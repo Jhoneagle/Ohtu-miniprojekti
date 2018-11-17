@@ -21,7 +21,7 @@ public class ServerRule extends ExternalResource {
         Main.setDao(dao);
         Main.main(null);
         
-        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "chromedriver");
     }
 
     @Override

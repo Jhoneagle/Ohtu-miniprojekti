@@ -5,4 +5,3 @@ build
 WebLogin.iml
 bin
 .settings
-chromedriver.exe
