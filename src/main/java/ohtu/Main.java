@@ -9,8 +9,9 @@ import ohtu.util.CreationStatus;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.velocity.VelocityTemplateEngine;
+import spark.servlet.SparkApplication;
 
-public class Main {
+public class Main implements SparkApplication {
     
     static String LAYOUT = "templates/layout.html";
   
@@ -18,6 +19,15 @@ public class Main {
     static AuthenticationService authService;
     
     public static void main(String[] args) {
+        startSpark();      
+    }
+
+    @Override
+    public void init() {
+        startSpark();
+    }
+
+    private static void startSpark() {
         port(findOutPort());
               
         get("/", (request, response) -> {
@@ -81,7 +91,7 @@ public class Main {
                 
            response.redirect("/welcome");
            return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());           
+        }, new VelocityTemplateEngine());
     }
 
     public static void setDao(UserDao dao) {
