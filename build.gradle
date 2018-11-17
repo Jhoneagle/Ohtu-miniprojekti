@@ -10,7 +10,7 @@ repositories {
 }
 
 task( browse, dependsOn: jar, type: JavaExec ) {
-    main = 'ohtu.Tester'
+    main = 'ohtu.Main'
     classpath = sourceSets.main.runtimeClasspath
 }
 
