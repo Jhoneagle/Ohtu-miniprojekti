@@ -35,6 +35,7 @@ dependencies {
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion   
     compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version:seleniumVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version:seleniumVersion
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver',version: seleniumVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version:seleniumVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:seleniumVersion 
     compile group: 'org.xerial', name:'sqlite-jdbc', version:'3.8.11.2'
