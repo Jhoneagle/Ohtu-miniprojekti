@@ -26,7 +26,8 @@ project.ext {
 dependencies {
     compile 'com.google.guava:guava:20.0'
     testCompile 'junit:junit:4.12'
-    compile group: 'com.sparkjava', name: 'spark-core', version: '2.2'
+    compile group: 'com.sparkjava', name: 'spark-core', version: '2.5'
+    compile 'org.slf4j:slf4j-simple:1.7.21'
     compile group: 'com.sparkjava', name: 'spark-template-velocity', version: '2.0.0'
     testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: '0.10.3'
     testCompile group: 'org.fluentlenium', name: 'fluentlenium-assertj', version: '0.10.3' 
@@ -43,6 +44,19 @@ test {
     testLogging.showStandardStreams = true
     systemProperties System.getProperties()
 }
+
+// This task is needed by Heroku
+task stage {
+    dependsOn build
+}
+
+// This task copies dependencies that are pulled down from Maven
+// and copies into a directory specified in Procfile
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from(configurations.compile)
+}
+stage.dependsOn(copyToLib)
 
 // Define the main class for the application
 mainClassName = 'ohtu.Main'
