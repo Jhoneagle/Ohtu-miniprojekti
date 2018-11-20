@@ -1,0 +1,22 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+        <title>Vinkit</title>
+    </head>   
+    
+    <body>
+        <h1>Vinkit listana</h1>
+        
+        <ul>
+            <li th:each="vinkki : ${vinkit}">
+                <span th:text="${vinkki.otsikko}">Vinkkien otsikot listana</span> 
+                <span th:text="${vinkki.kirjoittaja}">Vinkkien kirjoittajat listana</span>
+                <span th:text="${vinkki.tyyppi}">Vinkkien tyypit listana</span>
+            </li>
+            
+        </ul>  
+        
+    </body>
+    
+</html>

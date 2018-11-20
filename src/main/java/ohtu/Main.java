@@ -1,14 +1,20 @@
 
 package ohtu;
 
+import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import ohtu.authentication.AuthenticationService;
+import ohtu.data_access.Database;
 import ohtu.data_access.FileUserDao;
 import ohtu.data_access.UserDao;
+import ohtu.data_access.VinkkiDao;
 import ohtu.util.CreationStatus;
 import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.velocity.VelocityTemplateEngine;
+import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 public class Main {
     
@@ -17,15 +23,26 @@ public class Main {
     static UserDao dao;
     static AuthenticationService authService;
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         port(findOutPort());
+        Database database = new Database("jdbc:sqlite:vinkit.db");
               
+        VinkkiDao vinkit = new VinkkiDao(database);
+        System.out.println(vinkit.findOne(1).getOtsikko());
+        
         get("/", (request, response) -> {
             HashMap<String, String> model = new HashMap<>();
             model.put("template", "templates/index.html");
             return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());             
-         
+        }, new VelocityTemplateEngine());            
+        
+         get("/vinkit", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("vinkit", vinkit.findAll());
+            return new ModelAndView(map, "vinkit");
+        }, new ThymeleafTemplateEngine());
+        
+               
         get("/ohtu", (request, response) -> {
             HashMap<String, String> model = new HashMap<>();
             model.put("template", "templates/ohtu.html");
