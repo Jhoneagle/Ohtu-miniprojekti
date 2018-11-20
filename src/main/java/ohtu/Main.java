@@ -33,7 +33,13 @@ public class Main {
             return new ModelAndView(model, LAYOUT);
         }, new VelocityTemplateEngine());            
         
-         get("/vinkit", (req, res) -> {
+        get("/newVinkki", (request, response) -> {
+            HashMap<String, String> model = new HashMap<>();
+            model.put("template", "templates/newVinkki.html");
+            return new ModelAndView(model, LAYOUT);
+        }, new VelocityTemplateEngine());
+        
+        get("/vinkit", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("vinkit", vinkkiDao.findAll());
             return new ModelAndView(map, "vinkit");

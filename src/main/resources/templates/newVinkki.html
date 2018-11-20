@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Vinkki app</title>
+        <meta charset="utf-8"/>
+    </head>   
+    
+    <body>
+        <h3>Lisää uusi vinkki </h3>
+
+        <form action="/vinkit" method="post">
+            <label>Kirjan tai artikkelin otsikko: </label><br/>
+            <input type="text" name="otsikko"/><br/>
+            <label>Kirjoittaja: </label><br/>
+            <input type="text" name="kirjoittaja"/><br/>
+            <label>Vinkin tyyppi </label><br/>
+            <input type="text" name="tyyppi"/><br/>
+            <input type="submit" name="action" value="Lisää"/><br/>
+        </form>
+    </body>
+</html>

@@ -34,7 +34,7 @@ public class Stepdefs {
         element = driver.findElement(By.name("password"));
         element.sendKeys(password);
         element = driver.findElement(By.name("login"));
-        element.submit();  
+        element.submit();
     } 
     
     private void createUserWith(String username, String password) {
