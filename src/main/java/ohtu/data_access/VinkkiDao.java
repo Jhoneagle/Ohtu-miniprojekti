@@ -72,4 +72,23 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public void add(Vinkki vinkki) throws SQLException {
+        Integer vinkkiId = vinkki.getId();
+        String vinkkiOtsikko = vinkki.getOtsikko();
+        String vinkkiKirjoittaja = vinkki.getKirjoittaja();
+        String vinkkiTyyppi = vinkki.getTyyppi();
+        /*if (findByName(vinkkiOtsikko) != null) {
+            return;
+        }*/
+        
+        Connection conn = database.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, kirjoittaja, tyyppi) VALUES (?,?,?)");
+        stmt.setString(1, vinkkiOtsikko);
+        stmt.setString(2, vinkkiKirjoittaja);
+        stmt.setString(3, vinkkiTyyppi);
+        stmt.executeUpdate();
+        stmt.close();
+        conn.close();
+    }
+    
 }

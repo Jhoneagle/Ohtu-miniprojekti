@@ -2,14 +2,13 @@
 package ohtu;
 
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import ohtu.authentication.AuthenticationService;
 import ohtu.data_access.Database;
 import ohtu.data_access.FileUserDao;
 import ohtu.data_access.UserDao;
 import ohtu.data_access.VinkkiDao;
+import ohtu.domain.Vinkki;
 import ohtu.util.CreationStatus;
 import spark.ModelAndView;
 import static spark.Spark.*;
@@ -28,7 +27,6 @@ public class Main {
         Database database = new Database("jdbc:sqlite:vinkit.db");
               
         VinkkiDao vinkit = new VinkkiDao(database);
-        System.out.println(vinkit.findOne(1).getOtsikko());
         
         get("/", (request, response) -> {
             HashMap<String, String> model = new HashMap<>();
@@ -42,7 +40,18 @@ public class Main {
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
         
-               
+        post("/vinkit", (req,res) -> {
+            String btnName = req.queryParams("action");  
+            String otsikko = req.queryParams("otsikko");
+            String kirjoittaja = req.queryParams("kirjoittaja");
+            String tyyppi = req.queryParams("tyyppi");
+            Vinkki vinkki = new Vinkki(-1, otsikko, kirjoittaja, tyyppi);
+            vinkit.add(vinkki);
+
+            res.redirect("/vinkit");
+            return "";
+        });  
+        
         get("/ohtu", (request, response) -> {
             HashMap<String, String> model = new HashMap<>();
             model.put("template", "templates/ohtu.html");

@@ -14,6 +14,10 @@ public class Vinkki {
         this.tyyppi=tyyppi;
     }
     
+    public int getId() {
+        return this.id;
+    }
+    
     public String getOtsikko() {
         return otsikko;
     }
