@@ -1,6 +1,6 @@
 package ohtu;
 
-import ohtu.data_access.UserDao;
+import ohtu.data_access.AccountDao;
 import ohtu.domain.User;
 import org.junit.rules.ExternalResource;
 import spark.Spark;
@@ -16,9 +16,9 @@ public class ServerRule extends ExternalResource {
     @Override
     protected void before() throws Throwable {
         Spark.port(port);
-        UserDao dao = new UserDaoForTests();
+        AccountDao dao = new UserDaoForTests();
         dao.add(new User("jukka", "akkuj"));
-        Main.setDao(dao);
+        Main.userDao = dao;
         Main.main(null);
     }
 

@@ -7,10 +7,10 @@ import java.util.List;
 import ohtu.domain.Vinkki;
 
 public class VinkkiDao implements Dao<Vinkki, Integer> {
-    private Database database;
+    private final Database database;
     
     public VinkkiDao(Database database) {
-        this.database=database;
+        this.database = database;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         Integer id = rs.getInt("id");
         String otsikko = rs.getString("otsikko");
         String kirjoittaja = rs.getString("kirjoittaja");
-        String tyyppi=rs.getString("tyyppi");
+        String tyyppi = rs.getString("tyyppi");
         
         Vinkki etsitty = new Vinkki(id, otsikko, kirjoittaja, tyyppi);
         rs.close();
@@ -51,7 +51,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
                 Integer id = rs.getInt("id");
                 String otsikko = rs.getString("otsikko");
                 String kirjoittaja = rs.getString("kirjoittaja");
-                String tyyppi=rs.getString("tyyppi");
+                String tyyppi = rs.getString("tyyppi");
 
                 vinkit.add(new Vinkki(id, otsikko, kirjoittaja, tyyppi));
             }
@@ -59,12 +59,13 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             rs.close();
             stmt.close();
             conn.close();
+            
             return vinkit;
         } catch(Exception e) {
             System.out.println("Exception");
-        }        
-        return null;
+        }
         
+        return null;
     }
 
     @Override
@@ -72,11 +73,13 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    @Override
     public void add(Vinkki vinkki) throws SQLException {
         Integer vinkkiId = vinkki.getId();
         String vinkkiOtsikko = vinkki.getOtsikko();
         String vinkkiKirjoittaja = vinkki.getKirjoittaja();
         String vinkkiTyyppi = vinkki.getTyyppi();
+        
         /*if (findByName(vinkkiOtsikko) != null) {
             return;
         }*/
@@ -90,5 +93,4 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         stmt.close();
         conn.close();
     }
-    
 }

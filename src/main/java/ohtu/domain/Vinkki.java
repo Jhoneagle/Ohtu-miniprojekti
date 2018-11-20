@@ -10,8 +10,8 @@ public class Vinkki {
     public Vinkki(Integer id, String otsikko, String kirjoittaja, String tyyppi) {
         this.id = id;
         this.otsikko = otsikko;
-        this.kirjoittaja=kirjoittaja;
-        this.tyyppi=tyyppi;
+        this.kirjoittaja = kirjoittaja;
+        this.tyyppi = tyyppi;
     }
     
     public int getId() {

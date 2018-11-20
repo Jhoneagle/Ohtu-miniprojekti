@@ -1,22 +1,27 @@
 package ohtu.authentication;
 
-import ohtu.data_access.UserDao;
+import java.sql.SQLException;
+import ohtu.data_access.AccountDao;
 import ohtu.domain.User;
 import ohtu.util.CreationStatus;
 
 public class AuthenticationService {
 
-    private UserDao userDao;
+    private AccountDao userDao;
 
-    public AuthenticationService(UserDao userDao) {
+    public AuthenticationService(AccountDao userDao) {
         this.userDao = userDao;
     }
 
-    public boolean logIn(String username, String password) {
-        for (User user : userDao.listAll()) {
-            if (user.getUsername().equals(username)
-                    && user.getPassword().equals(password)) {
-                return true;
+    public boolean logIn(String username, String password) throws SQLException {
+        for (Object obj : userDao.findAll()) {
+            if (obj.getClass() == User.class) {
+                User user = (User) obj;
+                
+                if (user.getUsername().equals(username)
+                        && user.getPassword().equals(password)) {
+                    return true;
+                }
             }
         }
 
@@ -62,7 +67,11 @@ public class AuthenticationService {
         }
         
         if (status.isOk()) {
-            userDao.add(new User(username, password));
+            try {
+                userDao.add(new User(username, password));
+            } catch (SQLException ex) {
+                status.addError("add failed because database");
+            }
         }
         
         return status;

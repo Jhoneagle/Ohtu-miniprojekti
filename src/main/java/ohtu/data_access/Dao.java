@@ -1,6 +1,6 @@
 package ohtu.data_access;
 
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface Dao<T,K> {
@@ -10,4 +10,5 @@ public interface Dao<T,K> {
 
     void delete(K key) throws SQLException;
 
+    void add(T newOne) throws SQLException;
 }

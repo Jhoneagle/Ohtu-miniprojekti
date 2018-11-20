@@ -3,11 +3,10 @@ package ohtu;
 
 import java.util.ArrayList;
 import java.util.List;
-import ohtu.data_access.UserDao;
+import ohtu.data_access.AccountDao;
 import ohtu.domain.User;
 
-public class UserDaoForTests implements UserDao {
-
+public class UserDaoForTests implements AccountDao<User, Integer> {
     private List<User> users;
 
     public UserDaoForTests() {
@@ -15,7 +14,7 @@ public class UserDaoForTests implements UserDao {
     }
 
     @Override
-    public List<User> listAll() {
+    public List<User> findAll() {
         return users;
     }
 
@@ -41,5 +40,15 @@ public class UserDaoForTests implements UserDao {
 
     public List<User> getUsers() {
         return users;
+    }
+
+    @Override
+    public User findOne(Integer key) {
+        return users.get(key);
+    }
+
+    @Override
+    public void delete(Integer key) {
+        users.remove((int) key);
     }
 }

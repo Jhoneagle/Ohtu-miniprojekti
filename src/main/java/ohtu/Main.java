@@ -1,11 +1,11 @@
-
 package ohtu;
 
 import java.sql.SQLException;
 import java.util.*;
 import ohtu.authentication.AuthenticationService;
+import ohtu.data_access.AccountDao;
+import ohtu.data_access.Dao;
 import ohtu.data_access.Database;
-import ohtu.data_access.FileUserDao;
 import ohtu.data_access.UserDao;
 import ohtu.data_access.VinkkiDao;
 import ohtu.domain.Vinkki;
@@ -16,17 +16,16 @@ import spark.template.velocity.VelocityTemplateEngine;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 public class Main {
-    
     static String LAYOUT = "templates/layout.html";
   
-    static UserDao dao;
+    static AccountDao userDao;
+    static Dao vinkkiDao;
     static AuthenticationService authService;
     
     public static void main(String[] args) throws SQLException {
         port(findOutPort());
         Database database = new Database("jdbc:sqlite:vinkit.db");
-              
-        VinkkiDao vinkit = new VinkkiDao(database);
+        setAllDao(database);
         
         get("/", (request, response) -> {
             HashMap<String, String> model = new HashMap<>();
@@ -36,7 +35,7 @@ public class Main {
         
          get("/vinkit", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("vinkit", vinkit.findAll());
+            map.put("vinkit", vinkkiDao.findAll());
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
         
@@ -46,24 +45,13 @@ public class Main {
             String kirjoittaja = req.queryParams("kirjoittaja");
             String tyyppi = req.queryParams("tyyppi");
             Vinkki vinkki = new Vinkki(-1, otsikko, kirjoittaja, tyyppi);
-            vinkit.add(vinkki);
+            vinkkiDao.add(vinkki);
 
             res.redirect("/vinkit");
             return "";
-        });  
+        });
         
-        get("/ohtu", (request, response) -> {
-            HashMap<String, String> model = new HashMap<>();
-            model.put("template", "templates/ohtu.html");
-            return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());            
-        
-        get("/welcome", (request, response) -> {
-            HashMap<String, String> model = new HashMap<>();
-            model.put("template", "templates/welcome.html");
-            return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());            
-        
+        /*
         get("/login", (request, response) -> {
             HashMap<String, String> model = new HashMap<>();
             model.put("template", "templates/login.html");
@@ -108,17 +96,17 @@ public class Main {
            response.redirect("/welcome");
            return new ModelAndView(model, LAYOUT);
         }, new VelocityTemplateEngine());
+        */
     }
 
-    public static void setDao(UserDao dao) {
-        Main.dao = dao;
+    public static void setAllDao(Database database) {
+        userDao = new UserDao(database);
+        vinkkiDao = new VinkkiDao(database);
     }
     
     public static AuthenticationService authenticationService(){
-        if ( dao==null ) {
-          dao = new FileUserDao("salasanat.txt");  
-        } if (authService==null) {
-           authService = new AuthenticationService(dao); 
+        if (authService == null) {
+           authService = new AuthenticationService(userDao); 
         }
 
         return authService;
