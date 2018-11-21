@@ -14,8 +14,44 @@ public class Stepdefs {
     WebDriver driver = new HtmlUnitDriver();
     String baseUrl = "http://localhost:4567";
     
-    
-    
+    @Given("^front page is selected$")
+    public void front_page_selected() throws Throwable {
+        driver.get(baseUrl);
+    }
+
+    @When("^list all tips clicked$")
+    public void list_all_tips_clicked() throws Throwable {
+        WebElement element = driver.findElement(By.name("toVinkit"));
+        element.click();
+    }
+
+    @Then("^list all view is open$")
+    public void list_all_view_is_open() throws Throwable {
+        pageHasContent("Lukuvinkit listana");
+    }
+
+    @When("^new tip is clicked$")
+    public void new_tip_is_clicked() throws Throwable {
+        WebElement element = driver.findElement(By.name("toNewVinkki"));
+        element.click();
+    }
+
+    @Then("^new tip view is open$")
+    public void new_tip_view_is_open() throws Throwable {
+        pageHasContent("uusi vinkki");
+    }
+
+    @Given("^new tip view is selected$")
+    public void new_tip_view_is_selected() throws Throwable {
+        driver.get(baseUrl + "/newVinkki");
+    }
+
+    @When("^otsikko \"([^\"]*)\", kirjoittaja \"([^\"]*)\", tyyppi \"([^\"]*)\" are given$")
+    public void otsikko_kirjoittaja_tyyppi_are_given(String otsikko, String kirjoittaja, String tyyppi) throws Throwable {
+    //    createTip(otsikko, kirjoittaja, tyyppi);
+    }
+
+
     @After
     public void tearDown(){
         driver.quit();
@@ -58,6 +94,18 @@ public class Stepdefs {
         element = driver.findElement(By.name("passwordConfirmation"));
         element.sendKeys("");
         element = driver.findElement(By.name("signup"));
+        element.submit();
+    }
+
+    private void createTip(String otsikko, String kirjoittaja, String tyyppi) {
+        assertTrue(driver.getPageSource().contains("uusi vinkki"));
+        WebElement element = driver.findElement(By.name("otsikko"));
+        element.sendKeys(otsikko);
+        element = driver.findElement(By.name("kirjoittaja"));
+        element.sendKeys(kirjoittaja);
+        element = driver.findElement(By.name("tyyppi"));
+        element.sendKeys(tyyppi);
+        element = driver.findElement(By.name("addVinkki"));
         element.submit();
     }
 }

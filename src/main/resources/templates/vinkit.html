@@ -11,7 +11,7 @@
         <ul>
             <li th:each="vinkki : ${vinkit}">
                 Otsikko:
-                <span th:text="${vinkki.otsikko}">Vinkkien otsikot listana</span><br/> 
+                <span th:text="${vinkki.otsikko}">Vinkkien otsikot listana</span><br/>
                 Kirjoittaja:
                 <span th:text="${vinkki.kirjoittaja}">Vinkkien kirjoittajat listana</span><br/>
                 Tyyppi:
@@ -20,6 +20,6 @@
         </ul>  
         
         <a href="/">Takaisin pääsivulle</a><br />
-        <a href="/newVinkki">Uusi vinkki</a>
+        <a href="/newVinkki" name="toNewVinkki">Uusi vinkki</a>
     </body>
 </html>
