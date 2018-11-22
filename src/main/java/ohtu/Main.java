@@ -1,4 +1,4 @@
-package ohtu.main;
+package ohtu;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -110,13 +110,8 @@ public class Main {
     }
 
     public static void setAllDao(Database database) {
-        if (userDao != null) {
-            userDao = new UserDao(database);
-        }
-        
-        if (vinkkiDao != null) {
-            vinkkiDao = new VinkkiDao(database);
-        }
+        userDao = new UserDao(database);
+        vinkkiDao = new VinkkiDao(database);
     }
     
     public static AuthenticationService authenticationService(){

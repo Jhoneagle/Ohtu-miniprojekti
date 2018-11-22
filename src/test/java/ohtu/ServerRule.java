@@ -1,13 +1,11 @@
 package ohtu;
 
-import ohtu.main.Main;
 import ohtu.data_access.AccountDao;
 import ohtu.domain.User;
 import org.junit.rules.ExternalResource;
 import spark.Spark;
 
 public class ServerRule extends ExternalResource {
-    
     private final int port;
 
     public ServerRule(int port) {
