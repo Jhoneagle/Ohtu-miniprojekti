@@ -57,8 +57,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
                 String kuvaus = rs.getString("kuvaus");
                 String linkki = rs.getString("linkki");
                 String tagit = rs.getString("tagit");
-
-                System.out.println(tagit);
                 
                 Vinkki f = new Vinkki(id, otsikko, tekija, kuvaus, linkki);
                 f.setTagit(tagit);
