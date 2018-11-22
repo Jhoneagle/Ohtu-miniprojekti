@@ -1,6 +1,5 @@
 package ohtu;
 
-import main.Main;
 import ohtu.data_access.AccountDao;
 import ohtu.domain.User;
 import org.junit.rules.ExternalResource;

@@ -9,7 +9,7 @@ apply plugin: 'jacoco'
 
 jacoco {
     toolVersion = "0.8.2"
-    reportsDir = file("$buildDir/customJacocoReportDir")
+    reportsDir = file("$buildDir/JacocoReports")
 }
 
 // In this section you declare where to find the dependencies of your project
@@ -19,7 +19,7 @@ repositories {
 }
 
 task( browse, dependsOn: jar, type: JavaExec ) {
-    main = 'main.Main'
+    main = 'ohtu.Main'
     classpath = sourceSets.main.runtimeClasspath
 }
 
@@ -61,8 +61,13 @@ jacocoTestReport {
     }
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it,
-                    exclude: ['main/**'])
+            fileTree(dir: it, exclude: [
+		    'ohtu/util/**',
+		    'ohtu/authentication/**',
+		    '**/*Main**',
+		    '**/*UserDao**',
+		    '**/*User**'
+	    ])
         })
     }
 }
@@ -81,4 +86,4 @@ task copyToLib(type: Copy) {
 stage.dependsOn(copyToLib)
 
 // Define the main class for the application
-mainClassName = 'main.Main'
+mainClassName = 'ohtu.Main'

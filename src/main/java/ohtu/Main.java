@@ -1,4 +1,4 @@
-package main;
+package ohtu;
 
 import java.sql.SQLException;
 import java.util.*;
