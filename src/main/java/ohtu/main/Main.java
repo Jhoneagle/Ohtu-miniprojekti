@@ -1,4 +1,4 @@
-package ohtu;
+package ohtu.main;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -18,8 +18,8 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 public class Main {
     static String LAYOUT = "templates/layout.html";
   
-    static AccountDao userDao;
-    static Dao vinkkiDao;
+    public static AccountDao userDao;
+    public static Dao vinkkiDao;
     static AuthenticationService authService;
     
     public static void main(String[] args) throws SQLException {
@@ -110,8 +110,13 @@ public class Main {
     }
 
     public static void setAllDao(Database database) {
-        userDao = new UserDao(database);
-        vinkkiDao = new VinkkiDao(database);
+        if (userDao != null) {
+            userDao = new UserDao(database);
+        }
+        
+        if (vinkkiDao != null) {
+            vinkkiDao = new VinkkiDao(database);
+        }
     }
     
     public static AuthenticationService authenticationService(){
