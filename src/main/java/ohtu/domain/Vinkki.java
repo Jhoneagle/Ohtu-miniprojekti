@@ -1,13 +1,16 @@
 package ohtu.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Vinkki {
 
     private Integer id;
     private String otsikko;
     private String tekija;
     private String kuvaus;
-
     private String linkki;
+    private List<String> tagit;
 
     public Vinkki(Integer id, String otsikko, String tekija, String kuvaus, String linkki) {
         this.id = id;
@@ -15,6 +18,7 @@ public class Vinkki {
         this.tekija = tekija;
         this.kuvaus = kuvaus;
         this.linkki = linkki;
+        this.tagit = new ArrayList<>();
     }
 
     public int getId() {
@@ -37,4 +41,26 @@ public class Vinkki {
         return this.kuvaus;
     }
 
+    public String getTagit() {
+        String result = "";
+        
+        if (!this.tagit.isEmpty()) {
+            result += this.tagit.get(0);
+        }
+        
+        for (int i = 1; i < this.tagit.size(); i++) {
+            String n = "," + this.tagit.get(i);
+            result += n;
+        }
+        
+        return result;
+    }
+    
+    public void setTagit(String tags) {
+        String[] parsed = tags.split(",");
+        
+        for (String t : parsed) {
+            this.tagit.add(t);
+        }
+    }
 }

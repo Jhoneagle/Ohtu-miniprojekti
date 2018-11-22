@@ -23,13 +23,17 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         if (!rs.next()) {
             return null;
         }
+        
         Integer id = rs.getInt("id");
         String otsikko = rs.getString("otsikko");
         String tekija = rs.getString("tekija");
         String kuvaus = rs.getString("kuvaus");
         String linkki = rs.getString("linkki");
+        String tagit = rs.getString("tagit");
 
         Vinkki etsitty = new Vinkki(id, otsikko, tekija, kuvaus, linkki);
+        etsitty.setTagit(tagit);
+        
         rs.close();
         stmt.close();
         conn.close();
@@ -39,7 +43,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
 
     @Override
     public List<Vinkki> findAll() throws SQLException {
-
         try {
             List<Vinkki> vinkit = new ArrayList<>();
             Connection conn = database.getConnection();
@@ -53,8 +56,13 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
                 String tekija = rs.getString("tekija");
                 String kuvaus = rs.getString("kuvaus");
                 String linkki = rs.getString("linkki");
+                String tagit = rs.getString("tagit");
 
-                vinkit.add(new Vinkki(id, otsikko, tekija, kuvaus, linkki));
+                System.out.println(tagit);
+                
+                Vinkki f = new Vinkki(id, otsikko, tekija, kuvaus, linkki);
+                f.setTagit(tagit);
+                vinkit.add(f);
             }
 
             rs.close();
@@ -80,17 +88,19 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         String vinkkiTekija = vinkki.getTekija();
         String vinkkiKuvaus = vinkki.getKuvaus();
         String vinkkiLinkki = vinkki.getLinkki();
+        String tagit = vinkki.getTagit();
 
 
         /*if (findByName(vinkkiOtsikko) != null) {
             return;
         }*/
         Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki) VALUES (?,?,?,?)");
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit) VALUES (?,?,?,?,?)");
         stmt.setString(1, vinkkiOtsikko);
         stmt.setString(2, vinkkiTekija);
         stmt.setString(3, vinkkiKuvaus);
         stmt.setString(4, vinkkiLinkki);
+        stmt.setString(5, tagit);
 
         stmt.executeUpdate();
         stmt.close();

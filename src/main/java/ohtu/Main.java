@@ -51,7 +51,10 @@ public class Main {
             String tekija = req.queryParams("tekija");
             String kuvaus = req.queryParams("kuvaus");
             String linkki = req.queryParams("linkki");
+            String tagit = req.queryParams("tagit");
+            
             Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus,linkki);
+            vinkki.setTagit(tagit);
             vinkkiDao.add(vinkki);
 
             res.redirect("/vinkit");
