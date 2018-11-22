@@ -19,7 +19,7 @@ repositories {
 }
 
 task( browse, dependsOn: jar, type: JavaExec ) {
-    main = 'ohtu.Main'
+    main = 'main.Main'
     classpath = sourceSets.main.runtimeClasspath
 }
 
@@ -59,6 +59,12 @@ jacocoTestReport {
         xml.enabled true
         html.enabled true
     }
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['main/**'])
+        })
+    }
 }
 
 // This task is needed by Heroku
@@ -75,4 +81,4 @@ task copyToLib(type: Copy) {
 stage.dependsOn(copyToLib)
 
 // Define the main class for the application
-mainClassName = 'ohtu.Main'
+mainClassName = 'main.Main'
