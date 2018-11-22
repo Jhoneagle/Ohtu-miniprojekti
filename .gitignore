@@ -2,6 +2,6 @@ build
 .gradle
 .idea
 .nb-gradle
-WebLogin.iml
 bin
 .settings
+*~

@@ -1,4 +1,3 @@
-
 package ohtu.data_access;
 
 import java.sql.*;
@@ -7,8 +6,9 @@ import java.util.List;
 import ohtu.domain.Vinkki;
 
 public class VinkkiDao implements Dao<Vinkki, Integer> {
+
     private final Database database;
-    
+
     public VinkkiDao(Database database) {
         this.database = database;
     }
@@ -16,55 +16,56 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     @Override
     public Vinkki findOne(Integer key) throws SQLException {
         Connection conn = database.getConnection();
-        PreparedStatement stmt=conn.prepareStatement("SELECT * from Vinkki WHERE id=?");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * from Vinkki WHERE id=?");
         stmt.setObject(1, key);
-        
-        ResultSet rs= stmt.executeQuery();
-        if(!rs.next()) {
+
+        ResultSet rs = stmt.executeQuery();
+        if (!rs.next()) {
             return null;
         }
         Integer id = rs.getInt("id");
         String otsikko = rs.getString("otsikko");
-        String kirjoittaja = rs.getString("kirjoittaja");
-        String tyyppi = rs.getString("tyyppi");
-        
-        Vinkki etsitty = new Vinkki(id, otsikko, kirjoittaja, tyyppi);
+        String tekija = rs.getString("tekija");
+        String kuvaus = rs.getString("kuvaus");
+        String linkki = rs.getString("linkki");
+
+        Vinkki etsitty = new Vinkki(id, otsikko, tekija, kuvaus, linkki);
         rs.close();
         stmt.close();
         conn.close();
-        
+
         return etsitty;
     }
 
     @Override
     public List<Vinkki> findAll() throws SQLException {
-        
-        try{
-            List<Vinkki>vinkit = new ArrayList<>();
-            Connection conn= database.getConnection();
+
+        try {
+            List<Vinkki> vinkit = new ArrayList<>();
+            Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Vinkki");
 
             ResultSet rs = stmt.executeQuery();
 
-
-            while(rs.next()) {
+            while (rs.next()) {
                 Integer id = rs.getInt("id");
                 String otsikko = rs.getString("otsikko");
-                String kirjoittaja = rs.getString("kirjoittaja");
-                String tyyppi = rs.getString("tyyppi");
+                String tekija = rs.getString("tekija");
+                String kuvaus = rs.getString("kuvaus");
+                String linkki = rs.getString("linkki");
 
-                vinkit.add(new Vinkki(id, otsikko, kirjoittaja, tyyppi));
+                vinkit.add(new Vinkki(id, otsikko, tekija, kuvaus, linkki));
             }
 
             rs.close();
             stmt.close();
             conn.close();
-            
+
             return vinkit;
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("Exception");
         }
-        
+
         return null;
     }
 
@@ -72,23 +73,25 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public void delete(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public void add(Vinkki vinkki) throws SQLException {
-        Integer vinkkiId = vinkki.getId();
         String vinkkiOtsikko = vinkki.getOtsikko();
-        String vinkkiKirjoittaja = vinkki.getKirjoittaja();
-        String vinkkiTyyppi = vinkki.getTyyppi();
-        
+        String vinkkiTekija = vinkki.getTekija();
+        String vinkkiKuvaus = vinkki.getKuvaus();
+        String vinkkiLinkki = vinkki.getLinkki();
+
+
         /*if (findByName(vinkkiOtsikko) != null) {
             return;
         }*/
-        
         Connection conn = database.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, kirjoittaja, tyyppi) VALUES (?,?,?)");
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki) VALUES (?,?,?,?)");
         stmt.setString(1, vinkkiOtsikko);
-        stmt.setString(2, vinkkiKirjoittaja);
-        stmt.setString(3, vinkkiTyyppi);
+        stmt.setString(2, vinkkiTekija);
+        stmt.setString(3, vinkkiKuvaus);
+        stmt.setString(4, vinkkiLinkki);
+
         stmt.executeUpdate();
         stmt.close();
         conn.close();

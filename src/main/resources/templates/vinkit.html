@@ -4,21 +4,24 @@
         <title>Vinkit</title>
         <meta charset="utf-8"/>
     </head>   
-    
+
     <body>
         <h1>Lukuvinkit listana</h1>
-        
+
         <ul>
             <li th:each="vinkki : ${vinkit}">
                 Otsikko:
                 <span th:text="${vinkki.otsikko}">Vinkkien otsikot listana</span><br/>
                 Kirjoittaja:
-                <span th:text="${vinkki.kirjoittaja}">Vinkkien kirjoittajat listana</span><br/>
-                Tyyppi:
-                <span th:text="${vinkki.tyyppi}">Vinkkien tyypit listana</span><br/><br/>
+                <span th:text="${vinkki.tekija}">Vinkkien tekijät listana</span><br/>
+                Kuvaus:
+                <span th:text="${vinkki.kuvaus}">Vinkkien kuvaukset</span><br/><br/>
+                Linkki:
+                <span th:text="${vinkki.linkki}">Vinkkien linkit</span><br/><br/>
+
             </li>
         </ul>  
-        
+
         <a href="/">Takaisin pääsivulle</a><br />
         <a href="/newVinkki" name="toNewVinkki">Uusi vinkki</a>
     </body>

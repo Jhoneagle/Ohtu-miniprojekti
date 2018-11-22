@@ -6,14 +6,15 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.junit.Assert.*;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;	
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class Stepdefs {
+
     WebDriver driver = new HtmlUnitDriver();
     String baseUrl = "http://localhost:4567";
-    
+
     @Given("^front page is selected$")
     public void front_page_selected() throws Throwable {
         driver.get(baseUrl);
@@ -46,23 +47,21 @@ public class Stepdefs {
         driver.get(baseUrl + "/newVinkki");
     }
 
-    @When("^otsikko \"([^\"]*)\", kirjoittaja \"([^\"]*)\", tyyppi \"([^\"]*)\" are given$")
-    public void otsikko_kirjoittaja_tyyppi_are_given(String otsikko, String kirjoittaja, String tyyppi) throws Throwable {
-    //    createTip(otsikko, kirjoittaja, tyyppi);
+    @When("^otsikko \"([^\"]*)\", kirjoittaja \"([^\"]*)\", kuvaus \"([^\"]*)\", linkki \"([^\"]*)\" are given$")
+    public void otsikko_kirjoittaja_tyyppi_are_given(String otsikko, String tekija, String kuvaus, String linkki) throws Throwable {
+        //    createTip(otsikko, kirjoittaja, tyyppi);
     }
-
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         driver.quit();
     }
-        
+
     /* helper methods */
- 
     private void pageHasContent(String content) {
         assertTrue(driver.getPageSource().contains(content));
     }
-    
+
     private void logInWith(String username, String password) {
         assertTrue(driver.getPageSource().contains("Give your credentials to login"));
         WebElement element = driver.findElement(By.name("username"));
@@ -71,8 +70,8 @@ public class Stepdefs {
         element.sendKeys(password);
         element = driver.findElement(By.name("login"));
         element.submit();
-    } 
-    
+    }
+
     private void createUserWith(String username, String password) {
         assertTrue(driver.getPageSource().contains("Create username and give password"));
         WebElement element = driver.findElement(By.name("username"));
@@ -83,8 +82,8 @@ public class Stepdefs {
         element.sendKeys(password);
         element = driver.findElement(By.name("signup"));
         element.submit();
-    } 
-    
+    }
+
     private void createUserUnValidConfirm(String username, String password) {
         assertTrue(driver.getPageSource().contains("Create username and give password"));
         WebElement element = driver.findElement(By.name("username"));
@@ -97,14 +96,16 @@ public class Stepdefs {
         element.submit();
     }
 
-    private void createTip(String otsikko, String kirjoittaja, String tyyppi) {
+    private void createTip(String otsikko, String tekija, String tyyppi, String kuvaus, String linkki) {
         assertTrue(driver.getPageSource().contains("uusi vinkki"));
         WebElement element = driver.findElement(By.name("otsikko"));
         element.sendKeys(otsikko);
-        element = driver.findElement(By.name("kirjoittaja"));
-        element.sendKeys(kirjoittaja);
-        element = driver.findElement(By.name("tyyppi"));
+        element = driver.findElement(By.name("tekija"));
+        element.sendKeys(kuvaus);
+        element = driver.findElement(By.name("kuvaus"));
         element.sendKeys(tyyppi);
+        element = driver.findElement(By.name("linkki"));
+        element.sendKeys(linkki);
         element = driver.findElement(By.name("addVinkki"));
         element.submit();
     }

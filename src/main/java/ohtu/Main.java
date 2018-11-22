@@ -48,9 +48,10 @@ public class Main {
         post("/vinkit", (req,res) -> {
             String btnName = req.queryParams("action");  
             String otsikko = req.queryParams("otsikko");
-            String kirjoittaja = req.queryParams("kirjoittaja");
-            String tyyppi = req.queryParams("tyyppi");
-            Vinkki vinkki = new Vinkki(-1, otsikko, kirjoittaja, tyyppi);
+            String tekija = req.queryParams("tekija");
+            String kuvaus = req.queryParams("kuvaus");
+            String linkki = req.queryParams("linkki");
+            Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus,linkki);
             vinkkiDao.add(vinkki);
 
             res.redirect("/vinkit");
