@@ -5,3 +5,5 @@ build
 bin
 .settings
 *~
+vinkit.db
+*.iml

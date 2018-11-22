@@ -17,8 +17,8 @@ public class Database {
     
     private void initializeSqlTables() {
         try {
-            getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id INTEGER PRIMARY KEY, otsikko varchar(255),kuvaus varchar(255), tekija varchar(100), linkki varchar(255))").execute();
-
+            getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id INTEGER PRIMARY KEY, "
+                    + "otsikko varchar(255),kuvaus varchar(255), tekija varchar(100), linkki varchar(255))").execute();
         } catch (SQLException ex) {
             return;
         }
