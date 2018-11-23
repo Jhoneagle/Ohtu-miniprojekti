@@ -1,19 +1,15 @@
 package ohtu;
 
-import java.sql.SQLException;
-import java.util.*;
 import ohtu.authentication.AuthenticationService;
-import ohtu.data_access.AccountDao;
-import ohtu.data_access.Dao;
-import ohtu.data_access.Database;
-import ohtu.data_access.UserDao;
-import ohtu.data_access.VinkkiDao;
+import ohtu.data_access.*;
 import ohtu.domain.Vinkki;
-import ohtu.util.CreationStatus;
 import spark.ModelAndView;
-import static spark.Spark.*;
-import spark.template.velocity.VelocityTemplateEngine;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
+import spark.template.velocity.VelocityTemplateEngine;
+
+import java.util.HashMap;
+
+import static spark.Spark.*;
 
 public class Main {
     static String LAYOUT = "templates/layout.html";
@@ -22,7 +18,7 @@ public class Main {
     public static Dao vinkkiDao;
     static AuthenticationService authService;
     
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         port(findOutPort());
         Database database = new Database("jdbc:sqlite:vinkit.db");
         setAllDao(database);
@@ -110,8 +106,13 @@ public class Main {
     }
 
     public static void setAllDao(Database database) {
-        userDao = new UserDao(database);
-        vinkkiDao = new VinkkiDao(database);
+        if (userDao == null) {
+            userDao = new UserDao(database);
+        }
+        
+        if (vinkkiDao == null) {
+            vinkkiDao = new VinkkiDao(database);
+        }
     }
     
     public static AuthenticationService authenticationService(){

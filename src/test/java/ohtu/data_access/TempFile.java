@@ -1,7 +1,6 @@
 package ohtu.data_access;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 

@@ -56,6 +56,10 @@ public class Vinkki {
         return result;
     }
     
+    public List<String> getTagitAsList() {
+        return this.tagit;
+    }
+    
     public void setTagit(String tags) {
         String[] parsed = tags.split(",");
         

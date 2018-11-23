@@ -1,10 +1,11 @@
 
 package ohtu;
 
-import java.util.ArrayList;
-import java.util.List;
 import ohtu.data_access.AccountDao;
 import ohtu.domain.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoForTests implements AccountDao<User, Integer> {
     private List<User> users;

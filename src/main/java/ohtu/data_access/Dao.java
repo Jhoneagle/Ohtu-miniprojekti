@@ -1,14 +1,13 @@
 package ohtu.data_access;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface Dao<T,K> {
-    T findOne(K key) throws SQLException;
+    T findOne(K key);
 
-    List<T> findAll() throws SQLException;
+    List<T> findAll();
 
-    void delete(K key) throws SQLException;
+    void delete(K key);
 
-    void add(T newOne) throws SQLException;
+    void add(T newOne);
 }

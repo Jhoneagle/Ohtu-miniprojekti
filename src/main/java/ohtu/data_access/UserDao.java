@@ -1,8 +1,8 @@
 package ohtu.data_access;
 
-import java.sql.SQLException;
-import java.util.List;
 import ohtu.domain.User;
+
+import java.util.List;
 
 public class UserDao implements AccountDao<User, Integer> {
     private final Database database;
@@ -28,17 +28,17 @@ public class UserDao implements AccountDao<User, Integer> {
     }
     
     @Override
-    public User findOne(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); 
+    public User findOne(Integer key) {
+        return null; 
     }
     
     @Override
     public void add(User user) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override
-    public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void delete(Integer key) {
+        
     }
 }

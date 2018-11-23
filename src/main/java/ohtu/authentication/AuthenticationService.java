@@ -1,9 +1,10 @@
 package ohtu.authentication;
 
-import java.sql.SQLException;
 import ohtu.data_access.AccountDao;
 import ohtu.domain.User;
 import ohtu.util.CreationStatus;
+
+import java.sql.SQLException;
 
 public class AuthenticationService {
 
@@ -67,11 +68,7 @@ public class AuthenticationService {
         }
         
         if (status.isOk()) {
-            try {
-                userDao.add(new User(username, password));
-            } catch (SQLException ex) {
-                status.addError("add failed because database");
-            }
+            userDao.add(new User(username, password));
         }
         
         return status;
