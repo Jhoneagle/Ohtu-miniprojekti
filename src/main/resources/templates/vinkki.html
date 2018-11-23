@@ -10,8 +10,15 @@
     </head>   
     
     <body>
-        <h1>Lukuvinkit</h1>
+        <h3 th:text="${vinkki.otsikko}">Otsikko</h3>
         
-        <p><a href="/vinkit" name="toVinkit">Tarkastele kaikkia vinkkejä listana</a></p>
+        Tekijä:
+        <span th:text="${vinkki.tekija}">Tekijä</span><br/><br/>
+        Kuvaus:
+        <span th:text="${vinkki.kuvaus}">Kuvaus</span><br/><br/>
+        Linkki:
+        <span th:text="${vinkki.linkki}">Linkki</span><br/><br/>
+        tagit:
+        <span th:text="${tagit}">Linkki</span><br/><br/>
     </body>
 </html>

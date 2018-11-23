@@ -3,22 +3,23 @@
     <head>
         <title>Vinkit</title>
         <meta charset="utf-8"/>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>   
 
     <body>
         <h1>Lukuvinkit listana</h1>
 
-        <ul>
-            <li th:each="vinkki : ${vinkit}">
-                Otsikko:
-                <span th:text="${vinkki.otsikko}">Vinkkien otsikot listana</span><br/>
-                Kirjoittaja:
-                <span th:text="${vinkki.tekija}">Vinkkien tekijät listana</span><br/>
+        <ul class="list-group">
+            <li th:each="vinkki : ${vinkit}" class="list-group-item">
+                Otsikko: 
+                <a th:href="@{~/vinkki/{id}(id=${vinkki.id})}">
+                    <span th:text="${vinkki.otsikko}">Vinkin otsikko</span><br/>
+                </a>
                 Kuvaus:
-                <span th:text="${vinkki.kuvaus}">Vinkkien kuvaukset</span><br/><br/>
-                Linkki:
-                <span th:text="${vinkki.linkki}">Vinkkien linkit</span><br/><br/>
-
+                <span th:text="${vinkki.kuvaus}">Vinkin kuvaus</span><br/><br/>
             </li>
         </ul>  
 

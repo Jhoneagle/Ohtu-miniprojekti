@@ -41,6 +41,19 @@ public class Main {
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
         
+        get("/vinkki/:id", (req, res) -> {
+            Integer vinkkiId = Integer.parseInt(req.params(":id"));
+            Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
+            HashMap map = new HashMap<>();
+            map.put("vinkki", found);
+            
+            if (found != null) {
+                map.put("tagit", found.getTagit());
+            }
+            
+            return new ModelAndView(map, "vinkki");
+        }, new ThymeleafTemplateEngine());
+        
         post("/vinkit", (req,res) -> {
             String btnName = req.queryParams("action");  
             String otsikko = req.queryParams("otsikko");
