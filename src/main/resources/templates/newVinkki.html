@@ -10,32 +10,34 @@
     </head>   
 
     <body>
-        <h3>Lisää uusi vinkki </h3>
+        <div class="container">
+            <h3>Lisää uusi vinkki </h3>
 
-        <form action="/vinkit" method="post">
-            <div class="form-group">
-                <label for="otsikko">Kirjan tai artikkelin otsikko: </label><br/>
-                <input type="text" class="form-control" name="otsikko" id="otsikko"/><br/>
-            </div>
-            <div class="form-group">
-                <label for="tekija">Tekijä </label><br/>
-                <input type="text" class="form-control" name="tekija" id="tekija"/><br/>
-            </div>
-            <div class="form-group">
-                <label for="kuvaus">Vinkin kuvaus </label><br/>
-                <input type="text" class="form-control" name="kuvaus" id="kuvaus"/><br/>
-            </div>
-            <div class="form-group">
-                <label for="linkki">Vinkin linkki </label><br/>
-                <input type="text" class="form-control" name="linkki" id="linkki"/><br/>
-            </div>
-            <div class="form-group">
-                <label for="tagit">Tagit </label><br/>
-                <input type="text" class="form-control" name="tagit" id="tagit"/><br/>
-            </div>
-            <input type="submit" class="btn btn-success" name="addVinkki" value="Lisää"/><br/>
-        </form>
-        
-        <a href="/">Takaisin pääsivulle</a><br />
+            <form action="/vinkit" method="post">
+                <div class="form-group">
+                    <label for="otsikko">Kirjan tai artikkelin otsikko: </label><br/>
+                    <input type="text" class="form-control" name="otsikko" id="otsikko"/><br/>
+                </div>
+                <div class="form-group">
+                    <label for="tekija">Tekijä </label><br/>
+                    <input type="text" class="form-control" name="tekija" id="tekija"/><br/>
+                </div>
+                <div class="form-group">
+                    <label for="kuvaus">Vinkin kuvaus </label><br/>
+                    <input type="text" class="form-control" name="kuvaus" id="kuvaus"/><br/>
+                </div>
+                <div class="form-group">
+                    <label for="linkki">Vinkin linkki </label><br/>
+                    <input type="text" class="form-control" name="linkki" id="linkki"/><br/>
+                </div>
+                <div class="form-group">
+                    <label for="tagit">Tagit </label><br/>
+                    <input type="text" class="form-control" name="tagit" id="tagit"/><br/>
+                </div>
+                <input type="submit" class="btn btn-success" name="addVinkki" value="Lisää"/><br/>
+            </form>
+
+            <a href="/">Takaisin pääsivulle</a><br />
+        </div>
     </body>
 </html>
