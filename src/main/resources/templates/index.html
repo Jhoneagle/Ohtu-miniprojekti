@@ -10,8 +10,18 @@
     </head>   
     
     <body>
-        <h1>Lukuvinkit</h1>
-        
-        <p><a href="/vinkit" name="toVinkit">Tarkastele kaikkia vinkkejä listana</a></p>
+        <div class="container">
+            <h1>Lukuvinkit</h1>
+
+            <p><a href="/vinkit" name="toVinkit">Tarkastele kaikkia lukuvinkkejä listana</a></p>
+
+            <form>
+                <div class="form-group">
+                    <label>Etsi pilkulla eroteltujen tagien avulla</label> 
+                    <input type="text" class="form-control" name="etsi" />     
+                </div>             
+                <button class="btn btn-success" type="submit" name="action" value="etsi">Etsi</button>
+            </form>    
+        </div>
     </body>
 </html>

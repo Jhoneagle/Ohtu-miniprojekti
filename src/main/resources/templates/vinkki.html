@@ -10,15 +10,19 @@
     </head>   
     
     <body>
-        <h3 th:text="${vinkki.otsikko}">Otsikko</h3>
-        
-        Tekijä:
-        <span th:text="${vinkki.tekija}">Tekijä</span><br/><br/>
-        Kuvaus:
-        <span th:text="${vinkki.kuvaus}">Kuvaus</span><br/><br/>
-        Linkki:
-        <span th:text="${vinkki.linkki}">Linkki</span><br/><br/>
-        tagit:
-        <span th:text="${tagit}">Linkki</span><br/><br/>
+        <div class="container">
+            <h3 th:text="${vinkki.otsikko}">Otsikko</h3>
+            Tekijä:
+            <span th:text="${vinkki.tekija}">Tekijä</span><br/><br/>
+            Kuvaus:
+            <span th:text="${vinkki.kuvaus}">Kuvaus</span><br/><br/>
+            Linkki:
+            <span th:text="${vinkki.linkki}">Linkki</span><br/><br/>
+            tagit:
+            <span th:text="${tagit}">Linkki</span><br/><br/>
+            <a href="/">Takaisin pääsivulle</a><br />
+        </div>    
     </body>
+
+        
 </html>
