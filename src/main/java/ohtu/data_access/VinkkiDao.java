@@ -1,6 +1,7 @@
 package ohtu.data_access;
 
 import ohtu.domain.Vinkki;
+import ohtu.util.Utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.util.List;
 public class VinkkiDao implements Dao<Vinkki, Integer> {
 
     private final Database database;
+    private final Utils utils = new Utils();
 
     public VinkkiDao(Database database) {
         this.database = database;
@@ -94,6 +96,15 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             String vinkkiKuvaus = vinkki.getKuvaus();
             String vinkkiLinkki = vinkki.getLinkki();
             String tagit = vinkki.getTagit();
+
+            String tag = utils.parseUrlForTag(vinkkiLinkki);
+            if (!tag.isEmpty()) {
+                if (tagit.isEmpty()) {
+                    tagit = tag;
+                } else {
+                    tagit += "," + tag;
+                }
+            }
             
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit) VALUES (?,?,?,?,?)");

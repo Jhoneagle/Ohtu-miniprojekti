@@ -38,9 +38,20 @@ public class VinkkiDaoTest extends TempFile {
     public void AddingRandomAmountSucceeds() {
         long times = Math.round(Math.random() * 20);
         addNTime(times);
-        
+
         assertEquals(times, dao.findAll().size());
     }
+
+    @Test
+    public void addingLinkWillAddTag() {
+        dao.add(new Vinkki(1, "Title", "Doer", "Doing titles", "youtube.com/"));
+        assertEquals("video", dao.findOne(1).getTagit());
+        Vinkki vinkki = new Vinkki(2, "Foo", "Bar", "", "youtube.com/roger");
+        vinkki.setTagit("Tag,Magic");
+        dao.add(vinkki);
+        assertEquals("Tag,Magic,video", dao.findOne(2).getTagit());
+    }
+
     
     @Test
     public void listOneVinkki() {
