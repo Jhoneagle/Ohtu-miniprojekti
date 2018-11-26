@@ -1,13 +1,14 @@
 package ohtu;
 
+import java.util.ArrayList;
 import ohtu.authentication.AuthenticationService;
 import ohtu.data_access.*;
 import ohtu.domain.Vinkki;
 import spark.ModelAndView;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
-import spark.template.velocity.VelocityTemplateEngine;
 
 import java.util.HashMap;
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -17,25 +18,29 @@ public class Main {
     public static AccountDao userDao;
     public static Dao vinkkiDao;
     static AuthenticationService authService;
+    public static List<Vinkki>naytettavat; 
     
     public static void main(String[] args) {
         port(findOutPort());
         Database database = new Database("jdbc:sqlite:vinkit.db");
         setAllDao(database);
+        naytettavat = new ArrayList<>();
         
         get("/", (request, response) -> {
-            HashMap<String, String> model = new HashMap<>();
-            model.put("template", "templates/index.html");
-            return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());            
+            HashMap map = new HashMap<>();
+            map.put("template", "templates/index.html"); 
+            map.put("naytettavat", naytettavat);
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());            
         
         get("/newVinkki", (request, response) -> {
-            HashMap<String, String> model = new HashMap<>();
+            HashMap model = new HashMap<>();
             model.put("template", "templates/newVinkki.html");
-            return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());
+            return new ModelAndView(model, "newVinkki");
+        }, new ThymeleafTemplateEngine());
         
         get("/vinkit", (req, res) -> {
+            naytettavat = new ArrayList<>();
             HashMap map = new HashMap<>();
             map.put("vinkit", vinkkiDao.findAll());
             return new ModelAndView(map, "vinkit");
@@ -68,6 +73,25 @@ public class Main {
 
             res.redirect("/vinkit");
             return "";
+        });
+        
+        post("/", (req,res) -> {
+            naytettavat = new ArrayList<>();
+            String haku = req.queryParams("etsi");
+            String[] etsittavat = haku.trim().toLowerCase().split(",");
+            List<Vinkki>vinkit = vinkkiDao.findAll();
+            
+            for(String s : etsittavat) {
+                String etsittava = s.trim();
+                for(Vinkki vinkki : vinkit) {
+                    String tagit = vinkki.getTagit();
+                    if(tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
+                        naytettavat.add(vinkki);
+                    }
+                }              
+            }
+            res.redirect("/");
+            return "";   
         });
         
         /*
