@@ -16,7 +16,7 @@
             <ul class="list-group">
                 <li th:each="vinkki : ${vinkit}" class="list-group-item">
                     Otsikko: 
-                    <a th:href="@{~/vinkki/{id}(id=${vinkki.id})}">
+                    <a th:href="@{~/vinkki/{id}(id=${vinkki.id})}" name="otsikko">
                         <span th:text="${vinkki.otsikko}">Vinkin otsikko</span><br/>
                     </a>
                     Kuvaus:
@@ -26,6 +26,8 @@
 
             <a href="/">Takaisin pääsivulle</a><br />
             <a href="/newVinkki" name="toNewVinkki">Uusi vinkki</a>
+            
+            
         </div>
     </body>
 </html>
