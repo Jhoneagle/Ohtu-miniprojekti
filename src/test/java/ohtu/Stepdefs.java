@@ -51,6 +51,23 @@ public class Stepdefs {
     public void otsikko_kirjoittaja_tyyppi_are_given(String otsikko, String tekija, String kuvaus, String linkki) throws Throwable {
         createTip(otsikko, tekija, kuvaus, linkki);
     }
+    
+    @Given("^the page displaying all tips is selected$")
+    public void the_page_displaying_all_tips_is_selected() throws Throwable {
+        driver.get(baseUrl+"/vinkit");
+    }
+
+    @When("^heading of the chosen tip is clicked$")
+    public void heading_of_the_chosen_tip_is_clicked() throws Throwable {
+        WebElement element = driver.findElement(By.name("otsikko"));
+        element.click();
+    }
+
+    @Then("^single tip details are displayed on a separate page$")
+    public void single_tip_details_are_displayed_on_a_separate_page() throws Throwable {
+        driver.get(baseUrl+"/vinkki");
+    }
+
 
     @After
     public void tearDown() {
@@ -75,6 +92,8 @@ public class Stepdefs {
         element = driver.findElement(By.name("addVinkki"));
         element.submit();
     }
+    
+    
     
     /*
     private void logInWith(String username, String password) {
