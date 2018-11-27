@@ -33,6 +33,7 @@ public class UserDaoForTests implements AccountDao<User, Integer> {
     @Override
     public void add(User user) {
         users.add(user);
+        System.out.println("id problem be caution!!");
     }
 
     public void setUsers(List<User> users) {
@@ -51,5 +52,6 @@ public class UserDaoForTests implements AccountDao<User, Integer> {
     @Override
     public void delete(Integer key) {
         users.remove((int) key);
+        System.out.println("id problem be caution!!");
     }
 }

@@ -48,8 +48,18 @@ public class Stepdefs {
     }
 
     @When("^otsikko \"([^\"]*)\", tekija \"([^\"]*)\", kuvaus \"([^\"]*)\", linkki \"([^\"]*)\" are given$")
-    public void otsikko_kirjoittaja_tyyppi_are_given(String otsikko, String tekija, String kuvaus, String linkki) throws Throwable {
-        createTip(otsikko, tekija, kuvaus, linkki);
+    public void otsikko_tekija_kuvaus_linkki_are_given(String otsikko, String tekija, String kuvaus, String linkki) throws Throwable {
+        createTip(otsikko, tekija, kuvaus, linkki, "");
+    }
+    
+    @When("^video \"([^\"]*)\" and tags \"([^\"]*)\" are given$")
+    public void video_and_tags_are_given(String video, String tags) throws Throwable {
+        createTip("tagsTest", "automatic", "test", video, tags);
+    }
+    
+    @When("^wanted tags \"([^\"]*)\" typed and search button clicked$")
+    public void tags_give_and_search_clicked(String tags) throws Throwable {
+        search(tags);
     }
     
     @Given("^the page displaying all tips is selected$")
@@ -63,12 +73,27 @@ public class Stepdefs {
         element.click();
     }
 
+    @When("^heading of the tip with otsikko \"([^\"]*)\" is clicked$")
+    public void heading_of_the_tip_with_otsikko_is_clicked(String otsikko) throws Throwable {
+        WebElement element = driver.findElement(By.xpath("//*[text() = 'tagsTest']")).findElement(By.xpath("./.."));
+        element.click();
+    }
+    
     @Then("^single tip details are displayed on a separate page$")
     public void single_tip_details_are_displayed_on_a_separate_page() throws Throwable {
-        driver.get(baseUrl+"/vinkki");
+        pageHasContent("testi");
     }
 
+    @Then("^automatic tag can be found$")
+    public void automatic_tag_can_be_found() throws Throwable {
+        pageHasContent("test,amazing,video");
+    }
 
+    @Then("^result gives found tip \"([^\"]*)\" with tags asked$")
+    public void result_gives_found_tips_acording_to_tags(String tipFound) throws Throwable {
+        pageHasContent(tipFound);
+    }
+    
     @After
     public void tearDown() {
         driver.quit();
@@ -79,7 +104,7 @@ public class Stepdefs {
         assertTrue(driver.getPageSource().contains(content));
     }
 
-    private void createTip(String otsikko, String tekija, String kuvaus, String linkki) {
+    private void createTip(String otsikko, String tekija, String kuvaus, String linkki, String tags) {
         assertTrue(driver.getPageSource().contains("uusi vinkki"));
         WebElement element = driver.findElement(By.name("otsikko"));
         element.sendKeys(otsikko);
@@ -89,7 +114,16 @@ public class Stepdefs {
         element.sendKeys(kuvaus);
         element = driver.findElement(By.name("linkki"));
         element.sendKeys(linkki);
+        element = driver.findElement(By.name("tagit"));
+        element.sendKeys(tags);
         element = driver.findElement(By.name("addVinkki"));
+        element.submit();
+    }
+    
+    private void search(String tags) {
+        WebElement element = driver.findElement(By.name("etsi"));
+        element.sendKeys(tags);
+        element = driver.findElement(By.name("action"));
         element.submit();
     }
     

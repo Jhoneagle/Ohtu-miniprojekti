@@ -67,7 +67,7 @@ public class Main {
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
             
-            Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus,linkki);
+            Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki);
             vinkki.setTagit(tagit);
             vinkkiDao.add(vinkki);
 

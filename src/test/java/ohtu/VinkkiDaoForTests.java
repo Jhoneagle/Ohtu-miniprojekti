@@ -5,9 +5,11 @@ import ohtu.domain.Vinkki;
 
 import java.util.ArrayList;
 import java.util.List;
+import ohtu.util.Utils;
 
 public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
     private List<Vinkki> vinkit;
+    private int nextId;
 
     public VinkkiDaoForTests() {
         this.vinkit = new ArrayList<>();
@@ -34,11 +36,25 @@ public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
     @Override
     public void delete(Integer key) {
         this.vinkit.remove((int) key);
+        System.out.println("id problem be caution!!");
     }
 
     @Override
     public void add(Vinkki newOne) {
-        this.vinkit.add(newOne);
+        String tag = new Utils().parseUrlForTag(newOne.getLinkki());
+        
+        if (!tag.isEmpty()) {
+            if (newOne.getTagitAsList().isEmpty()) {
+                newOne.setTagit(tag);
+            } else {
+                newOne.setTagit(newOne.getTagit() + "," + tag);
+            }
+        }
+        
+        Vinkki vinkki = new Vinkki(nextId, newOne.getOtsikko(), newOne.getTekija(), newOne.getKuvaus(), newOne.getLinkki());
+        vinkki.setTagit(newOne.getTagit());
+        this.vinkit.add(vinkki);
+        nextId++;
     }
     
 }
