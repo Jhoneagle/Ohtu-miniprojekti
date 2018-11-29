@@ -20,7 +20,7 @@ public class UtilsTest {
         assertEquals("video", urlTag);
         urlTag = utils.parseUrlForTag("www.dm.acm.org/");
         assertEquals("tieteellinen julkaisu", urlTag);
-        urlTag = utils.parseUrlForTag("ieeeexplore.ieeee.org/studiees");
+        urlTag = utils.parseUrlForTag("ieeexplore.ieee.org/studiees");
         assertEquals("tieteellinen julkaisu", urlTag);
         urlTag = utils.parseUrlForTag("helsinki.fi/office");
         assertEquals("", urlTag);
