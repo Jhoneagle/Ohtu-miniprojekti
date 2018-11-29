@@ -1,5 +1,6 @@
 package ohtu;
 
+import java.sql.Date;
 import ohtu.data_access.Dao;
 import ohtu.domain.Vinkki;
 
@@ -51,10 +52,19 @@ public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
             }
         }
         
-        Vinkki vinkki = new Vinkki(nextId, newOne.getOtsikko(), newOne.getTekija(), newOne.getKuvaus(), newOne.getLinkki());
+        Vinkki vinkki = new Vinkki(nextId, newOne.getOtsikko(), newOne.getTekija(), newOne.getKuvaus(), newOne.getLinkki(), new Date(1));
         vinkki.setTagit(newOne.getTagit());
         this.vinkit.add(vinkki);
         nextId++;
     }
-    
+
+    @Override
+    public void updateWithKey(Integer key) {
+        this.vinkit.get(key).getLuettu().setTime(System.currentTimeMillis());
+    }
+
+    @Override
+    public Vinkki update(Vinkki updatedOne) {
+        return null;
+    }
 }

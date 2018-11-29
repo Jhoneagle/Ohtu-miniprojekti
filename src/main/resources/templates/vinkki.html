@@ -20,14 +20,18 @@
             <span th:text="${vinkki.linkki}">Linkki</span><br/><br/>
             Tagit:
             <span th:text="${tagit}">Linkki</span><br/><br/>
-
-            <form action="/vinkit:id" method="post">
+            Luettu:
+            <span th:text="${vinkki.luettu}">Luettu</span><br/><br/>
+            
+            <form action="/vinkit/:id" method="post">
                 <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
                 <input type="submit" class="btn btn-danger"id="removeButton" name="removeButton" value="Poista">
+            </form>
 
+            <form action="/luettu/:id" method="post">
+                <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
+                <input type="submit" class="btn btn-success"id="luettuButton" name="luettuButton" value="Merkitse luetuksi">
             </form><br/><br/>
-
-
 
             <a href="/">Takaisin pääsivulle</a><br />
         </div>    

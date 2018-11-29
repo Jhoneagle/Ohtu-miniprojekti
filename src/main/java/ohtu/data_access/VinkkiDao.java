@@ -4,6 +4,7 @@ import ohtu.domain.Vinkki;
 import ohtu.util.Utils;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VinkkiDao implements Dao<Vinkki, Integer> {
-
     private final Database database;
     private final Utils utils = new Utils();
 
@@ -37,8 +37,9 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             String kuvaus = rs.getString("kuvaus");
             String linkki = rs.getString("linkki");
             String tagit = rs.getString("tagit");
+            Date luettu = rs.getDate("luettu");
 
-            Vinkki etsitty = new Vinkki(id, otsikko, tekija, kuvaus, linkki);
+            Vinkki etsitty = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu);
             etsitty.setTagit(tagit);
 
             rs.close();
@@ -67,8 +68,9 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
                 String kuvaus = rs.getString("kuvaus");
                 String linkki = rs.getString("linkki");
                 String tagit = rs.getString("tagit");
+                Date luettu = rs.getDate("luettu");
 
-                Vinkki f = new Vinkki(id, otsikko, tekija, kuvaus, linkki);
+                Vinkki f = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu);
                 f.setTagit(tagit);
                 vinkit.add(f);
             }
@@ -86,7 +88,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     @Override
     public void delete(Integer id) {
         try {
-
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vinkki WHERE id = ?");
             stmt.setInt(1, id);
@@ -96,7 +97,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         } catch (SQLException ex) {
             String error = ex.getMessage();
         }
-
     }
 
     @Override
@@ -131,5 +131,25 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         } catch (SQLException ex) {
             String error = ex.getMessage();
         }
+    }
+    
+    @Override
+    public void updateWithKey(Integer id) {
+        try {
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET luettu = ? WHERE id = ?");
+            stmt.setDate(1, new Date(System.currentTimeMillis()));
+            stmt.setInt(2, id);
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            String error = ex.getMessage();
+        }
+    }
+
+    @Override
+    public Vinkki update(Vinkki updatedOne) {
+        return null;
     }
 }

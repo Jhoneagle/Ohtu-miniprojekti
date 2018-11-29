@@ -1,5 +1,6 @@
 package ohtu.data_access;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import ohtu.domain.Vinkki;
 import org.junit.Before;
@@ -52,9 +53,9 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void addingLinkWillAddTag() {
-        dao.add(new Vinkki(1, "Title", "Doer", "Doing titles", "youtube.com/"));
+        dao.add(new Vinkki(1, "Title", "Doer", "Doing titles", "youtube.com/", new Date(1)));
         assertEquals("video", dao.findOne(1).getTagit());
-        Vinkki vinkki = new Vinkki(2, "Foo", "Bar", "", "youtube.com/roger");
+        Vinkki vinkki = new Vinkki(2, "Foo", "Bar", "", "youtube.com/roger", new Date(1));
         vinkki.setTagit("Tag,Magic");
         dao.add(vinkki);
         assertEquals("Tag,Magic,video", dao.findOne(2).getTagit());
@@ -153,6 +154,23 @@ public class VinkkiDaoTest extends TempFile {
     }
     
     @Test
+    public void notReadInBegging() {
+        dao.add(generateVinkki());
+        Vinkki findOne = dao.findOne(1);
+        
+        assertNull(findOne.getLuettu());
+    }
+    
+    @Test
+    public void ReadAfterSubmit() {
+        dao.add(generateVinkki());
+        dao.updateWithKey(1);
+        Vinkki findOne = dao.findOne(1);
+        
+        assertNotNull(findOne.getLuettu());
+    }
+    
+    @Test
     public void unValidDatabaseCausesError1() {
         dao = new VinkkiDao(new Database(null));
         List<Vinkki> findAll = dao.findAll();
@@ -184,7 +202,7 @@ public class VinkkiDaoTest extends TempFile {
         String kuvaus = "" + randomFloat();
         String linkki = "" + randomFloat();
         
-        return new Vinkki(id, otsikko, tekija, kuvaus, linkki);
+        return new Vinkki(id, otsikko, tekija, kuvaus, linkki, new Date(1));
     }
     
     private Double randomFloat() {

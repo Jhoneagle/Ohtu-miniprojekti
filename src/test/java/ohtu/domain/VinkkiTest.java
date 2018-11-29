@@ -1,5 +1,6 @@
 package ohtu.domain;
 
+import java.sql.Date;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +11,7 @@ public class VinkkiTest {
     
     @Before
     public void setUp() {
-        this.vinkki = new Vinkki(1, "Foo Bar", "Mark Doe", "hyva kirja", "testiurl");
+        this.vinkki = new Vinkki(1, "Foo Bar", "Mark Doe", "hyva kirja", "testiurl", new Date(1));
     }
     
     @Test

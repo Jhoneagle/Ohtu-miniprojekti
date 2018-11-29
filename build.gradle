@@ -44,6 +44,7 @@ dependencies {
     compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version:seleniumVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:seleniumVersion
     compile group: 'org.xerial', name:'sqlite-jdbc', version:'3.8.11.2'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
     compile group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.11.RELEASE'
     // https://mvnrepository.com/artifact/com.sparkjava/spark-template-thymeleaf
     compile group: 'com.sparkjava', name: 'spark-template-thymeleaf', version: '2.7.1'

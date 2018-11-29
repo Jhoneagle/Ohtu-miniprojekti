@@ -1,5 +1,6 @@
 package ohtu.domain;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,13 +12,15 @@ public class Vinkki {
     private String kuvaus;
     private String linkki;
     private List<String> tagit;
+    private Date luettu;
 
-    public Vinkki(Integer id, String otsikko, String tekija, String kuvaus, String linkki) {
+    public Vinkki(Integer id, String otsikko, String tekija, String kuvaus, String linkki, Date luettu) {
         this.id = id;
         this.otsikko = otsikko;
         this.tekija = tekija;
         this.kuvaus = kuvaus;
         this.linkki = linkki;
+        this.luettu = luettu;
         this.tagit = new ArrayList<>();
     }
 
@@ -66,5 +69,9 @@ public class Vinkki {
         for (String t : parsed) {
             this.tagit.add(t);
         }
+    }
+
+    public Date getLuettu() {
+        return luettu;
     }
 }

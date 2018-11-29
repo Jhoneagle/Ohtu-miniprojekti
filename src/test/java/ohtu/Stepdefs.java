@@ -4,6 +4,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.sql.Date;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,6 +38,12 @@ public class Stepdefs {
         element.click();
     }
 
+    @When("^submitted read of the tip$")
+    public void submitted_read_of_the_tip() throws Throwable {
+        WebElement element = driver.findElement(By.name("luettuButton"));
+        element.click();
+    }
+    
     @Then("^new tip view is open$")
     public void new_tip_view_is_open() throws Throwable {
         pageHasContent("uusi vinkki");
@@ -92,6 +99,12 @@ public class Stepdefs {
     @Then("^result gives found tip \"([^\"]*)\" with tags asked$")
     public void result_gives_found_tips_acording_to_tags(String tipFound) throws Throwable {
         pageHasContent(tipFound);
+    }
+    
+    @Then("^tip is signed read and have returned list view$")
+    public void tip_is_signed_read_and_have_returned_list_view() throws Throwable {
+        pageHasContent("Lukuvinkit listana");
+        pageHasContent(new Date(System.currentTimeMillis()).toString());
     }
     
     @After

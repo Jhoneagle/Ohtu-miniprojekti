@@ -1,5 +1,6 @@
 package ohtu;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import ohtu.authentication.AuthenticationService;
 import ohtu.data_access.*;
@@ -18,12 +19,13 @@ public class Main {
 
     public static AccountDao userDao;
     public static Dao vinkkiDao;
+    public static Dao kommenttiDao;
     static AuthenticationService authService;
     public static List<Vinkki> naytettavat;
 
     public static void main(String[] args) {
         port(findOutPort());
-        Database database = new Database("jdbc:sqlite:vinkit.db");
+        Database database = getDatabase();
         setAllDao(database);
         naytettavat = new ArrayList<>();
 
@@ -68,7 +70,7 @@ public class Main {
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
 
-            Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki);
+            Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1));
             vinkki.setTagit(tagit);
             vinkkiDao.add(vinkki);
 
@@ -76,15 +78,22 @@ public class Main {
             return "";
         });
 
-        post("/vinkit:id", (req, res) -> {
+        post("/vinkit/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
-
             vinkkiDao.delete(vinkkiId);
 
             res.redirect("/vinkit");
             return "";
         });
 
+        post("/luettu/:id", (req, res) -> {
+            Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
+            vinkkiDao.updateWithKey(vinkkiId);
+            
+            res.redirect("/vinkit");
+            return "";
+        });
+        
         post("/", (req, res) -> {
             naytettavat = new ArrayList<>();
             String haku = req.queryParams("etsi");
@@ -100,6 +109,7 @@ public class Main {
                     }
                 }
             }
+            
             res.redirect("/");
             return "";
         });
@@ -160,6 +170,10 @@ public class Main {
         if (vinkkiDao == null) {
             vinkkiDao = new VinkkiDao(database);
         }
+        
+        if (kommenttiDao == null) {
+            kommenttiDao = new KommenttiDao(database);
+        }
     }
 
     public static AuthenticationService authenticationService() {
@@ -182,5 +196,11 @@ public class Main {
 
     static void setEnvPort(String port) {
         portFromEnv = port;
+    }
+    
+    static Database getDatabase() {
+        String dbUrl = System.getenv("DATABASE_URL");
+        
+        return new Database("jdbc:sqlite:vinkit.db");
     }
 }
