@@ -11,7 +11,7 @@ public class Utils {
         }
         if (string.contains("youtube.com")) {
             return "video";
-        } else if (string.contains("dm.acm.org") || string.contains("ieeeexplore.ieeee.org")) {
+        } else if (string.contains("dm.acm.org") || string.contains("ieeexplore.ieee.org")) {
             return "tieteellinen julkaisu";
         }
         return "";
