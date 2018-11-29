@@ -25,26 +25,26 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("SELECT * from Vinkki WHERE id=?");
             stmt.setObject(1, key);
-            
+
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
                 return null;
             }
-            
+
             Integer id = rs.getInt("id");
             String otsikko = rs.getString("otsikko");
             String tekija = rs.getString("tekija");
             String kuvaus = rs.getString("kuvaus");
             String linkki = rs.getString("linkki");
             String tagit = rs.getString("tagit");
-            
+
             Vinkki etsitty = new Vinkki(id, otsikko, tekija, kuvaus, linkki);
             etsitty.setTagit(tagit);
-            
+
             rs.close();
             stmt.close();
             conn.close();
-            
+
             return etsitty;
         } catch (SQLException ex) {
             return null;
@@ -67,7 +67,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
                 String kuvaus = rs.getString("kuvaus");
                 String linkki = rs.getString("linkki");
                 String tagit = rs.getString("tagit");
-                
+
                 Vinkki f = new Vinkki(id, otsikko, tekija, kuvaus, linkki);
                 f.setTagit(tagit);
                 vinkit.add(f);
@@ -84,8 +84,19 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     }
 
     @Override
-    public void delete(Integer key) {
-        
+    public void delete(Integer id) {
+        try {
+
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vinkki WHERE id = ?");
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            String error = ex.getMessage();
+        }
+
     }
 
     @Override
@@ -105,7 +116,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
                     tagit += "," + tag;
                 }
             }
-            
+
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit) VALUES (?,?,?,?,?)");
             stmt.setString(1, vinkkiOtsikko);
@@ -113,7 +124,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.setString(3, vinkkiKuvaus);
             stmt.setString(4, vinkkiLinkki);
             stmt.setString(5, tagit);
-            
+
             stmt.executeUpdate();
             stmt.close();
             conn.close();

@@ -13,60 +13,61 @@ import java.util.List;
 import static spark.Spark.*;
 
 public class Main {
+
     static String LAYOUT = "templates/layout.html";
-  
+
     public static AccountDao userDao;
     public static Dao vinkkiDao;
     static AuthenticationService authService;
-    public static List<Vinkki>naytettavat; 
-    
+    public static List<Vinkki> naytettavat;
+
     public static void main(String[] args) {
         port(findOutPort());
         Database database = new Database("jdbc:sqlite:vinkit.db");
         setAllDao(database);
         naytettavat = new ArrayList<>();
-        
+
         get("/", (request, response) -> {
             HashMap map = new HashMap<>();
-            map.put("template", "templates/index.html"); 
+            map.put("template", "templates/index.html");
             map.put("naytettavat", naytettavat);
             return new ModelAndView(map, "index");
-        }, new ThymeleafTemplateEngine());            
-        
+        }, new ThymeleafTemplateEngine());
+
         get("/newVinkki", (request, response) -> {
             HashMap model = new HashMap<>();
             model.put("template", "templates/newVinkki.html");
             return new ModelAndView(model, "newVinkki");
         }, new ThymeleafTemplateEngine());
-        
+
         get("/vinkit", (req, res) -> {
             naytettavat = new ArrayList<>();
             HashMap map = new HashMap<>();
             map.put("vinkit", vinkkiDao.findAll());
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
-        
+
         get("/vinkki/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.params(":id"));
             Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
             HashMap map = new HashMap<>();
             map.put("vinkki", found);
-            
+
             if (found != null) {
                 map.put("tagit", found.getTagit());
             }
-            
+
             return new ModelAndView(map, "vinkki");
         }, new ThymeleafTemplateEngine());
-        
-        post("/vinkit", (req,res) -> {
-            String btnName = req.queryParams("action");  
+
+        post("/vinkit", (req, res) -> {
+            String btnName = req.queryParams("action");
             String otsikko = req.queryParams("otsikko");
             String tekija = req.queryParams("tekija");
             String kuvaus = req.queryParams("kuvaus");
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
-            
+
             Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki);
             vinkki.setTagit(tagit);
             vinkkiDao.add(vinkki);
@@ -74,26 +75,35 @@ public class Main {
             res.redirect("/vinkit");
             return "";
         });
-        
-        post("/", (req,res) -> {
+
+        post("/vinkit:id", (req, res) -> {
+            Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
+
+            vinkkiDao.delete(vinkkiId);
+
+            res.redirect("/vinkit");
+            return "";
+        });
+
+        post("/", (req, res) -> {
             naytettavat = new ArrayList<>();
             String haku = req.queryParams("etsi");
             String[] etsittavat = haku.trim().toLowerCase().split(",");
-            List<Vinkki>vinkit = vinkkiDao.findAll();
-            
-            for(String s : etsittavat) {
+            List<Vinkki> vinkit = vinkkiDao.findAll();
+
+            for (String s : etsittavat) {
                 String etsittava = s.trim();
-                for(Vinkki vinkki : vinkit) {
+                for (Vinkki vinkki : vinkit) {
                     String tagit = vinkki.getTagit();
-                    if(tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
+                    if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
                         naytettavat.add(vinkki);
                     }
-                }              
+                }
             }
             res.redirect("/");
-            return "";   
+            return "";
         });
-        
+
         /*
         get("/login", (request, response) -> {
             HashMap<String, String> model = new HashMap<>();
@@ -139,38 +149,38 @@ public class Main {
            response.redirect("/welcome");
            return new ModelAndView(model, LAYOUT);
         }, new VelocityTemplateEngine());
-        */
+         */
     }
 
     public static void setAllDao(Database database) {
         if (userDao == null) {
             userDao = new UserDao(database);
         }
-        
+
         if (vinkkiDao == null) {
             vinkkiDao = new VinkkiDao(database);
         }
     }
-    
-    public static AuthenticationService authenticationService(){
+
+    public static AuthenticationService authenticationService() {
         if (authService == null) {
-           authService = new AuthenticationService(userDao); 
+            authService = new AuthenticationService(userDao);
         }
 
         return authService;
-    }    
-      
+    }
+
     static int findOutPort() {
-        if ( portFromEnv!=null ) {
+        if (portFromEnv != null) {
             return Integer.parseInt(portFromEnv);
         }
-        
+
         return 4567;
     }
-    
+
     static String portFromEnv = new ProcessBuilder().environment().get("PORT");
-    
-    static void setEnvPort(String port){
+
+    static void setEnvPort(String port) {
         portFromEnv = port;
     }
 }

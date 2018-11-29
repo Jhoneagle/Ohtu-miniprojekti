@@ -43,26 +43,26 @@ public class Vinkki {
 
     public String getTagit() {
         String result = "";
-        
+
         if (!this.tagit.isEmpty()) {
             result += this.tagit.get(0);
         }
-        
+
         for (int i = 1; i < this.tagit.size(); i++) {
             String n = "," + this.tagit.get(i);
             result += n;
         }
-        
+
         return result;
     }
-    
+
     public List<String> getTagitAsList() {
         return this.tagit;
     }
-    
+
     public void setTagit(String tags) {
         String[] parsed = tags.split(",");
-        
+
         for (String t : parsed) {
             this.tagit.add(t);
         }
