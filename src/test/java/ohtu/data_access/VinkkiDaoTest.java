@@ -33,6 +33,14 @@ public class VinkkiDaoTest extends TempFile {
         
         assertEquals(2, dao.findAll().size());
     }
+        @Test
+    public void deleteOneSucceeds() {
+        dao.add(generateVinkki());
+        dao.add(generateVinkki());
+        dao.delete(1);
+        
+        assertEquals(1, dao.findAll().size());
+    }
     
     @Test
     public void AddingRandomAmountSucceeds() {
