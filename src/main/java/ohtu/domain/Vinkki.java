@@ -71,7 +71,6 @@ public class Vinkki {
             String n = "," + this.tagit.get(i);
             result += n;
         }
-
         return result;
     }
 
