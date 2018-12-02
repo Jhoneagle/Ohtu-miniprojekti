@@ -150,7 +150,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
 
     @Override
     public Vinkki update(Vinkki updatedOne) {
-<<<<<<< HEAD
         
         try {
             Connection conn = database.getConnection();
@@ -168,8 +167,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             String error = ex.getMessage();
         }
         return updatedOne;
-=======
-        return null;
->>>>>>> fe07191344ca596cf5b534f87a0a089f07129f29
     }
+
 }
