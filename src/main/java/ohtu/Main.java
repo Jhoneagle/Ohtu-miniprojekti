@@ -62,6 +62,14 @@ public class Main {
             return new ModelAndView(map, "vinkki");
         }, new ThymeleafTemplateEngine());
 
+        get("/vinkinMuokkaus/:id", (req,res) -> {
+            Integer vinkkiId = Integer.parseInt(req.params(":id"));
+            Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
+            HashMap map = new HashMap<>();
+            map.put("vinkki", found);           
+            return new ModelAndView(map, "vinkinmuokkaus");
+        }, new ThymeleafTemplateEngine());
+        
         post("/vinkit", (req, res) -> {
             String btnName = req.queryParams("action");
             String otsikko = req.queryParams("otsikko");
@@ -90,6 +98,37 @@ public class Main {
             Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
             vinkkiDao.updateWithKey(vinkkiId);
             
+            res.redirect("/vinkit");
+            return "";
+        });
+        
+        post("/muokattu/:id", (req, res) -> {
+            String s = req.queryParams("id").replace("/", "").trim();
+                Integer id=Integer.parseInt(s);
+                Vinkki vinkki = (Vinkki) vinkkiDao.findOne(id);
+                String otsikko = req.queryParams("otsikko");
+                String tekija = req.queryParams("tekija");
+                String kuvaus = req.queryParams("kuvaus");
+                String linkki = req.queryParams("linkki");
+                String tagit = req.queryParams("tagit");
+                if(!otsikko.isEmpty()) {
+                    vinkki.setOtsikko(otsikko);
+                } 
+                if(!tekija.isEmpty()) {
+                    vinkki.setTekija(tekija);
+                } 
+                if(!kuvaus.isEmpty()) {
+                    vinkki.setKuvaus(kuvaus);
+                } 
+                if(!linkki.isEmpty()) {
+                    vinkki.setLinkki(linkki);
+                } 
+                if(!tagit.isEmpty()) {
+                    vinkki.setTagit(tagit);
+                } 
+                
+                vinkkiDao.update(vinkki);
+         
             res.redirect("/vinkit");
             return "";
         });

@@ -27,21 +27,37 @@ public class Vinkki {
     public int getId() {
         return this.id;
     }
+    
 
     public String getOtsikko() {
         return this.otsikko;
+    }
+    
+    public void setOtsikko(String otsikko) {
+        this.otsikko=otsikko;
     }
 
     public String getTekija() {
         return this.tekija;
     }
 
+    public void setTekija(String tekija) {
+        this.tekija=tekija;
+    }
     public String getLinkki() {
         return this.linkki;
+    }
+   
+    public void setLinkki(String linkki) {
+        this.linkki=linkki;
     }
 
     public String getKuvaus() {
         return this.kuvaus;
+    }
+    
+    public void setKuvaus(String kuvaus) {
+        this.kuvaus=kuvaus;
     }
 
     public String getTagit() {
