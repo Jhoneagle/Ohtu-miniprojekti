@@ -25,15 +25,14 @@
             
             <form action="/vinkit/:id" method="post">
                 <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
-                <input type="submit" class="btn btn-danger"id="removeButton" name="action" value="Poista">
-                <a th:href="@{~/vinkinMuokkaus/{id} (id=${vinkki.id})}" class="btn btn-success" id="muokkausNappi" name="action" value="Muokkaa">Muokkaa</a>
+                <input type="submit" class="btn btn-danger"id="removeButton" name="removeButton" value="Poista">
             </form>
 
             <form action="/luettu/:id" method="post">
                 <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
                 <input type="submit" class="btn btn-success"id="luettuButton" name="luettuButton" value="Merkitse luetuksi">
             </form><br/><br/>
-            
+
             <a href="/">Takaisin pääsivulle</a><br />
         </div>    
     </body>
