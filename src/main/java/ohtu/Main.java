@@ -62,34 +62,81 @@ public class Main {
             return new ModelAndView(map, "vinkki");
         }, new ThymeleafTemplateEngine());
 
+        get("/vinkinMuokkaus/:id", (req,res) -> {
+            Integer vinkkiId = Integer.parseInt(req.params(":id"));
+            Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
+            HashMap map = new HashMap<>();
+            //map.put("template", "templates/vinkinMuokkaus.html");
+            map.put("vinkki", found);
+            return new ModelAndView(map, "vinkinmuokkaus");
+        }, new ThymeleafTemplateEngine());
+        
         post("/vinkit", (req, res) -> {
             String btnName = req.queryParams("action");
-            String otsikko = req.queryParams("otsikko");
-            String tekija = req.queryParams("tekija");
-            String kuvaus = req.queryParams("kuvaus");
-            String linkki = req.queryParams("linkki");
-            String tagit = req.queryParams("tagit");
+            if(btnName.equals("Lisää")) {
+                String otsikko = req.queryParams("otsikko");
+                String tekija = req.queryParams("tekija");
+                String kuvaus = req.queryParams("kuvaus");
+                String linkki = req.queryParams("linkki");
+                String tagit = req.queryParams("tagit");
 
-            Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1));
-            vinkki.setTagit(tagit);
-            vinkkiDao.add(vinkki);
 
+                Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1));
+                vinkki.setTagit(tagit);
+                vinkkiDao.add(vinkki);
+            } else {
+                String s = req.queryParams("id").replace("/", "").trim();
+                Integer id=Integer.parseInt(s);
+                Vinkki vinkki = (Vinkki) vinkkiDao.findOne(id);
+                String otsikko = req.queryParams("otsikko");
+                String tekija = req.queryParams("tekija");
+                String kuvaus = req.queryParams("kuvaus");
+                String linkki = req.queryParams("linkki");
+                String tagit = req.queryParams("tagit");
+                if(!otsikko.isEmpty()) {
+                    vinkki.setOtsikko(otsikko);
+                } 
+                if(!tekija.isEmpty()) {
+                    vinkki.setTekija(tekija);
+                } 
+                if(!kuvaus.isEmpty()) {
+                    vinkki.setKuvaus(kuvaus);
+                } 
+                if(!linkki.isEmpty()) {
+                    vinkki.setLinkki(linkki);
+                } 
+                if(!tagit.isEmpty()) {
+                    vinkki.setTagit(tagit);
+                } 
+                
+                vinkkiDao.update(vinkki);
+            }
+            
             res.redirect("/vinkit");
             return "";
         });
 
         post("/vinkit/:id", (req, res) -> {
+            String btnName=req.queryParams("action");
             Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
-            vinkkiDao.delete(vinkkiId);
-
-            res.redirect("/vinkit");
+            if(btnName.equals("Poista")) {
+                vinkkiDao.delete(vinkkiId);
+            } else {
+                
+            }           
+            res.redirect("/");
             return "";
+        });
+        
+        post("/vinkki/:id", (req, res) -> {
+            Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
+            res.redirect("/vinkit");                       
+           return ""; 
         });
 
         post("/luettu/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
-            vinkkiDao.updateWithKey(vinkkiId);
-            
+            vinkkiDao.updateWithKey(vinkkiId);           
             res.redirect("/vinkit");
             return "";
         });
