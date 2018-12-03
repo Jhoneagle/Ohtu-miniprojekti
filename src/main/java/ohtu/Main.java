@@ -124,7 +124,7 @@ public class Main {
                     vinkki.setLinkki(linkki);
                 } 
                 if(!tagit.isEmpty()) {
-                    vinkki.setTagit(tagit);
+                    vinkki.setTagitAgain(tagit);
                 } 
                 
                 vinkkiDao.update(vinkki);
