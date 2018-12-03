@@ -7,6 +7,10 @@ public interface Dao<T, K> {
 
     List<T> findAll();
 
+    default List<T> findAllByForeignKey(K key) {
+        return null;
+    }
+
     void delete(K key);
 
     void add(T newOne);

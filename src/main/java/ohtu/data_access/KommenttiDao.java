@@ -5,6 +5,8 @@
  */
 package ohtu.data_access;
 
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import ohtu.domain.Kommentti;
 
@@ -18,35 +20,127 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
     public KommenttiDao(Database database) {
         this.database = database;
     }
-    
+
     @Override
     public Kommentti findOne(Integer key) {
-        return null;
+        try {
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti WHERE id=?");
+            stmt.setObject(1, key);
+
+            ResultSet rs = stmt.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+
+            Integer id = rs.getInt("id");
+            Integer vinkkiId = rs.getInt("vinkki_id");
+            String nikki = rs.getString("nikki");
+            String content = rs.getString("content");
+            Date created = rs.getDate("created");
+
+            Kommentti kommentti = new Kommentti(id, vinkkiId, nikki, content, created);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return kommentti;
+        } catch (SQLException ex) {
+            return null;
+        }
     }
 
     @Override
     public List<Kommentti> findAll() {
-        return null;
+        try {
+            List<Kommentti> kommentit = new ArrayList<>();
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                Integer vinkkiId = rs.getInt("vinkki_id");
+                String nikki = rs.getString("nikki");
+                String content = rs.getString("content");
+                Date created = rs.getDate("created");
+
+                Kommentti kommentti = new Kommentti(id, vinkkiId, nikki, content, created);
+                kommentit.add(kommentti);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+            return kommentit;
+        } catch (SQLException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Kommentti> findAllByForeignKey(Integer key) {
+        List<Kommentti> kommentit = new ArrayList<>();
+        try {
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti WHERE vinkki_id=?");
+            stmt.setObject(1, key);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                String nikki = rs.getString("nikki");
+                String content = rs.getString("content");
+                Date created = rs.getDate("created");
+
+                Kommentti kommentti = new Kommentti(id, key, nikki, content, created);
+                kommentit.add(kommentti);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            String error = ex.getMessage();
+        }
+
+        return kommentit;
     }
 
     @Override
     public void delete(Integer key) {
-        
+
     }
 
     @Override
     public void add(Kommentti newOne) {
-        
+        try {
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kommentti (vinkki_id, nikki, content, created) VALUES (?,?,?,?)");
+            stmt.setInt(1, newOne.getVinkkiId());
+            stmt.setString(2, newOne.getNikki());
+            stmt.setString(3, newOne.getContent());
+            stmt.setDate(4, new Date(System.currentTimeMillis()));
+
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            String error = ex.getMessage();
+        }
     }
 
     @Override
     public void updateWithKey(Integer key) {
-        
+
     }
 
     @Override
     public Kommentti update(Kommentti updatedOne) {
         return null;
     }
-    
+
 }
