@@ -30,5 +30,5 @@ public class TempFile {
         if (tempDatabase != null) {
             this.tempDatabase.delete();
         }
-    }    
+    }
 }
