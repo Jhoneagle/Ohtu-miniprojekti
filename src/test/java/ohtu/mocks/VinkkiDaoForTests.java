@@ -1,4 +1,4 @@
-package ohtu;
+package ohtu.mocks;
 
 import java.sql.Date;
 import ohtu.data_access.Dao;
@@ -65,6 +65,6 @@ public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
 
     @Override
     public Vinkki update(Vinkki updatedOne) {
-        return null;
+        return this.vinkit.set(updatedOne.getId(), updatedOne);
     }
 }

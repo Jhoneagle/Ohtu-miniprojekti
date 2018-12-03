@@ -202,6 +202,8 @@ public class Main {
     }
 
     public static void setAllDao(Database database) {
+        
+        
         if (userDao == null) {
             userDao = new UserDao(database);
         }

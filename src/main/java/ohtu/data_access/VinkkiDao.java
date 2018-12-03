@@ -140,6 +140,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET luettu = ? WHERE id = ?");
             stmt.setDate(1, new Date(System.currentTimeMillis()));
             stmt.setInt(2, id);
+            
             stmt.executeUpdate();
             stmt.close();
             conn.close();
@@ -150,7 +151,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
 
     @Override
     public Vinkki update(Vinkki updatedOne) {
-        
         try {
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET otsikko=?, tekija=?, kuvaus=?, linkki=?, tagit=? WHERE id = ?");
@@ -160,12 +160,14 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.setString(4, updatedOne.getLinkki());
             stmt.setString(5, updatedOne.getTagit());
             stmt.setInt(6, updatedOne.getId());
+            
             stmt.executeUpdate();
             stmt.close();
             conn.close();
         } catch (SQLException ex) {
             String error = ex.getMessage();
         }
+        
         return updatedOne;
     }
 

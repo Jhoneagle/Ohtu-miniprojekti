@@ -1,5 +1,5 @@
 
-package ohtu;
+package ohtu.mocks;
 
 import ohtu.data_access.AccountDao;
 import ohtu.domain.User;

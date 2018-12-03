@@ -9,7 +9,14 @@ public class Database {
     private final String databaseAddress;
     
     public Database(String databaseAddress) {
-        this.databaseAddress = databaseAddress;
+        String dbUrl = System.getenv("JDBC_DATABASE_URL");
+        
+        if (dbUrl != null) {
+            this.databaseAddress = dbUrl;
+        } else {
+            this.databaseAddress = databaseAddress;
+        }
+        
         initializeSqlTables();
     }
     

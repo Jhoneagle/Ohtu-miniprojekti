@@ -1,5 +1,8 @@
 package ohtu;
 
+import ohtu.mocks.KommenttiDaoForTests;
+import ohtu.mocks.UserDaoForTests;
+import ohtu.mocks.VinkkiDaoForTests;
 import org.junit.rules.ExternalResource;
 import spark.Spark;
 
