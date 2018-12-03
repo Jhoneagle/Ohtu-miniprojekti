@@ -6,26 +6,24 @@ import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Database {
     private final String databaseAddress;
     private final boolean test;
-    private final String env;
     
     public Database(String databaseAddress, boolean test) {
         this.databaseAddress = databaseAddress;
         this.test = test;
-        this.env = System.getenv("DATABASE_URL");
         
         initializeSqlTables();
     }
     
     public Connection getConnection() throws SQLException {
-        if (this.env != null && !test) {
+        String env = System.getenv("DATABASE_URL");
+        
+        if (env != null && !test && env.length() > 0) {
             try {
-                URI dbUri = new URI(this.env);
+                URI dbUri = new URI(env);
                 
                 String username = dbUri.getUserInfo().split(":")[0];
                 String password = dbUri.getUserInfo().split(":")[1];
