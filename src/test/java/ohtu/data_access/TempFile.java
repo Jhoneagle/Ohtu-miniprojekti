@@ -20,6 +20,7 @@ public class TempFile {
             String databaseAddress = "jdbc:sqlite:"+tempDatabase.getAbsolutePath();
             
             database = new Database(databaseAddress);
+            database.setTest(true);
         } catch (IOException ex) {
             System.out.println("Failed to use database in tests!");
         }
