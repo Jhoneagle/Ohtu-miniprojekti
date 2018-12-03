@@ -1,8 +1,6 @@
 
 package ohtu.data_access;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

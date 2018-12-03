@@ -41,10 +41,7 @@ public class Main {
             
             Connection conn = database.getConnection();
             
-            System.out.println(conn.toString());
-            System.out.println(conn.getCatalog());
-            System.out.println(conn.getSchema());
-            System.out.println(conn);
+            System.out.println(conn.getClientInfo().toString());
             
             PreparedStatement statement = conn.prepareStatement("SELECT 1");
             ResultSet rs = statement.executeQuery();
