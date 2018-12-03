@@ -12,7 +12,7 @@ public class Database {
     public Database(String databaseAddress) {
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         
-        if (dbUrl != null || !test) {
+        if (dbUrl != null && !test) {
             this.databaseAddress = dbUrl;
         } else {
             this.databaseAddress = databaseAddress;
