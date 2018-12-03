@@ -17,24 +17,24 @@
                 
                 <div class="form-group">
                     <label for="otsikko">Muokkaa otsikkoa: </label><br/>
-                    <input type="text" class="form-control" name="otsikko" id="otsikko" th:placeholder="${vinkki.otsikko}"/><br/>
+                    <input type="text" class="form-control" name="otsikko" id="otsikko" th:value="${vinkki.otsikko}"/><br/>
                     <input type="hidden" class="form-control" name="id" id="id" th:value=${vinkki.id}/>
                 </div>
                 <div class="form-group">
                     <label for="tekija">Muokkaa tekijää:</label><br/>
-                    <input type="text" class="form-control" name="tekija" id="tekija" th:placeholder="${vinkki.tekija}"/><br/>
+                    <input type="text" class="form-control" name="tekija" id="tekija" th:value="${vinkki.tekija}"/><br/>
                 </div>
                 <div class="form-group">
                     <label for="kuvaus">Muokkaa kuvausta:</label><br/>
-                    <input type="text" class="form-control" name="kuvaus" id="kuvaus" th:placeholder="${vinkki.kuvaus}"/><br/>
+                    <input type="text" class="form-control" name="kuvaus" id="kuvaus" th:value="${vinkki.kuvaus}"/><br/>
                 </div>
                 <div class="form-group">
                     <label for="linkki">Muokkaa linkkiä:</label><br/>
-                    <input type="text" class="form-control" name="linkki" id="linkki" th:placeholder="${vinkki.linkki}"/><br/>
+                    <input type="text" class="form-control" name="linkki" id="linkki" th:value="${vinkki.linkki}"/><br/>
                 </div>
                 <div class="form-group">
                     <label for="tagit">Muokkaa tageja:</label><br/>
-                    <input type="text" class="form-control" name="tagit" id="tagit" th:placeholder="${vinkki.tagit}"/><br/>
+                    <input type="text" class="form-control" name="tagit" id="tagit" th:value="${vinkki.tagit}"/><br/>
                 </div>
                 <input type="submit" class="btn btn-success" name="action" value="Tallenna muutokset"/><br/>
             </form>
