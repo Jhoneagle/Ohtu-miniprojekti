@@ -28,10 +28,10 @@ public class Utils {
     }
 
     public List<Kommentti> sortCommentsByDateOrId(List<Kommentti> kom) {
-        ArrayList kommentit = (ArrayList) kom;
-        if (kommentit == null || kommentit.size() < 2) {
-            return kommentit;
+        if (kom == null || kom.size() < 2) {
+            return kom;
         }
+        List<Kommentti> kommentit = kom;
         Collections.sort(kommentit, new Comparator<Kommentti>() {
             @Override
             public int compare(Kommentti kom1, Kommentti kom2) {
