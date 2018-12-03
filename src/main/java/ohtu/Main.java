@@ -67,7 +67,7 @@ public class Main {
             Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
             HashMap map = new HashMap<>();
             map.put("vinkki", found);           
-            return new ModelAndView(map, "vinkinmuokkaus");
+            return new ModelAndView(map, "vinkinMuokkaus");
         }, new ThymeleafTemplateEngine());
         
         post("/vinkit", (req, res) -> {
