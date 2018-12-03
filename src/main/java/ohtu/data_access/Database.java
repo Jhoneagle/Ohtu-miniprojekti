@@ -27,12 +27,12 @@ public class Database {
     }
     
     private void initializeSqlTables() {
-        if (this.test) {
+        if (this.test || System.getenv("JDBC_DATABASE_URL") == null) {
             try {
-                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id INTEGER PRIMARY KEY NOT NULL, "
+                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id INTEGER PRIMARY KEY, "
                         + "otsikko varchar(255), kuvaus varchar(255), tekija varchar(100), linkki varchar(255)"
                         + ", tagit varchar(255), luettu date)").execute();
-                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Kommentti(id INTEGER PRIMARY KEY NOT NULL, "
+                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Kommentti(id INTEGER PRIMARY KEY, "
                         + "vinkki_id INTEGER, nikki varchar(255), content varchar(255), "
                         + "FOREIGN KEY (vinkki_id) REFERENCES Vinkki(id))").execute();
             } catch (SQLException ex) {
