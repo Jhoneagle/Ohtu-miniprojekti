@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import ohtu.authentication.AuthenticationService;
 import ohtu.data_access.*;
+import ohtu.domain.Kommentti;
 import ohtu.domain.Vinkki;
+import ohtu.util.Utils;
 import spark.ModelAndView;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
@@ -25,6 +27,7 @@ public class Main {
     public static Dao kommenttiDao;
     static AuthenticationService authService;
     public static List<Vinkki> naytettavat;
+    private static Utils utils;
 
     public static void main(String[] args) {
         port(findOutPort());
@@ -32,6 +35,7 @@ public class Main {
         Database database = getDatabase();
         setAllDao(database);
         naytettavat = new ArrayList<>();
+        utils = new Utils();
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -75,8 +79,9 @@ public class Main {
             Integer vinkkiId = Integer.parseInt(req.params(":id"));
             Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
             HashMap map = new HashMap<>();
+            ArrayList<Kommentti> kommentit = (ArrayList) kommenttiDao.findAllByForeignKey(vinkkiId);
             map.put("vinkki", found);
-
+            map.put("kommentit", utils.sortCommentsByDateOrId(kommentit));
             if (found != null) {
                 map.put("tagit", found.getTagit());
             }
@@ -152,6 +157,16 @@ public class Main {
                 vinkkiDao.update(vinkki);
          
             res.redirect("/vinkit");
+            return "";
+        });
+
+        post("/kommentit/:vinkkiId", (req, res) -> {
+            Integer vinkkiId = Integer.parseInt(req.queryParams("vinkkiId"));
+            String nikki = req.queryParams("nikki");
+            String content = req.queryParams("content");
+            Kommentti kommentti = new Kommentti(-1, vinkkiId, nikki, content, null);
+            kommenttiDao.add(kommentti);
+            res.redirect("/vinkki/" + vinkkiId);
             return "";
         });
         

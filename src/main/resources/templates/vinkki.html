@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <title>Vinkki app</title>
         <meta charset="utf-8"/>
@@ -33,6 +33,27 @@
                 <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
                 <input type="submit" class="btn btn-success"id="luettuButton" name="luettuButton" value="Merkitse luetuksi">
             </form><br/><br/>
+
+            <h3>Syötä uusi kommentti</h3>
+            <form action="/kommentit/:vinkkiId" method="post">
+                <input type="hidden" name="vinkkiId" th:value="${vinkki.id}"/>
+                <label for="nikki">Nimimerkki</label>
+                <input type="text" name="nikki" id="nikki" />
+
+                <label for="content">Kommentti</label>
+                <input type="text" name="content" id="content" />
+
+                <input type="submit" class="btn btn-success" id="kommentoiButton" name="kommentoiButton" value="Lähetä kommentti">
+            </form>
+
+            <h2>Kommentit</h2>
+
+            <ul class="list-group">
+                <li th:each="kommentti : ${kommentit}" class="list-group-item">
+                    <p>Kirjoittanut <span th:text="${kommentti.nikki}"/> Lähetetty <span th:text="${kommentti.created}"/></p>
+                    <p th:text="${kommentti.content}">Kommentin sisältö</p>
+                </li>
+            </ul>
 
             <a href="/">Takaisin pääsivulle</a><br />
         </div>    
