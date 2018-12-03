@@ -10,6 +10,8 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static spark.Spark.*;
 
@@ -202,16 +204,21 @@ public class Main {
     }
 
     public static void setAllDao(Database database) {
-        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("failed");
+        }
         
         if (userDao == null) {
             userDao = new UserDao(database);
         }
-
+            
         if (vinkkiDao == null) {
             vinkkiDao = new VinkkiDao(database);
         }
-        
+            
         if (kommenttiDao == null) {
             kommenttiDao = new KommenttiDao(database);
         }
