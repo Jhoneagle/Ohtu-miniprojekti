@@ -247,8 +247,6 @@ public class Main {
     }
     
     static Database getDatabase() {
-        String dbUrl = System.getenv("DATABASE_URL");
-        
-        return new Database("jdbc:sqlite:vinkit.db");
+        return new Database("jdbc:sqlite:vinkit.db", false);
     }
 }

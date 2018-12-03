@@ -7,9 +7,8 @@ import java.sql.SQLException;
 
 public class Database {
     private final String databaseAddress;
-    private boolean test = false;
     
-    public Database(String databaseAddress) {
+    public Database(String databaseAddress, boolean test) {
         String dbUrl = System.getenv("JDBC_DATABASE_URL");
         
         if (dbUrl != null && !test) {
@@ -36,9 +35,5 @@ public class Database {
         } catch (SQLException ex) {
             return;
         }
-    }
-    
-    public void setTest(boolean test) {
-        this.test = test;
     }
 }
