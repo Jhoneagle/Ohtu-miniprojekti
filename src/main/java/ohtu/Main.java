@@ -1,6 +1,9 @@
 package ohtu;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import ohtu.authentication.AuthenticationService;
 import ohtu.data_access.*;
@@ -28,17 +31,30 @@ public class Main {
     public static void main(String[] args) {
         port(findOutPort());
         
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("failed");
-        }
-        
         Database database = getDatabase();
         setAllDao(database);
         naytettavat = new ArrayList<>();
 
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Class.forName("org.postgresql.Driver");
+            
+            Connection conn = database.getConnection();
+            
+            System.console().writer().append(conn.toString());
+            
+            PreparedStatement statement = conn.prepareStatement("SELECT 1");
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                System.console().writer().append("Yhteys onnistui");
+            } else {
+                System.console().writer().append("Yhteys epäonnistui");
+            }
+        } catch (Exception ex) {
+            System.console().writer().append("epäonnistuu kirjastot!");
+        }
+        
         get("/", (request, response) -> {
             HashMap map = new HashMap<>();
             map.put("template", "templates/index.html");
