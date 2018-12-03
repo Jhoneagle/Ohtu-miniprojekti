@@ -27,6 +27,14 @@ public class Main {
 
     public static void main(String[] args) {
         port(findOutPort());
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("failed");
+        }
+        
         Database database = getDatabase();
         setAllDao(database);
         naytettavat = new ArrayList<>();
@@ -204,13 +212,6 @@ public class Main {
     }
 
     public static void setAllDao(Database database) {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("failed");
-        }
-        
         if (userDao == null) {
             userDao = new UserDao(database);
         }

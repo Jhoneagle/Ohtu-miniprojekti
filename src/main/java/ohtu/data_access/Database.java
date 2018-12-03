@@ -19,23 +19,13 @@ public class Database {
     }
     
     public Connection getConnection() throws SQLException {
-        String env = System.getenv("DATABASE_URL");
+        String bdUrl = System.getenv("JDBC_DATABASE_URL");
         
-        if (env != null && !test && env.length() > 0) {
-            try {
-                URI dbUri = new URI(env);
-                
-                String username = dbUri.getUserInfo().split(":")[0];
-                String password = dbUri.getUserInfo().split(":")[1];
-                String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-                
-                return DriverManager.getConnection(dbUrl, username, password);
-            } catch (URISyntaxException ex) {
-                System.out.println("URL fail!");
-            }
+        if (bdUrl != null && !test && bdUrl.length() > 0) {
+            return DriverManager.getConnection(bdUrl);
+        } else {
+            return DriverManager.getConnection(databaseAddress);
         }
-        
-        return DriverManager.getConnection(databaseAddress);
     }
     
     private void initializeSqlTables() {
