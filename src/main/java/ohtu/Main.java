@@ -41,18 +41,18 @@ public class Main {
             
             Connection conn = database.getConnection();
             
-            System.console().writer().append(conn.toString());
+            System.out.println(conn.toString());
             
             PreparedStatement statement = conn.prepareStatement("SELECT 1");
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                System.console().writer().append("Yhteys onnistui");
+                System.out.println("Yhteys onnistui");
             } else {
-                System.console().writer().append("Yhteys epäonnistui");
+                System.out.println("Yhteys epäonnistui");
             }
         } catch (Exception ex) {
-            System.console().writer().append("epäonnistuu kirjastot!");
+            System.out.println("epäonnistuu kirjastot!");
         }
         
         get("/", (request, response) -> {
