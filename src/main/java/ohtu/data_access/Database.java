@@ -19,23 +19,36 @@ public class Database {
     public Connection getConnection() throws SQLException {
         String bdUrl = System.getenv("JDBC_DATABASE_URL");
         
-        if (bdUrl != null && !test && bdUrl.length() > 0) {
+        if (bdUrl != null && !this.test && bdUrl.length() > 0) {
             return DriverManager.getConnection(bdUrl);
         } else {
-            return DriverManager.getConnection(databaseAddress);
+            return DriverManager.getConnection(this.databaseAddress);
         }
     }
     
     private void initializeSqlTables() {
-        try {
-            getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id INTEGER PRIMARY KEY, "
-                    + "otsikko varchar(255), kuvaus varchar(255), tekija varchar(100), linkki varchar(255)"
-                    + ", tagit varchar(255), luettu date)").execute();
-            getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Kommentti(id INTEGER PRIMARY KEY, "
-                    + "vinkki_id INTEGER, nikki varchar(255), content varchar(255), "
-                    + "FOREIGN KEY (vinkki_id) REFERENCES Vinkki(id))").execute();
-        } catch (SQLException ex) {
-            return;
+        if (this.test) {
+            try {
+                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id INTEGER PRIMARY KEY NOT NULL, "
+                        + "otsikko varchar(255), kuvaus varchar(255), tekija varchar(100), linkki varchar(255)"
+                        + ", tagit varchar(255), luettu date)").execute();
+                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Kommentti(id INTEGER PRIMARY KEY, "
+                        + "vinkki_id INTEGER, nikki varchar(255), content varchar(255), "
+                        + "FOREIGN KEY (vinkki_id) REFERENCES Vinkki(id))").execute();
+            } catch (SQLException ex) {
+                return;
+            }
+        } else {
+            try {
+                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id serial PRIMARY KEY NOT NULL, "
+                        + "otsikko varchar(255), kuvaus varchar(255), tekija varchar(100), linkki varchar(255)"
+                        + ", tagit varchar(255), luettu date)").execute();
+                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Kommentti(id INTEGER PRIMARY KEY, "
+                        + "vinkki_id INTEGER, nikki varchar(255), content varchar(255), "
+                        + "FOREIGN KEY (vinkki_id) REFERENCES Vinkki(id))").execute();
+            } catch (SQLException ex) {
+                return;
+            }
         }
     }
 }

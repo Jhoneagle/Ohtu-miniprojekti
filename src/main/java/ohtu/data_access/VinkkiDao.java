@@ -48,7 +48,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
 
             return etsitty;
         } catch (SQLException ex) {
-            System.out.println("ei toimi yhteys databaseen!");
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
             return null;
         }
     }
@@ -81,8 +81,8 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             conn.close();
 
             return vinkit;
-        } catch (SQLException e) {
-            System.out.println("ei toimi yhteys databaseen!");
+        } catch (SQLException ex) {
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
             return null;
         }
     }
@@ -97,7 +97,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.close();
             conn.close();
         } catch (SQLException ex) {
-            System.out.println("ei toimi yhteys databaseen!");
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
         }
     }
 
@@ -120,18 +120,19 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             }
 
             Connection conn = database.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit) VALUES (?,?,?,?,?)");
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit, luettu) VALUES (?,?,?,?,?,?)");
             stmt.setString(1, vinkkiOtsikko);
             stmt.setString(2, vinkkiTekija);
             stmt.setString(3, vinkkiKuvaus);
             stmt.setString(4, vinkkiLinkki);
             stmt.setString(5, tagit);
-
+            stmt.setDate(6, null);
+            
             stmt.executeUpdate();
             stmt.close();
             conn.close();
         } catch (SQLException ex) {
-            System.out.println("ei toimi yhteys databaseen!");
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
         }
     }
     
@@ -147,7 +148,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.close();
             conn.close();
         } catch (SQLException ex) {
-            System.out.println("ei toimi yhteys databaseen!");
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
         }
     }
 
@@ -167,7 +168,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.close();
             conn.close();
         } catch (SQLException ex) {
-            System.out.println("ei toimi yhteys databaseen!");
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
         }
         
         return updatedOne;
