@@ -14,28 +14,6 @@
             <h1>Lukuvinkit</h1>
 
             <p><a href="/vinkit" name="toVinkit">Tarkastele kaikkia lukuvinkkejä listana</a></p>
-
-            <form action="/" method="post">
-                <div class="form-group">
-                    <label>Etsi vinkkejä pilkulla eroteltujen tagien avulla:</label> 
-                    <input type="text" class="form-control" name="etsi" />     
-                </div>             
-                <button class="btn btn-success" type="submit" name="action">Etsi</button>
-            </form> 
-            
-            <ul class="list-group">
-                <li th:each="vinkki : ${naytettavat}" class="list-group-item">
-                    Otsikko: 
-                    <a th:href="@{~/vinkki/{id}(id=${vinkki.id})}" name="otsikko">
-                        <span th:text="${vinkki.otsikko}">Vinkin otsikko</span><br/>
-                    </a>
-                    Kuvaus:
-                    <span th:text="${vinkki.kuvaus}">Vinkin kuvaus</span><br/><br/>
-                    Luettu:
-                    <span th:text="${vinkki.luettu}">Vinkki luettu</span><br/><br/>
-                </li>
-                
-            </ul>  
             
         </div>
     </body>

@@ -31,7 +31,7 @@ public class Main {
 
     public static void main(String[] args) {
         port(findOutPort());
-        
+
         Database database = getDatabase();
         setAllDao(database);
         naytettavat = new ArrayList<>();
@@ -40,9 +40,9 @@ public class Main {
         try {
             Class.forName("org.sqlite.JDBC");
             Class.forName("org.postgresql.Driver");
-            
+
             Connection conn = database.getConnection();
-            
+
             PreparedStatement statement = conn.prepareStatement("SELECT 1");
             ResultSet rs = statement.executeQuery();
 
@@ -54,7 +54,7 @@ public class Main {
         } catch (Exception ex) {
             System.out.println("epäonnistuu kirjastot!");
         }
-        
+
         get("/", (request, response) -> {
             HashMap map = new HashMap<>();
             map.put("template", "templates/index.html");
@@ -89,14 +89,14 @@ public class Main {
             return new ModelAndView(map, "vinkki");
         }, new ThymeleafTemplateEngine());
 
-        get("/vinkinMuokkaus/:id", (req,res) -> {
+        get("/vinkinMuokkaus/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.params(":id"));
             Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
             HashMap map = new HashMap<>();
-            map.put("vinkki", found);           
+            map.put("vinkki", found);
             return new ModelAndView(map, "vinkinMuokkaus");
         }, new ThymeleafTemplateEngine());
-        
+
         post("/vinkit", (req, res) -> {
             String btnName = req.queryParams("action");
             String otsikko = req.queryParams("otsikko");
@@ -124,38 +124,38 @@ public class Main {
         post("/luettu/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
             vinkkiDao.updateWithKey(vinkkiId);
-            
+
             res.redirect("/vinkit");
             return "";
         });
-        
+
         post("/muokattu/:id", (req, res) -> {
             String s = req.queryParams("id").replace("/", "").trim();
-                Integer id=Integer.parseInt(s);
-                Vinkki vinkki = (Vinkki) vinkkiDao.findOne(id);
-                String otsikko = req.queryParams("otsikko");
-                String tekija = req.queryParams("tekija");
-                String kuvaus = req.queryParams("kuvaus");
-                String linkki = req.queryParams("linkki");
-                String tagit = req.queryParams("tagit");
-                if(!otsikko.isEmpty()) {
-                    vinkki.setOtsikko(otsikko);
-                } 
-                if(!tekija.isEmpty()) {
-                    vinkki.setTekija(tekija);
-                } 
-                if(!kuvaus.isEmpty()) {
-                    vinkki.setKuvaus(kuvaus);
-                } 
-                if(!linkki.isEmpty()) {
-                    vinkki.setLinkki(linkki);
-                } 
-                if(!tagit.isEmpty()) {
-                    vinkki.setTagitAgain(tagit);
-                } 
-                
-                vinkkiDao.update(vinkki);
-         
+            Integer id = Integer.parseInt(s);
+            Vinkki vinkki = (Vinkki) vinkkiDao.findOne(id);
+            String otsikko = req.queryParams("otsikko");
+            String tekija = req.queryParams("tekija");
+            String kuvaus = req.queryParams("kuvaus");
+            String linkki = req.queryParams("linkki");
+            String tagit = req.queryParams("tagit");
+            if (!otsikko.isEmpty()) {
+                vinkki.setOtsikko(otsikko);
+            }
+            if (!tekija.isEmpty()) {
+                vinkki.setTekija(tekija);
+            }
+            if (!kuvaus.isEmpty()) {
+                vinkki.setKuvaus(kuvaus);
+            }
+            if (!linkki.isEmpty()) {
+                vinkki.setLinkki(linkki);
+            }
+            if (!tagit.isEmpty()) {
+                vinkki.setTagitAgain(tagit);
+            }
+
+            vinkkiDao.update(vinkki);
+
             res.redirect("/vinkit");
             return "";
         });
@@ -169,7 +169,7 @@ public class Main {
             res.redirect("/vinkki/" + vinkkiId);
             return "";
         });
-        
+
         post("/", (req, res) -> {
             naytettavat = new ArrayList<>();
             String haku = req.queryParams("etsi");
@@ -185,10 +185,31 @@ public class Main {
                     }
                 }
             }
-            
+
             res.redirect("/");
             return "";
         });
+
+        post("/etsi", (req, res) -> {
+            naytettavat = new ArrayList<>();
+            String haku = req.queryParams("etsi");
+            String[] etsittavat = haku.trim().toLowerCase().split(",");
+            List<Vinkki> vinkit = vinkkiDao.findAll();
+
+            HashMap map = new HashMap<>();
+            for (String s : etsittavat) {
+                String etsittava = s.trim();
+                for (Vinkki vinkki : vinkit) {
+                    String tagit = vinkki.getTagit();
+                    if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
+                        naytettavat.add(vinkki);
+                    }
+                }
+            }
+            map.put("vinkit", naytettavat);
+
+              return new ModelAndView(map, "vinkit");
+        }, new ThymeleafTemplateEngine());
 
         /*
         get("/login", (request, response) -> {
@@ -242,11 +263,11 @@ public class Main {
         if (userDao == null) {
             userDao = new UserDao(database);
         }
-            
+
         if (vinkkiDao == null) {
             vinkkiDao = new VinkkiDao(database);
         }
-            
+
         if (kommenttiDao == null) {
             kommenttiDao = new KommenttiDao(database);
         }
@@ -273,7 +294,7 @@ public class Main {
     static void setEnvPort(String port) {
         portFromEnv = port;
     }
-    
+
     static Database getDatabase() {
         return new Database("jdbc:sqlite:vinkit.db", false);
     }
