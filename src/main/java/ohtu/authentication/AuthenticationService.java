@@ -68,7 +68,7 @@ public class AuthenticationService {
         }
 
         if (status.isOk()) {
-            userDao.add(new User(username, password));
+            userDao.add(new User(-1, username, password));
         }
 
         return status;

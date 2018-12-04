@@ -47,6 +47,7 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
 
             return kommentti;
         } catch (SQLException ex) {
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
             return null;
         }
     }
@@ -76,14 +77,16 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             conn.close();
             return kommentit;
         } catch (SQLException ex) {
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
             return null;
         }
     }
 
     @Override
     public List<Kommentti> findAllByForeignKey(Integer key) {
-        List<Kommentti> kommentit = new ArrayList<>();
         try {
+            List<Kommentti> kommentit = new ArrayList<>();
+            
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti WHERE vinkki_id=?");
             stmt.setObject(1, key);
@@ -103,16 +106,17 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             rs.close();
             stmt.close();
             conn.close();
+            
+            return kommentit;
         } catch (SQLException ex) {
-            String error = ex.getMessage();
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
+            return null;
         }
-
-        return kommentit;
     }
 
     @Override
     public void delete(Integer key) {
-
+        System.out.println("not supported!");
     }
 
     @Override
@@ -129,18 +133,7 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             stmt.close();
             conn.close();
         } catch (SQLException ex) {
-            String error = ex.getMessage();
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
         }
     }
-
-    @Override
-    public void updateWithKey(Integer key) {
-
-    }
-
-    @Override
-    public Kommentti update(Kommentti updatedOne) {
-        return null;
-    }
-
 }
