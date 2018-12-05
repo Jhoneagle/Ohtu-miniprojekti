@@ -159,14 +159,13 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public Vinkki update(Vinkki updatedOne) {
         try {
             Connection conn = database.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET otsikko=?, tekija=?, kuvaus=?, linkki=?, tagit=?, isbn=? WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET otsikko=?, tekija=?, kuvaus=?, linkki=?, tagit=? WHERE id = ?");
             stmt.setString(1, updatedOne.getOtsikko());
             stmt.setString(2, updatedOne.getTekija());
             stmt.setString(3, updatedOne.getKuvaus());
             stmt.setString(4, updatedOne.getLinkki());
             stmt.setString(5, updatedOne.getTagit());
-            stmt.setString(6, updatedOne.getIsbn());
-            stmt.setInt(7, updatedOne.getId());
+            stmt.setInt(6, updatedOne.getId());
             
             stmt.executeUpdate();
             stmt.close();

@@ -12,19 +12,21 @@
 
     <body>
         <div th:replace="~{/header :: header}">Header</div>
+        
+        <div class="container">
+            <h3>Lisää uusi vinkki </h3>
 
-        <form action="/isbn" method="post">
+            <form action="/isbn" method="post">
                 <div class="form-group">
                     <label for="isbn">Kirjan ISBN-numero: </label><br/>
                     <input type="text" class="form-control" name="isbn" id="isbn"/><br/>
                 </div>
 
-                <input type="submit" class="btn btn-success" name="haeISBN" value="Hae"/><br/>
+                <input type="submit" class="btn btn-success" name="haeISBN" value="Hae esi tiedot"/><br/>
             </form>
-        
-        <div class="container">
-            <h3>Lisää uusi vinkki </h3>
-
+            
+            <br /><br />
+            
             <form action="/vinkit" method="post">
                 <div class="form-group">
                     <label for="otsikko">Kirjan tai artikkelin otsikko: </label><br/>
@@ -49,7 +51,7 @@
                 
                 <div class="form-group">
                     <label for="tagit">Tagit </label><br/>
-                    <input type="text" class="form-control" name="tagit" id="tagit"/><br/>
+                    <input type="text" class="form-control" name="tagit" id="tagit" th:value="${tagit}"/><br/>
                 </div>
                 
                 <input type="submit" class="btn btn-success" name="addVinkki" value="Lisää"/><br/>

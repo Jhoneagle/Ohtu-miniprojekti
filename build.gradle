@@ -24,7 +24,7 @@ task( browse, dependsOn: jar, type: JavaExec ) {
 
 project.ext {
     cucumberVersion = '1.2.5'
-    seleniumVersion = '2.41.0'
+    seleniumVersion = '2.52.0'
 }
 
 dependencies {
@@ -32,13 +32,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile group: 'com.sparkjava', name: 'spark-core', version: '2.5'
     compile 'org.slf4j:slf4j-simple:1.7.21'
-    compile group: 'com.sparkjava', name: 'spark-template-velocity', version: '2.0.0'
     testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: '0.10.3'
     testCompile group: 'org.fluentlenium', name: 'fluentlenium-assertj', version: '0.10.3'
     testCompile 'info.cukes:cucumber-java:' + cucumberVersion
     testCompile 'info.cukes:cucumber-junit:' + cucumberVersion
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version:seleniumVersion
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version:seleniumVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-htmlunit-driver',version: seleniumVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-api', version:seleniumVersion
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version:seleniumVersion
@@ -46,6 +43,8 @@ dependencies {
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
     compile group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.11.RELEASE'
     compile group: 'com.sparkjava', name: 'spark-template-thymeleaf', version: '2.7.1'
+    compile group: 'org.apache.httpcomponents', name: 'fluent-hc', version: '4.5.1'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
 }
 
 test {

@@ -71,7 +71,9 @@ public class Main {
             model.put("template", "templates/newVinkki.html");
             
             if (handler.isQueue()) {
-                model.put("vinkki", handler.getData());
+                Vinkki data = handler.getData();
+                model.put("vinkki", data);
+                model.put("tagit", data.getTagit());
             } else {
                 model.put("vinkki", new Vinkki(-1, "", "", "", "", new Date(1), null));
             }
@@ -89,12 +91,18 @@ public class Main {
         get("/vinkki/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.params(":id"));
             Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
-            HashMap map = new HashMap<>();
             ArrayList<Kommentti> kommentit = (ArrayList) kommenttiDao.findAllByForeignKey(vinkkiId);
+            
+            HashMap map = new HashMap<>();
             map.put("vinkki", found);
             map.put("kommentit", utils.sortCommentsByDateOrId(kommentit));
+            
             if (found != null) {
                 map.put("tagit", found.getTagit());
+                
+                if (found.getIsbn() != null && !found.getIsbn().isEmpty()) {
+                    found.setIsbn(found.getIsbn().substring(0, found.getIsbn().length() - 1));
+                }
             }
 
             return new ModelAndView(map, "vinkki");
@@ -117,10 +125,6 @@ public class Main {
             String tagit = req.queryParams("tagit");
             String isbn = req.queryParams("isbn");
 
-            if (isbn != null && !isbn.isEmpty()) {
-                tagit += ", kirja";
-            }
-            
             Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1), isbn);
             vinkki.setTagit(tagit);
             vinkkiDao.add(vinkki);
