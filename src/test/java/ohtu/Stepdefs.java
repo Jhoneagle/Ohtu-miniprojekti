@@ -82,7 +82,7 @@ public class Stepdefs {
 
     @When("^heading of the tip with otsikko \"([^\"]*)\" is clicked$")
     public void heading_of_the_tip_with_otsikko_is_clicked(String otsikko) throws Throwable {
-        WebElement element = driver.findElement(By.xpath("//*[text() = 'tagsTest']")).findElement(By.xpath("./.."));
+        WebElement element = driver.findElement(By.xpath("//*[text() = '" + otsikko + "']")).findElement(By.xpath("./.."));
         element.click();
     }
     
@@ -107,18 +107,66 @@ public class Stepdefs {
         pageHasContent(new Date(System.currentTimeMillis()).toString());
     }
     
+    @When("^pressed the edit button$")
+    public void pressed_the_edit_button() throws Throwable {
+        WebElement element = driver.findElement(By.name("editButton"));
+        element.click();
+    }
+
+    @Then("^view for editing tip is opened$")
+    public void view_for_editing_tip_is_opened() throws Throwable {
+        pageHasContent("Muokkaa vinkkiä");
+    }
+
+    @Given("^the tips otsikko \"([^\"]*)\" and selected the tip$")
+    public void the_tips_otsikko_and_selected_the_tip(String otsikko) throws Throwable {
+        driver.get(baseUrl + "/newVinkki");
+        createTip(otsikko, "test", "test", "test", "test");
+        
+        heading_of_the_tip_with_otsikko_is_clicked(otsikko);
+    }
+
+    @When("^details been chanced with \"([^\"]*)\"$")
+    public void details_been_chanced_with(String value) throws Throwable {
+        editTip(value);
+    }
+
+    @Then("^new details with \"([^\"]*)\" can be seen in the \"([^\"]*)\" tips info$")
+    public void new_details_can_be_seen_in_the_tips_info(String value, String otsikko) throws Throwable {
+        heading_of_the_tip_with_otsikko_is_clicked(otsikko + value);
+        
+        pageHasContent("Kommentit");
+        pageHasContent("test" + value);
+        pageHasContent(otsikko + value);
+    }
+
+    @When("^details nick \"([^\"]*)\" and content \"([^\"]*)\" for comment are given$")
+    public void details_nick_and_content_for_comment_are_given(String nick, String content) throws Throwable {
+        addComment(nick, content);
+    }
+
+    @Then("^tip has new comment with nick \"([^\"]*)\" and content \"([^\"]*)\"$")
+    public void tip_has_new_comment_with_nick_and_content(String nick, String content) {
+        pageHasContent("Kirjoittanut");
+        pageHasContent(nick);
+        pageHasContent("Lähetetty");
+        pageHasContent(content);
+    }
+    
     @After
     public void tearDown() {
         driver.quit();
     }
 
     /* helper methods */
+    
     private void pageHasContent(String content) {
         assertTrue(driver.getPageSource().contains(content));
     }
 
     private void createTip(String otsikko, String tekija, String kuvaus, String linkki, String tags) {
         assertTrue(driver.getPageSource().contains("uusi vinkki"));
+        
         WebElement element = driver.findElement(By.name("otsikko"));
         element.sendKeys(otsikko);
         element = driver.findElement(By.name("tekija"));
@@ -130,6 +178,33 @@ public class Stepdefs {
         element = driver.findElement(By.name("tagit"));
         element.sendKeys(tags);
         element = driver.findElement(By.name("addVinkki"));
+        element.submit();
+    }
+    
+    private void addComment(String nick, String content) {
+        assertTrue(driver.getPageSource().contains("Syötä uusi kommentti"));
+        
+        WebElement element = driver.findElement(By.name("nikki"));
+        element.sendKeys(nick);
+        element = driver.findElement(By.name("content"));
+        element.sendKeys(content);
+        
+        element = driver.findElement(By.name("kommentoiButton"));
+        element.submit();
+    }
+    
+    private void editTip(String with) {
+        assertTrue(driver.getPageSource().contains("uusi vinkki"));
+        
+        WebElement element = driver.findElement(By.name("otsikko"));
+        element.sendKeys(with);
+        element = driver.findElement(By.name("tekija"));
+        element.sendKeys(with);
+        element = driver.findElement(By.name("kuvaus"));
+        element.sendKeys(with);
+        element = driver.findElement(By.name("linkki"));
+        element.sendKeys(with);
+        element = driver.findElement(By.name("action"));
         element.submit();
     }
     

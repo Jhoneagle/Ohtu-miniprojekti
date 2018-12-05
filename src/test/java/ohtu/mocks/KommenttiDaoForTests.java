@@ -33,6 +33,17 @@ public class KommenttiDaoForTests implements Dao<Kommentti, Integer> {
     }
 
     @Override
+    public List<Kommentti> findAllByForeignKey(Integer vinkkiId) {
+        List<Kommentti> r = new ArrayList<>();
+        
+        this.kommentit.stream().filter((k) -> (k.getVinkkiId() == vinkkiId)).forEachOrdered((k) -> {
+            r.add(k);
+        });
+        
+        return r;
+    }
+    
+    @Override
     public void delete(Integer key) {
         this.kommentit.remove((int) key);
         System.out.println("id problem be caution!!");

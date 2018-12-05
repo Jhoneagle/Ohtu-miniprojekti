@@ -30,7 +30,7 @@
             <form action="/vinkit/:id" method="post">
                 <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
                 <input type="submit" class="btn btn-danger"id="removeButton" name="removeButton" value="Poista">
-                    <a th:href="@{~/vinkinMuokkaus/{id} (id=${vinkki.id})}" class="btn btn-success" id="muokkausNappi" value="Muokkaa">Muokkaa</a>
+                    <a th:href="@{~/vinkinMuokkaus/{id} (id=${vinkki.id})}" class="btn btn-success" name="editButton" id="muokkausNappi" value="Muokkaa">Muokkaa</a>
             </form>
 
             <form action="/luettu/:id" method="post">
