@@ -15,7 +15,11 @@ public interface Dao<T, K> {
 
     void add(T newOne);
     
-    void updateWithKey(K key);
+    default T update(T updatedOne) {
+        return null;
+    }
     
-    T update(T updatedOne);
+    default void updateWithKey(K key) {
+        System.out.println("not supported!");
+    }
 }

@@ -40,10 +40,10 @@ public class Database {
             }
         } else {
             try {
-                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id serial PRIMARY KEY NOT NULL, "
+                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Vinkki(id SERIAL PRIMARY KEY NOT NULL, "
                         + "otsikko varchar(255), kuvaus varchar(255), tekija varchar(100), linkki varchar(255)"
                         + ", tagit varchar(255), luettu date)").execute();
-                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Kommentti(id serial PRIMARY KEY NOT NULL, "
+                getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Kommentti(id SERIAL PRIMARY KEY NOT NULL, "
                         + "vinkki_id INTEGER, nikki varchar(255), content varchar(255), created date, "
                         + "FOREIGN KEY (vinkki_id) REFERENCES Vinkki(id))").execute();
             } catch (SQLException ex) {

@@ -195,6 +195,32 @@ public class VinkkiDaoTest extends TempFile {
         assertNull(findOne);
     }
     
+    @Test
+    public void unValidDatabaseCausesError4() {
+        dao = new VinkkiDao(new Database(null, true));
+        Vinkki update = dao.update(generateVinkki());
+        
+        assertNull(update);
+    }
+    
+    @Test
+    public void unValidDatabaseCausesError5() {
+        dao = new VinkkiDao(new Database(null, true));
+        dao.updateWithKey(1);
+        Vinkki findOne = dao.findOne(0);
+        
+        assertNull(findOne);
+    }
+    
+    @Test
+    public void unValidDatabaseCausesError6() {
+        dao = new VinkkiDao(new Database(null, true));
+        dao.delete(1);
+        Vinkki findOne = dao.findOne(0);
+        
+        assertNull(findOne);
+    }
+    
     private Vinkki generateVinkki() {
         int id = -1;
         String otsikko = "" + randomFloat();

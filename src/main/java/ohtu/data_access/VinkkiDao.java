@@ -167,11 +167,12 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.executeUpdate();
             stmt.close();
             conn.close();
+            
+            return updatedOne;
         } catch (SQLException ex) {
             System.out.println("ei toimi yhteys databaseen! \n" + ex);
+            return null;
         }
-        
-        return updatedOne;
     }
 
 }

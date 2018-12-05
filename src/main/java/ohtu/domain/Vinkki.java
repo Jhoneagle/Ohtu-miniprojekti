@@ -87,11 +87,8 @@ public class Vinkki {
     }
     
     public void setTagitAgain(String tags) {
-        String[] parsed = tags.split(",");
-        this.tagit=new ArrayList<>();
-        for (String t : parsed) {
-            this.tagit.add(t);
-        }
+        this.tagit = new ArrayList<>();
+        setTagit(tags);
     }
 
     public Date getLuettu() {

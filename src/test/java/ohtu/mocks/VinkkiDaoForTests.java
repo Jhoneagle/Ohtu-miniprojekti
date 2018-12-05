@@ -14,6 +14,7 @@ public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
 
     public VinkkiDaoForTests() {
         this.vinkit = new ArrayList<>();
+        this.nextId = 0;
     }
 
     public List<Vinkki> getVinkit() {

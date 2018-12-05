@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import gherkin.lexer.Ko;
 import ohtu.domain.Kommentti;
 import ohtu.domain.Vinkki;
 import org.junit.Before;
@@ -87,8 +86,39 @@ public class KommenttiDaoTest extends TempFile {
         }
         assertEquals(times + 1, kommenttiDao.findAll().size());
     }
-
-
+    
+    @Test
+    public void unValidDatabaseCausesError1() {
+        kommenttiDao = new KommenttiDao(new Database(null, true));
+        List<Kommentti> findAll = kommenttiDao.findAll();
+        
+        assertNull(findAll);
+    }
+    
+    @Test
+    public void unValidDatabaseCausesError2() {
+        kommenttiDao = new KommenttiDao(new Database(null, true));
+        Kommentti findOne = kommenttiDao.findOne(0);
+        
+        assertNull(findOne);
+    }
+    
+    @Test
+    public void unValidDatabaseCausesError3() {
+        kommenttiDao = new KommenttiDao(new Database(null, true));
+        kommenttiDao.add(generateKommentti());
+        Kommentti findOne = kommenttiDao.findOne(0);
+        
+        assertNull(findOne);
+    }
+    
+    @Test
+    public void unValidDatabaseCausesError4() {
+        kommenttiDao = new KommenttiDao(new Database(null, true));
+        List<Kommentti> found = kommenttiDao.findAllByForeignKey(0);
+        
+        assertNull(found);
+    }
 
     private Kommentti generateKommentti() {
         int id = -1;

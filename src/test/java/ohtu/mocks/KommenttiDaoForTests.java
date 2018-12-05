@@ -20,6 +20,7 @@ public class KommenttiDaoForTests implements Dao<Kommentti, Integer> {
 
     public KommenttiDaoForTests() {
         this.kommentit = new ArrayList<>();
+        this.nextId = 0;
     }
 
     public List<Kommentti> getKommentit() {
@@ -48,16 +49,9 @@ public class KommenttiDaoForTests implements Dao<Kommentti, Integer> {
 
     @Override
     public void add(Kommentti newOne) {
+        Kommentti kommentti = new Kommentti(nextId, newOne.getVinkkiId(), newOne.getNikki(), newOne.getContent(), newOne.getCreated());
         
-    }
-
-    @Override
-    public void updateWithKey(Integer key) {
-        
-    }
-
-    @Override
-    public Kommentti update(Kommentti updatedOne) {
-        return null;
+        this.kommentit.add(kommentti);
+        this.nextId++;
     }
 }

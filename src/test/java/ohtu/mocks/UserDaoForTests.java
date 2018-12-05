@@ -9,9 +9,11 @@ import java.util.List;
 
 public class UserDaoForTests implements AccountDao<User, Integer> {
     private List<User> users;
-
+    private int nextId;
+    
     public UserDaoForTests() {
         this.users = new ArrayList<>();
+        this.nextId = 0;
     }
 
     @Override
@@ -32,8 +34,10 @@ public class UserDaoForTests implements AccountDao<User, Integer> {
 
     @Override
     public void add(User user) {
-        users.add(user);
-        System.out.println("id problem be caution!!");
+        User user1 = new User(nextId, user.getUsername(), user.getPassword());
+        
+        users.add(user1);
+        this.nextId++;
     }
 
     public void setUsers(List<User> users) {
