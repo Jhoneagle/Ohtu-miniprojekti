@@ -139,42 +139,4 @@ public class Stepdefs {
         element = driver.findElement(By.name("action"));
         element.submit();
     }
-    
-    
-    
-    /*
-    private void logInWith(String username, String password) {
-        assertTrue(driver.getPageSource().contains("Give your credentials to login"));
-        WebElement element = driver.findElement(By.name("username"));
-        element.sendKeys(username);
-        element = driver.findElement(By.name("password"));
-        element.sendKeys(password);
-        element = driver.findElement(By.name("login"));
-        element.submit();
-    }
-
-    private void createUserWith(String username, String password) {
-        assertTrue(driver.getPageSource().contains("Create username and give password"));
-        WebElement element = driver.findElement(By.name("username"));
-        element.sendKeys(username);
-        element = driver.findElement(By.name("password"));
-        element.sendKeys(password);
-        element = driver.findElement(By.name("passwordConfirmation"));
-        element.sendKeys(password);
-        element = driver.findElement(By.name("signup"));
-        element.submit();
-    }
-
-    private void createUserUnValidConfirm(String username, String password) {
-        assertTrue(driver.getPageSource().contains("Create username and give password"));
-        WebElement element = driver.findElement(By.name("username"));
-        element.sendKeys(username);
-        element = driver.findElement(By.name("password"));
-        element.sendKeys(password);
-        element = driver.findElement(By.name("passwordConfirmation"));
-        element.sendKeys("");
-        element = driver.findElement(By.name("signup"));
-        element.submit();
-    }
-    */
 }

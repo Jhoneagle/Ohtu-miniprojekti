@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ohtu.mocks;
 
 import java.util.ArrayList;
@@ -10,10 +5,6 @@ import java.util.List;
 import ohtu.data_access.Dao;
 import ohtu.domain.Kommentti;
 
-/**
- *
- * @author jxkokko
- */
 public class KommenttiDaoForTests implements Dao<Kommentti, Integer> {
     private List<Kommentti> kommentit;
     private int nextId;

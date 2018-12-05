@@ -12,7 +12,6 @@ jacoco {
     reportsDir = file("$buildDir/JacocoReports")
 }
 
-// In this section you declare where to find the dependencies of your project
 repositories {
     jcenter()
     mavenCentral()
@@ -46,7 +45,6 @@ dependencies {
     compile group: 'org.xerial', name:'sqlite-jdbc', version:'3.8.11.2'
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
     compile group: 'org.thymeleaf', name: 'thymeleaf-spring5', version: '3.0.11.RELEASE'
-    // https://mvnrepository.com/artifact/com.sparkjava/spark-template-thymeleaf
     compile group: 'com.sparkjava', name: 'spark-template-thymeleaf', version: '2.7.1'
 }
 
@@ -63,28 +61,22 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-		    'ohtu/util/CreationStatus.class',
-		    'ohtu/authentication/**',
-		    '**/*Main**',
-		    '**/*UserDao**',
-		    '**/*User**'
+		    'ohtu/data_access/Dao.class',
+                    'ohtu/data_access/Database.class',
+		    '**/*Main**'
 	    ])
         })
     }
 }
 
-// This task is needed by Heroku
 task stage {
     dependsOn build
 }
 
-// This task copies dependencies that are pulled down from Maven
-// and copies into a directory specified in Procfile
 task copyToLib(type: Copy) {
     into "$buildDir/libs"
     from(configurations.compile)
 }
 stage.dependsOn(copyToLib)
 
-// Define the main class for the application
 mainClassName = 'ohtu.Main'

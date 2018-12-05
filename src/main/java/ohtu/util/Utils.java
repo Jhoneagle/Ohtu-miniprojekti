@@ -2,16 +2,11 @@ package ohtu.util;
 
 import ohtu.domain.Kommentti;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Utils {
-
     public Utils() {
     }
 
@@ -24,6 +19,7 @@ public class Utils {
         } else if (string.contains("dm.acm.org") || string.contains("ieeexplore.ieee.org")) {
             return "tieteellinen julkaisu";
         }
+        
         return "";
     }
 
@@ -43,6 +39,7 @@ public class Utils {
                 return Integer.compare(kom2.getId(), kom1.getId());
             }
         });
+        
         return kommentit;
     }
 }

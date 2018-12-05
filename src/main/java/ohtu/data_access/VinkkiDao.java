@@ -174,5 +174,4 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             return null;
         }
     }
-
 }

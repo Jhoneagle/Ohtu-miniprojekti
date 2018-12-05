@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import ohtu.authentication.AuthenticationService;
 import ohtu.data_access.*;
 import ohtu.domain.Kommentti;
 import ohtu.domain.Vinkki;
@@ -19,13 +18,10 @@ import java.util.List;
 import static spark.Spark.*;
 
 public class Main {
-
     static String LAYOUT = "templates/layout.html";
 
-    public static AccountDao userDao;
     public static Dao vinkkiDao;
     public static Dao kommenttiDao;
-    static AuthenticationService authService;
     public static List<Vinkki> naytettavat;
     private static Utils utils;
 
@@ -217,60 +213,9 @@ public class Main {
 
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
-
-        /*
-        get("/login", (request, response) -> {
-            HashMap<String, String> model = new HashMap<>();
-            model.put("template", "templates/login.html");
-            return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());     
-        
-        get("/user", (request, response) -> {
-            HashMap<String, String> model = new HashMap<>();
-            model.put("template", "templates/user.html");
-            return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());            
-        
-        post("/login", (request, response) -> {
-            HashMap<String, String> model = new HashMap<>();
-            String username = request.queryParams("username");
-            String password = request.queryParams("password");
-            
-            if ( !authenticationService().logIn(username, password) ) {
-                model.put("error", "invalid username or password");
-                model.put("template", "templates/login.html");
-                return new ModelAndView(model, LAYOUT);
-            }
-                
-           response.redirect("/ohtu");
-           return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());
-        
-        post("/user", (request, response) -> {
-            HashMap<String, String> model = new HashMap<>();
-            String username = request.queryParams("username");
-            String password = request.queryParams("password");
-            String passwordConf = request.queryParams("passwordConfirmation");
-            
-            CreationStatus status = authenticationService().createUser(username, password, passwordConf);
-            
-            if ( !status.isOk()) {
-                model.put("error", String.join(",  ", status.errors()));
-                model.put("template", "templates/user.html");
-                return new ModelAndView(model, LAYOUT);
-            }
-                
-           response.redirect("/welcome");
-           return new ModelAndView(model, LAYOUT);
-        }, new VelocityTemplateEngine());
-         */
     }
 
     public static void setAllDao(Database database) {
-        if (userDao == null) {
-            userDao = new UserDao(database);
-        }
-
         if (vinkkiDao == null) {
             vinkkiDao = new VinkkiDao(database);
         }
@@ -278,14 +223,6 @@ public class Main {
         if (kommenttiDao == null) {
             kommenttiDao = new KommenttiDao(database);
         }
-    }
-
-    public static AuthenticationService authenticationService() {
-        if (authService == null) {
-            authService = new AuthenticationService(userDao);
-        }
-
-        return authService;
     }
 
     static int findOutPort() {
