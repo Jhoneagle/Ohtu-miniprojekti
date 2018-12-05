@@ -43,6 +43,11 @@ public class ISBNhandlerTest {
         this.isbn.setIsbn("0545162076");
         Vinkki data = isbn.getData();
         
+        System.out.println(data.getOtsikko());
+        System.out.println(data.getTekija());
+        System.out.println(data.getKuvaus());
+        System.out.println(data.getLinkki());
+        
         String otsikko = "Harry Potter the Complete Series";
         String tekija = "J. K. Rowling";
         String kuvaus = "Collects the complete series that relates the adventures of young Harry Potter, who attends Hogwarts School of Witchcraft and Wizardry, where he and others of his kind learn their craft.";
