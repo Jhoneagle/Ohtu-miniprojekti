@@ -38,8 +38,9 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             String linkki = rs.getString("linkki");
             String tagit = rs.getString("tagit");
             Date luettu = rs.getDate("luettu");
+            String isbn = rs.getString("isbn");
 
-            Vinkki etsitty = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu);
+            Vinkki etsitty = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, isbn);
             etsitty.setTagit(tagit);
 
             rs.close();
@@ -70,8 +71,9 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
                 String linkki = rs.getString("linkki");
                 String tagit = rs.getString("tagit");
                 Date luettu = rs.getDate("luettu");
+                String isbn = rs.getString("isbn");
 
-                Vinkki f = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu);
+                Vinkki f = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, isbn);
                 f.setTagit(tagit);
                 vinkit.add(f);
             }
@@ -120,13 +122,14 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             }
 
             Connection conn = database.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit, luettu) VALUES (?,?,?,?,?,?)");
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit, luettu, isbn) VALUES (?,?,?,?,?,?,?)");
             stmt.setString(1, vinkkiOtsikko);
             stmt.setString(2, vinkkiTekija);
             stmt.setString(3, vinkkiKuvaus);
             stmt.setString(4, vinkkiLinkki);
             stmt.setString(5, tagit);
             stmt.setDate(6, null);
+            stmt.setString(7, vinkki.getIsbn());
             
             stmt.executeUpdate();
             stmt.close();
@@ -156,13 +159,14 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public Vinkki update(Vinkki updatedOne) {
         try {
             Connection conn = database.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET otsikko=?, tekija=?, kuvaus=?, linkki=?, tagit=? WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET otsikko=?, tekija=?, kuvaus=?, linkki=?, tagit=?, isbn=? WHERE id = ?");
             stmt.setString(1, updatedOne.getOtsikko());
             stmt.setString(2, updatedOne.getTekija());
             stmt.setString(3, updatedOne.getKuvaus());
             stmt.setString(4, updatedOne.getLinkki());
             stmt.setString(5, updatedOne.getTagit());
-            stmt.setInt(6, updatedOne.getId());
+            stmt.setString(6, updatedOne.getIsbn());
+            stmt.setInt(7, updatedOne.getId());
             
             stmt.executeUpdate();
             stmt.close();

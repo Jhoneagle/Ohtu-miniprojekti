@@ -12,8 +12,9 @@ public class Vinkki {
     private String linkki;
     private List<String> tagit;
     private Date luettu;
+    private String isbn;
 
-    public Vinkki(Integer id, String otsikko, String tekija, String kuvaus, String linkki, Date luettu) {
+    public Vinkki(Integer id, String otsikko, String tekija, String kuvaus, String linkki, Date luettu, String isbn) {
         this.id = id;
         this.otsikko = otsikko;
         this.tekija = tekija;
@@ -21,6 +22,7 @@ public class Vinkki {
         this.linkki = linkki;
         this.luettu = luettu;
         this.tagit = new ArrayList<>();
+        this.isbn = isbn;
     }
 
     public int getId() {
@@ -92,5 +94,13 @@ public class Vinkki {
 
     public Date getLuettu() {
         return luettu;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 }

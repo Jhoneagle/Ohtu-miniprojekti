@@ -8,20 +8,28 @@
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
             <style th:replace="~{/header :: style}">Header</style>
-
     </head>   
 
     <body>
         <div th:replace="~{/header :: header}">Header</div>
 
+        <form action="/isbn" method="post">
+                <div class="form-group">
+                    <label for="isbn">Kirjan ISBN-numero: </label><br/>
+                    <input type="text" class="form-control" name="isbn" id="isbn"/><br/>
+                </div>
+
+                <input type="submit" class="btn btn-success" name="haeISBN" value="Hae"/><br/>
+            </form>
+        
         <div class="container">
             <h3>Lisää uusi vinkki </h3>
 
             <form action="/vinkit" method="post">
-
                 <div class="form-group">
                     <label for="otsikko">Kirjan tai artikkelin otsikko: </label><br/>
                     <input type="text" class="form-control" name="otsikko" id="otsikko"/><br/>
+                    <input type="hidden" class="form-control" name="isbn" id="isbn" th:value=${vinkki.isbn}/>
                 </div>
 
                 <div class="form-group">
@@ -38,10 +46,12 @@
                     <label for="linkki">Vinkin linkki </label><br/>
                     <input type="text" class="form-control" name="linkki" id="linkki"/><br/>
                 </div>
+                
                 <div class="form-group">
                     <label for="tagit">Tagit </label><br/>
                     <input type="text" class="form-control" name="tagit" id="tagit"/><br/>
                 </div>
+                
                 <input type="submit" class="btn btn-success" name="addVinkki" value="Lisää"/><br/>
             </form>
         </div>

@@ -18,8 +18,6 @@ import java.util.List;
 import static spark.Spark.*;
 
 public class Main {
-    static String LAYOUT = "templates/layout.html";
-
     public static Dao vinkkiDao;
     public static Dao kommenttiDao;
     public static List<Vinkki> naytettavat;
@@ -68,6 +66,9 @@ public class Main {
         get("/newVinkki", (request, response) -> {
             HashMap model = new HashMap<>();
             model.put("template", "templates/newVinkki.html");
+            
+            
+            
             return new ModelAndView(model, "newVinkki");
         }, new ThymeleafTemplateEngine());
 
@@ -107,12 +108,22 @@ public class Main {
             String kuvaus = req.queryParams("kuvaus");
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
+            String isbn = req.queryParams("isbn");
 
-            Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1));
+            Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1), isbn);
             vinkki.setTagit(tagit);
             vinkkiDao.add(vinkki);
 
             res.redirect("/vinkit");
+            return "";
+        });
+        
+        post("/isbn", (req, res) -> {
+            String isbn = req.queryParams("isbn");
+
+            
+            
+            res.redirect("/newVinkki");
             return "";
         });
 
