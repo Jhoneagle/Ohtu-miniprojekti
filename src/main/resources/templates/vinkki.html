@@ -7,9 +7,13 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <style th:replace="~{/header :: style}">Header</style>
+
     </head>   
 
     <body>
+        <div th:replace="~{/header :: header}">Header</div>
+
         <div class="container">
             <h3 th:text="${vinkki.otsikko}">Otsikko</h3>
             Tekijä:
@@ -22,11 +26,11 @@
             <span th:text="${tagit}">Linkki</span><br/><br/>
             Luettu:
             <span th:text="${vinkki.luettu}">Luettu</span><br/><br/>
-            
+
             <form action="/vinkit/:id" method="post">
                 <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
                 <input type="submit" class="btn btn-danger"id="removeButton" name="removeButton" value="Poista">
-                <a th:href="@{~/vinkinMuokkaus/{id} (id=${vinkki.id})}" class="btn btn-success" id="muokkausNappi" value="Muokkaa">Muokkaa</a>
+                    <a th:href="@{~/vinkinMuokkaus/{id} (id=${vinkki.id})}" class="btn btn-success" id="muokkausNappi" value="Muokkaa">Muokkaa</a>
             </form>
 
             <form action="/luettu/:id" method="post">
@@ -55,7 +59,6 @@
                 </li>
             </ul>
 
-            <a href="/">Takaisin pääsivulle</a><br />
         </div>    
     </body>
 

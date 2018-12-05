@@ -62,6 +62,13 @@ public class Main {
             return new ModelAndView(map, "index");
         }, new ThymeleafTemplateEngine());
 
+        get("/base", (request, response) -> {
+            HashMap map = new HashMap<>();
+            map.put("template", "templates/index.html");
+            map.put("naytettavat", naytettavat);
+            return new ModelAndView(map, "index");
+        }, new ThymeleafTemplateEngine());
+
         get("/newVinkki", (request, response) -> {
             HashMap model = new HashMap<>();
             model.put("template", "templates/newVinkki.html");
@@ -208,7 +215,7 @@ public class Main {
             }
             map.put("vinkit", naytettavat);
 
-              return new ModelAndView(map, "vinkit");
+            return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
 
         /*

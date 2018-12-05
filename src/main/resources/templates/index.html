@@ -1,20 +1,25 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+
         <title>Vinkki app</title>
         <meta charset="utf-8"/>
-        
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <style th:replace="~{/header :: style}">Header</style>
     </head>   
-    
+
     <body>
+        <div th:replace="~{/header :: header}">Header</div>
+
         <div class="container">
             <h1>Lukuvinkit</h1>
 
-            <p><a href="/vinkit" name="toVinkit">Tarkastele kaikkia lukuvinkkejä listana</a></p>
-            
+            <p>Tervetuloa Team Fibonaccin vinkkisivustolle!</p>
+
+
         </div>
     </body>
 </html>

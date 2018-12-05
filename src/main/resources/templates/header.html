@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <style th:fragment="style">
+            ul.c {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #333;
+            }
+
+            a.b {
+                color: white;
+                text-align: center;
+                padding: 25px 16px;
+                font-size: 25px;
+                text-decoration: none;
+                float:left;
+
+            }
+            a.b:hover {
+                background-color: #111;
+            }
+            a.c {
+                color: white;
+                text-align: center;
+                padding: 25px 16px;
+                font-size: 25px;
+                text-decoration: none;
+                float:right;
+            }
+            a.c:hover {
+                background-color: #111;
+            }
+
+
+
+
+        </style>
+    </head>
+    <body>
+        <div th:fragment="header">
+            <ul class="c">
+                <a class="b" href="/">Etusivu</a>
+                <a class="b" href="/vinkit">Vinkit</a>
+                <a class="b" href="/newVinkki">Lisää uusi vinkki</a>
+
+                <a class="c" href="https://github.com/Jhoneagle/Ohtu-miniprojekti">Github</a>
+
+            </ul>
+
+
+        </div>
+    </body>
+</html>
