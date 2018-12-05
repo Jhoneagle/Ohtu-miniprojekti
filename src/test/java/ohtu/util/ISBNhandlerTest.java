@@ -51,8 +51,7 @@ public class ISBNhandlerTest {
         String otsikko = "Harry Potter the Complete Series";
         String tekija = "J. K. Rowling";
         String kuvaus = "Collects the complete series that relates the adventures of young Harry Potter, who attends Hogwarts School of Witchcraft and Wizardry, where he and others of his kind learn their craft.";
-        String linkki = "http://books.google.fi/books?id=h77PDQAAQBAJ&dq=isbn:0545162076&hl=&source=gbs_api";
-        Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1), null);
+        Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, "", new Date(1), null);
         
         assertTrue(areVinkitSame(data, vinkki));
     }
@@ -67,10 +66,6 @@ public class ISBNhandlerTest {
         }
 
         if (!expected.getKuvaus().contains(actual.getKuvaus())) {
-            return false;
-        }
-
-        if (!expected.getLinkki().contains(actual.getLinkki())) {
             return false;
         }
 
