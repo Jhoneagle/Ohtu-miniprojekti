@@ -21,8 +21,8 @@ public class KommenttiDaoTest extends TempFile {
         super.setUp();
         vinkkiDao = new VinkkiDao(database);
         kommenttiDao = new KommenttiDao(database);
-        vinkkiDao.add(new Vinkki(1, "Title", "Writer", "Book", "", new Date(System.currentTimeMillis())));
-        vinkkiDao.add(new Vinkki(2, "Otsikko", "Kirjoittaja", "Kirja", "", new Date(System.currentTimeMillis())));
+        vinkkiDao.add(new Vinkki(1, "Title", "Writer", "Book", "", new Date(System.currentTimeMillis()), null));
+        vinkkiDao.add(new Vinkki(2, "Otsikko", "Kirjoittaja", "Kirja", "", new Date(System.currentTimeMillis()), null));
     }
 
     @Test

@@ -14,6 +14,7 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import java.util.HashMap;
 import java.util.List;
+import ohtu.util.ISBNhandler;
 
 import static spark.Spark.*;
 
@@ -22,6 +23,7 @@ public class Main {
     public static Dao kommenttiDao;
     public static List<Vinkki> naytettavat;
     private static Utils utils;
+    private static ISBNhandler handler;
 
     public static void main(String[] args) {
         port(findOutPort());
@@ -30,6 +32,7 @@ public class Main {
         setAllDao(database);
         naytettavat = new ArrayList<>();
         utils = new Utils();
+        handler = new ISBNhandler();
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -67,7 +70,11 @@ public class Main {
             HashMap model = new HashMap<>();
             model.put("template", "templates/newVinkki.html");
             
-            
+            if (handler.isQueue()) {
+                model.put("vinkki", handler.getData());
+            } else {
+                model.put("vinkki", new Vinkki(-1, "", "", "", "", new Date(1), null));
+            }
             
             return new ModelAndView(model, "newVinkki");
         }, new ThymeleafTemplateEngine());
@@ -110,6 +117,10 @@ public class Main {
             String tagit = req.queryParams("tagit");
             String isbn = req.queryParams("isbn");
 
+            if (isbn != null && !isbn.isEmpty()) {
+                tagit += ", kirja";
+            }
+            
             Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1), isbn);
             vinkki.setTagit(tagit);
             vinkkiDao.add(vinkki);
@@ -120,8 +131,7 @@ public class Main {
         
         post("/isbn", (req, res) -> {
             String isbn = req.queryParams("isbn");
-
-            
+            handler.setIsbn(isbn);
             
             res.redirect("/newVinkki");
             return "";

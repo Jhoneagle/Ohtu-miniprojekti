@@ -53,7 +53,7 @@ public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
             }
         }
         
-        Vinkki vinkki = new Vinkki(nextId, newOne.getOtsikko(), newOne.getTekija(), newOne.getKuvaus(), newOne.getLinkki(), new Date(1));
+        Vinkki vinkki = new Vinkki(nextId, newOne.getOtsikko(), newOne.getTekija(), newOne.getKuvaus(), newOne.getLinkki(), new Date(1), null);
         vinkki.setTagit(newOne.getTagit());
         this.vinkit.add(vinkki);
         nextId++;

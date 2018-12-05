@@ -28,23 +28,23 @@
             <form action="/vinkit" method="post">
                 <div class="form-group">
                     <label for="otsikko">Kirjan tai artikkelin otsikko: </label><br/>
-                    <input type="text" class="form-control" name="otsikko" id="otsikko"/><br/>
+                    <input type="text" class="form-control" name="otsikko" id="otsikko" th:value="${vinkki.otsikko}"/><br/>
                     <input type="hidden" class="form-control" name="isbn" id="isbn" th:value=${vinkki.isbn}/>
                 </div>
 
                 <div class="form-group">
                     <label for="tekija">Tekijä </label><br/>
-                    <input type="text" class="form-control" name="tekija" id="tekija"/><br/>
+                    <input type="text" class="form-control" name="tekija" id="tekija" th:value="${vinkki.tekija}"/><br/>
                 </div>
 
                 <div class="form-group">
                     <label for="kuvaus">Vinkin kuvaus </label><br/>
-                    <input type="text" class="form-control" name="kuvaus" id="kuvaus"/><br/>
+                    <input type="text" class="form-control" name="kuvaus" id="kuvaus" th:value="${vinkki.kuvaus}"/><br/>
                 </div>
 
                 <div class="form-group">
                     <label for="linkki">Vinkin linkki </label><br/>
-                    <input type="text" class="form-control" name="linkki" id="linkki"/><br/>
+                    <input type="text" class="form-control" name="linkki" id="linkki" th:value="${vinkki.linkki}"/><br/>
                 </div>
                 
                 <div class="form-group">

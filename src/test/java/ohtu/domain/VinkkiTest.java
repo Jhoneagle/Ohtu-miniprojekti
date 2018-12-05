@@ -11,7 +11,7 @@ public class VinkkiTest {
 
     @Before
     public void setUp() {
-        this.vinkki = new Vinkki(1, "Foo Bar", "Mark Doe", "hyva kirja", "testiurl", new Date(1));
+        this.vinkki = new Vinkki(1, "Foo Bar", "Mark Doe", "hyva kirja", "testiurl", new Date(1), null);
     }
 
     @Test

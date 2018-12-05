@@ -54,9 +54,9 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void addingLinkWillAddTag() {
-        dao.add(new Vinkki(1, "Title", "Doer", "Doing titles", "youtube.com/", new Date(1)));
+        dao.add(new Vinkki(1, "Title", "Doer", "Doing titles", "youtube.com/", new Date(1), null));
         assertEquals("video", dao.findOne(1).getTagit());
-        Vinkki vinkki = new Vinkki(2, "Foo", "Bar", "", "youtube.com/roger", new Date(1));
+        Vinkki vinkki = new Vinkki(2, "Foo", "Bar", "", "youtube.com/roger", new Date(1), null);
         vinkki.setTagit("Tag,Magic");
         dao.add(vinkki);
         assertEquals("Tag,Magic,video", dao.findOne(2).getTagit());
@@ -172,8 +172,8 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void update() {
-        Vinkki vinkki = new Vinkki(1, "Eka", "Eka", "", "youtube.com/Eka", new Date(1));
-        Vinkki updated = new Vinkki(1, "Toka", "Toka", "", "youtube.com/toka", new Date(1));
+        Vinkki vinkki = new Vinkki(1, "Eka", "Eka", "", "youtube.com/Eka", new Date(1), null);
+        Vinkki updated = new Vinkki(1, "Toka", "Toka", "", "youtube.com/toka", new Date(1), null);
 
         dao.add(vinkki);
         dao.update(updated);
@@ -239,7 +239,7 @@ public class VinkkiDaoTest extends TempFile {
         String kuvaus = "" + randomFloat();
         String linkki = "" + randomFloat();
 
-        return new Vinkki(id, otsikko, tekija, kuvaus, linkki, new Date(1));
+        return new Vinkki(id, otsikko, tekija, kuvaus, linkki, new Date(1), null);
     }
 
     private Double randomFloat() {
