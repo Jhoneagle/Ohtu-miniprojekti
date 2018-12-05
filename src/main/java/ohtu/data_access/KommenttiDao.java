@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ohtu.data_access;
 
 import java.sql.*;
@@ -10,10 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import ohtu.domain.Kommentti;
 
-/**
- *
- * @author jxkokko
- */
 public class KommenttiDao implements Dao<Kommentti, Integer> {
     private final Database database;
 

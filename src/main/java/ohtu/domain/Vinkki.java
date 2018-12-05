@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Vinkki {
-
     private Integer id;
     private String otsikko;
     private String tekija;

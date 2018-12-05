@@ -15,7 +15,6 @@ public class KommenttiDaoTest extends TempFile {
     private KommenttiDao kommenttiDao;
     private VinkkiDao vinkkiDao;
 
-
     @Before
     @Override
     public void setUp() {
@@ -131,7 +130,6 @@ public class KommenttiDaoTest extends TempFile {
     private Double randomFloat() {
         return Math.random() * 10000;
     }
-
 
     private boolean areKommentitSame(Kommentti expected, Kommentti actual) {
         if (expected.getCreated().toString().compareTo(actual.getCreated().toString()) == 0

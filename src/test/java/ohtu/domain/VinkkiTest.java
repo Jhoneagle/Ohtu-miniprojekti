@@ -7,7 +7,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class VinkkiTest {
-
     private Vinkki vinkki;
 
     @Before
@@ -135,7 +134,8 @@ public class VinkkiTest {
         this.vinkki.setKuvaus("kuvaus");
         assertEquals("kuvaus", this.vinkki.getKuvaus());
     }
-        @Test
+    
+    @Test
     public void setTagitAgainTest() {
         this.vinkki.setTagitAgain("asd,qwe,zxc");
         assertEquals("asd,qwe,zxc", this.vinkki.getTagit());
