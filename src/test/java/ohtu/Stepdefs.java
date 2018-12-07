@@ -153,6 +153,31 @@ public class Stepdefs {
         pageHasContent(content);
     }
     
+    @When("^isbn \"([^\"]*)\" is given$")
+    public void isbn_is_given(String isbn) throws Throwable {
+        driver.get(baseUrl + "/newVinkki");
+        
+        WebElement element = driver.findElement(By.name("isbn"));
+        element.sendKeys(isbn);
+        
+        element = driver.findElement(By.name("haeISBN"));
+        element.submit();
+    }
+
+    @Then("^fields are occupied$")
+    public void fields_are_occupied() throws Throwable {
+        pageHasContent("uusi vinkki");
+        createFormContent(true);
+    }
+
+    @Then("^fields are not occupied$")
+    public void fields_are_not_occupied() throws Throwable {
+        pageHasContent("uusi vinkki");
+        createFormContent(false);
+    }
+    
+    
+    
     @After
     public void tearDown() {
         driver.quit();
@@ -162,6 +187,26 @@ public class Stepdefs {
     
     private void pageHasContent(String content) {
         assertTrue(driver.getPageSource().contains(content));
+    }
+    
+    private void createFormContent(boolean contains) {
+        WebElement element = driver.findElement(By.name("otsikko"));
+        assertEquals(contains, !element.getText().isEmpty());
+        
+        System.out.println("otsikko: " + element.getText());
+        System.out.println("elementti: " + element);
+        
+        element = driver.findElement(By.name("tekija"));
+        assertEquals(contains, !element.getText().isEmpty());
+        
+        element = driver.findElement(By.name("kuvaus"));
+        assertEquals(contains, !element.getText().isEmpty());
+        
+        element = driver.findElement(By.name("linkki"));
+        assertEquals(contains, !element.getText().isEmpty());
+        
+        element = driver.findElement(By.name("tagit"));
+        assertEquals(contains, !element.getText().isEmpty());
     }
 
     private void createTip(String otsikko, String tekija, String kuvaus, String linkki, String tags) {
