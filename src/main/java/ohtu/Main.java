@@ -174,45 +174,37 @@ public class Main {
         });
 
         post("/", (req, res) -> {
-            naytettavat = new ArrayList<>();
-            String haku = req.queryParams("etsi");
-            String[] etsittavat = haku.trim().toLowerCase().split(",");
-            List<Vinkki> vinkit = vinkkiDao.findAll();
-
-            for (String s : etsittavat) {
-                String etsittava = s.trim();
-                for (Vinkki vinkki : vinkit) {
-                    String tagit = vinkki.getTagit();
-                    if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
-                        naytettavat.add(vinkki);
-                    }
-                }
-            }
+            combineDisplayables(req.queryParams("etsi"));
 
             res.redirect("/");
             return "";
         });
 
         post("/etsi", (req, res) -> {
-            naytettavat = new ArrayList<>();
-            String haku = req.queryParams("etsi");
-            String[] etsittavat = haku.trim().toLowerCase().split(",");
-            List<Vinkki> vinkit = vinkkiDao.findAll();
+            combineDisplayables(req.queryParams("etsi"));
 
             HashMap map = new HashMap<>();
-            for (String s : etsittavat) {
-                String etsittava = s.trim();
-                for (Vinkki vinkki : vinkit) {
-                    String tagit = vinkki.getTagit();
-                    if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
-                        naytettavat.add(vinkki);
-                    }
-                }
-            }
             map.put("vinkit", naytettavat);
 
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
+    }
+    
+    private static void combineDisplayables(String haku) {
+        naytettavat = new ArrayList<>();
+        String[] etsittavat = haku.trim().toLowerCase().split(",");
+        List<Vinkki> vinkit = vinkkiDao.findAll();
+
+        for (String s : etsittavat) {
+            String etsittava = s.trim();
+            for (Vinkki vinkki : vinkit) {
+                String tagit = vinkki.getTagit();
+                if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
+                    naytettavat.add(vinkki);
+                }
+            }
+        }
+
     }
 
     public static void setAllDao(Database database) {
