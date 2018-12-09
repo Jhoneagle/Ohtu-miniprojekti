@@ -18,6 +18,20 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public VinkkiDao(Database database) {
         this.database = database;
     }
+    
+    private Vinkki createOneFrom(ResultSet rs) throws SQLException {
+        Integer id = rs.getInt("id");
+        String otsikko = rs.getString("otsikko");
+        String tekija = rs.getString("tekija");
+        String kuvaus = rs.getString("kuvaus");
+        String linkki = rs.getString("linkki");
+        String tagit = rs.getString("tagit");
+        Date luettu = rs.getDate("luettu");
+        
+        Vinkki vinkki = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, null);
+        vinkki.setTagit(tagit);
+        return vinkki;
+    }
 
     @Override
     public Vinkki findOne(Integer key) {
@@ -31,18 +45,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
                 return null;
             }
 
-            Integer id = rs.getInt("id");
-            String otsikko = rs.getString("otsikko");
-            String tekija = rs.getString("tekija");
-            String kuvaus = rs.getString("kuvaus");
-            String linkki = rs.getString("linkki");
-            String tagit = rs.getString("tagit");
-            Date luettu = rs.getDate("luettu");
-            String isbn = rs.getString("isbn");
-
-            Vinkki etsitty = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, isbn);
-            etsitty.setTagit(tagit);
-
+            Vinkki etsitty = createOneFrom(rs);
             rs.close();
             stmt.close();
             conn.close();
@@ -64,17 +67,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Integer id = rs.getInt("id");
-                String otsikko = rs.getString("otsikko");
-                String tekija = rs.getString("tekija");
-                String kuvaus = rs.getString("kuvaus");
-                String linkki = rs.getString("linkki");
-                String tagit = rs.getString("tagit");
-                Date luettu = rs.getDate("luettu");
-                String isbn = rs.getString("isbn");
-
-                Vinkki f = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, isbn);
-                f.setTagit(tagit);
+            	Vinkki f = createOneFrom(rs);
                 vinkit.add(f);
             }
 

@@ -125,6 +125,11 @@ public class Main {
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
             String isbn = req.queryParams("isbn");
+            
+            if (otsikko.isEmpty()) {
+                res.redirect("/newVinkki");
+                return "Vinkillä on oltava otsikko!";
+            }
 
             Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1), isbn);
             vinkki.setTagit(tagit);
@@ -201,45 +206,37 @@ public class Main {
         });
 
         post("/", (req, res) -> {
-            naytettavat = new ArrayList<>();
-            String haku = req.queryParams("etsi");
-            String[] etsittavat = haku.trim().toLowerCase().split(",");
-            List<Vinkki> vinkit = vinkkiDao.findAll();
-
-            for (String s : etsittavat) {
-                String etsittava = s.trim();
-                for (Vinkki vinkki : vinkit) {
-                    String tagit = vinkki.getTagit();
-                    if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
-                        naytettavat.add(vinkki);
-                    }
-                }
-            }
+            combineDisplayables(req.queryParams("etsi"));
 
             res.redirect("/");
             return "";
         });
 
         post("/etsi", (req, res) -> {
-            naytettavat = new ArrayList<>();
-            String haku = req.queryParams("etsi");
-            String[] etsittavat = haku.trim().toLowerCase().split(",");
-            List<Vinkki> vinkit = vinkkiDao.findAll();
+            combineDisplayables(req.queryParams("etsi"));
 
             HashMap map = new HashMap<>();
-            for (String s : etsittavat) {
-                String etsittava = s.trim();
-                for (Vinkki vinkki : vinkit) {
-                    String tagit = vinkki.getTagit();
-                    if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
-                        naytettavat.add(vinkki);
-                    }
-                }
-            }
             map.put("vinkit", naytettavat);
 
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
+    }
+    
+    private static void combineDisplayables(String haku) {
+        naytettavat = new ArrayList<>();
+        String[] etsittavat = haku.trim().toLowerCase().split(",");
+        List<Vinkki> vinkit = vinkkiDao.findAll();
+
+        for (String s : etsittavat) {
+            String etsittava = s.trim();
+            for (Vinkki vinkki : vinkit) {
+                String tagit = vinkki.getTagit();
+                if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
+                    naytettavat.add(vinkki);
+                }
+            }
+        }
+
     }
 
     public static void setAllDao(Database database) {

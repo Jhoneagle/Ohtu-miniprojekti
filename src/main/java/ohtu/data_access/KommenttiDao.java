@@ -11,6 +11,17 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
     public KommenttiDao(Database database) {
         this.database = database;
     }
+    
+    
+    public Kommentti createOneFrom(ResultSet rs) throws SQLException {
+        Integer id = rs.getInt("id");
+        Integer vinkkiId = rs.getInt("vinkki_id");
+        String nikki = rs.getString("nikki");
+        String content = rs.getString("content");
+        Date created = rs.getDate("created");
+        Kommentti kommentti = new Kommentti(id, vinkkiId, nikki, content, created);
+        return kommentti;
+    }
 
     @Override
     public Kommentti findOne(Integer key) {
@@ -23,15 +34,7 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             if (!rs.next()) {
                 return null;
             }
-
-            Integer id = rs.getInt("id");
-            Integer vinkkiId = rs.getInt("vinkki_id");
-            String nikki = rs.getString("nikki");
-            String content = rs.getString("content");
-            Date created = rs.getDate("created");
-
-            Kommentti kommentti = new Kommentti(id, vinkkiId, nikki, content, created);
-
+            Kommentti kommentti = createOneFrom(rs);
             rs.close();
             stmt.close();
             conn.close();
@@ -53,13 +56,7 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Integer id = rs.getInt("id");
-                Integer vinkkiId = rs.getInt("vinkki_id");
-                String nikki = rs.getString("nikki");
-                String content = rs.getString("content");
-                Date created = rs.getDate("created");
-
-                Kommentti kommentti = new Kommentti(id, vinkkiId, nikki, content, created);
+                Kommentti kommentti = createOneFrom(rs);
                 kommentit.add(kommentti);
             }
 
@@ -85,12 +82,7 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Integer id = rs.getInt("id");
-                String nikki = rs.getString("nikki");
-                String content = rs.getString("content");
-                Date created = rs.getDate("created");
-
-                Kommentti kommentti = new Kommentti(id, key, nikki, content, created);
+                Kommentti kommentti = createOneFrom(rs);
                 kommentit.add(kommentti);
             }
 
