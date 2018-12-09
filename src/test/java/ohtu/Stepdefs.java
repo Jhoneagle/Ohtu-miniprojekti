@@ -191,22 +191,19 @@ public class Stepdefs {
     
     private void createFormContent(boolean contains) {
         WebElement element = driver.findElement(By.name("otsikko"));
-        assertEquals(contains, !element.getText().isEmpty());
-        
-        System.out.println("otsikko: " + element.getText());
-        System.out.println("elementti: " + element);
+        assertEquals(contains, !element.getAttribute("value").isEmpty());
         
         element = driver.findElement(By.name("tekija"));
-        assertEquals(contains, !element.getText().isEmpty());
+        assertEquals(contains, !element.getAttribute("value").isEmpty());
         
         element = driver.findElement(By.name("kuvaus"));
-        assertEquals(contains, !element.getText().isEmpty());
+        assertEquals(contains, !element.getAttribute("value").isEmpty());
         
         element = driver.findElement(By.name("linkki"));
-        assertEquals(contains, !element.getText().isEmpty());
+        assertEquals(contains, !element.getAttribute("value").isEmpty());
         
         element = driver.findElement(By.name("tagit"));
-        assertEquals(contains, !element.getText().isEmpty());
+        assertEquals(contains, !element.getAttribute("value").isEmpty());
     }
 
     private void createTip(String otsikko, String tekija, String kuvaus, String linkki, String tags) {

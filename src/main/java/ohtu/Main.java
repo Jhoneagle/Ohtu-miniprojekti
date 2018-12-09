@@ -72,6 +72,7 @@ public class Main {
             
             if (handler.isQueue()) {
                 Vinkki data = handler.getData();
+                
                 model.put("vinkki", data);
                 model.put("tagit", data.getTagit());
             } else {
@@ -166,6 +167,7 @@ public class Main {
             String kuvaus = req.queryParams("kuvaus");
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
+            
             if (!otsikko.isEmpty()) {
                 vinkki.setOtsikko(otsikko);
             }
