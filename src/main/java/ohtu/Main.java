@@ -107,6 +107,11 @@ public class Main {
             String kuvaus = req.queryParams("kuvaus");
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
+            
+            if (otsikko.isEmpty()) {
+                res.redirect("/newVinkki");
+                return "Vinkillä on oltava otsikko!";
+            }
 
             Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1));
             vinkki.setTagit(tagit);
