@@ -14,6 +14,8 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import ohtu.util.ISBNhandler;
 
 import static spark.Spark.*;
@@ -81,9 +83,26 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         get("/vinkit", (req, res) -> {
+            String notRead = req.queryParams("notRead");
+            ArrayList<Vinkki> vinkit = (ArrayList) vinkkiDao.findAll();
+            String searchType = req.queryParams("search");
+            if ("Etsi tageilla".equals(searchType)) {
+                vinkit = combineDisplayablesByTag(vinkit, req.queryParams("searchText"));
+            } else if ("Vapaa sanahaku".equals(searchType)) {
+                vinkit = combineDisplayablesByVapaaSanahaku(vinkit, req.queryParams("searchText"));
+            }
+
+            if ("notRead".equals(notRead)) {
+                vinkit = (ArrayList) vinkit.stream()
+                        .filter(vinkki -> null == vinkki.getLuettu())
+                        .collect(Collectors.toList());
+            }
+
+
+
             naytettavat = new ArrayList<>();
             HashMap map = new HashMap<>();
-            map.put("vinkit", vinkkiDao.findAll());
+            map.put("vinkit", vinkit);
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
 
@@ -203,7 +222,7 @@ public class Main {
             return "";
         });
 
-        post("/", (req, res) -> {
+    /*    post("/", (req, res) -> {
             String nappi = req.queryParams("action");
             if(nappi.equals("Etsi tageilla")) {
                 combineDisplayablesByTag(req.queryParams("etsi"));
@@ -227,13 +246,12 @@ public class Main {
             map.put("vinkit", naytettavat);
 
             return new ModelAndView(map, "vinkit");
-        }, new ThymeleafTemplateEngine());
+        }, new ThymeleafTemplateEngine()); */
     }
     
-    private static void combineDisplayablesByVapaaSanahaku(String haku) {
-        naytettavat = new ArrayList<>();
+    private static ArrayList<Vinkki> combineDisplayablesByVapaaSanahaku(ArrayList<Vinkki> vinkit, String haku) {
         String[] etsittavat = haku.trim().toLowerCase().split(",");
-        List<Vinkki> vinkit = vinkkiDao.findAll();
+        ArrayList<Vinkki> filteredVinkit = new ArrayList();
 
         for (String s : etsittavat) {
             String etsittava = s.trim();
@@ -243,28 +261,28 @@ public class Main {
                 String kuvaus = vinkki.getKuvaus().toLowerCase();
                 System.out.println("etsittava: " + etsittava);
                 System.out.println("otsikko: " + otsikko);
-                if ((otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) && naytettavat.indexOf(vinkki) == -1) {
-                    naytettavat.add(vinkki);
+                if ((otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) && filteredVinkit.indexOf(vinkki) == -1) {
+                    filteredVinkit.add(vinkki);
                 }
             }
         }
+        return filteredVinkit;
     }
     
-    private static void combineDisplayablesByTag(String haku) {
-        naytettavat = new ArrayList<>();
+    private static ArrayList<Vinkki> combineDisplayablesByTag(ArrayList<Vinkki> vinkit, String haku) {
         String[] etsittavat = haku.trim().toLowerCase().split(",");
-        List<Vinkki> vinkit = vinkkiDao.findAll();
+        ArrayList<Vinkki> filteredVinkit = new ArrayList();
 
         for (String s : etsittavat) {
             String etsittava = s.trim();
             for (Vinkki vinkki : vinkit) {
                 String tagit = vinkki.getTagit();
-                if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
-                    naytettavat.add(vinkki);
+                if (tagit.contains(etsittava) && filteredVinkit.indexOf(vinkki) == -1) {
+                    filteredVinkit.add(vinkki);
                 }
             }
         }
-
+        return filteredVinkit;
     }
 
     public static void setAllDao(Database database) {

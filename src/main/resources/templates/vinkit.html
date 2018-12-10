@@ -17,28 +17,34 @@
         <div class="container">
             <h1>Lukuvinkit listana</h1>
 
-            <form action="/etsi" method="post">
-                <div class="form-group">
-                    <label>Etsi vinkkejä joko tageilla tai vapaana sanahakuna. Erottele hakutermit pilkuilla.</label> 
-                    <input type="text" class="form-control" name="etsi"/>     
-                </div>             
-                <span><input class="btn btn-success" type="submit" name="action" value="Etsi tageilla"></input>
-                    <input class="btn btn-success" type="submit" name="action" value="Vapaa sanahaku"></input></span>
-            </form> 
+            <form action="/vinkit" method="get">
+                <p>
+                    <label>Etsi vinkkejä joko tageilla tai vapaana sanahakuna. Erottele hakutermit pilkuilla</label>
+                    <input type="text" class="form-control" name="searchText">
+                </p>
+                <p>
+                    <input class="form-check-input" type="checkbox" name="notRead" id="notRead" value="notRead">
+                    <label class="form-check-label" for="notRead">Näytä vain lukemattomat vinkit</label>
+                </p>
+                <input class="btn btn-primary" type="submit" name="search" value="Etsi ilman hakusanaa">
+                <input class="btn btn-success" type="submit" name="search" value="Etsi tageilla">
+                <input class="btn btn-success" type="submit" name="search" value="Vapaa sanahaku">
+            </form>
 
-
-            <ul class="list-group">
-                <li th:each="vinkki : ${vinkit}" class="list-group-item">
-                    Otsikko: 
-                    <a th:href="@{~/vinkki/{id}(id=${vinkki.id})}" name="otsikko">
-                        <span th:text="${vinkki.otsikko}">Vinkin otsikko</span><br/>
-                    </a>
-                    Kuvaus:
-                    <span th:text="${vinkki.kuvaus}">Vinkin kuvaus</span><br/><br/>
-                    Luettu:
-                    <span th:text="${vinkki.luettu}">Vinkki luettu</span><br/><br/>
-                </li>
-            </ul>
+            <p>
+                <ul class="list-group">
+                    <li th:each="vinkki : ${vinkit}" class="list-group-item">
+                        Otsikko:
+                        <a th:href="@{~/vinkki/{id}(id=${vinkki.id})}" name="otsikko">
+                            <span th:text="${vinkki.otsikko}">Vinkin otsikko</span><br/>
+                        </a>
+                        Kuvaus:
+                        <span th:text="${vinkki.kuvaus}">Vinkin kuvaus</span><br/><br/>
+                        Luettu:
+                        <span th:text="${vinkki.luettu}">Vinkki luettu</span><br/><br/>
+                    </li>
+                </ul>
+            </p>
         </div>
     </body>
 </html>
