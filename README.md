@@ -16,3 +16,8 @@ Definition of done:
 
 Vaatimus on toteutettu valmiiksi, kun se on analysoitu, suunniteltu, ohjelmoitu, testattu, testaus automatisoitu, dokumentoitu, integroitu muuhun ohjelmistoon ja viety tuotantoympäristöön.
 
+Testit:
+
+Cucumber-testien featuret löytyy täältä: https://github.com/Jhoneagle/Ohtu-miniprojekti/tree/master/src/test/resources/ohtu
+
+Yksikkötestit, sekä cucumber-testit löytyy täältä: https://github.com/Jhoneagle/Ohtu-miniprojekti/tree/master/src/test/java/ohtu
