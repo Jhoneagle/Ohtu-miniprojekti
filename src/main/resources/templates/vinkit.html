@@ -19,11 +19,13 @@
 
             <form action="/etsi" method="post">
                 <div class="form-group">
-                    <label>Etsi vinkkejä pilkulla eroteltujen tagien avulla:</label> 
-                    <input type="text" class="form-control" name="etsi" />     
+                    <label>Etsi vinkkejä joko tageilla tai vapaana sanahakuna. Erottele hakutermit pilkuilla.</label> 
+                    <input type="text" class="form-control" name="etsi"/>     
                 </div>             
-                <button class="btn btn-success" type="submit" name="action">Etsi</button>
+                <span><input class="btn btn-success" type="submit" name="action" value="Etsi tageilla"></input>
+                    <input class="btn btn-success" type="submit" name="action" value="Vapaa sanahaku"></input></span>
             </form> 
+
 
             <ul class="list-group">
                 <li th:each="vinkki : ${vinkit}" class="list-group-item">
