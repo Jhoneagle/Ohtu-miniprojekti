@@ -204,14 +204,24 @@ public class Main {
         });
 
         post("/", (req, res) -> {
-            combineDisplayables(req.queryParams("etsi"));
-
+            String nappi = req.queryParams("action");
+            if(nappi.equals("Etsi tageilla")) {
+                combineDisplayablesByTag(req.queryParams("etsi"));
+            } else {
+                combineDisplayablesByVapaaSanahaku(req.queryParams("etsi"));
+            }
+            
             res.redirect("/");
             return "";
         });
 
         post("/etsi", (req, res) -> {
-            combineDisplayables(req.queryParams("etsi"));
+            String nappi = req.queryParams("action");
+            if(nappi.equals("Etsi tageilla")) {
+                combineDisplayablesByTag(req.queryParams("etsi"));
+            } else {
+                combineDisplayablesByVapaaSanahaku(req.queryParams("etsi"));
+            }
 
             HashMap map = new HashMap<>();
             map.put("vinkit", naytettavat);
@@ -220,7 +230,27 @@ public class Main {
         }, new ThymeleafTemplateEngine());
     }
     
-    private static void combineDisplayables(String haku) {
+    private static void combineDisplayablesByVapaaSanahaku(String haku) {
+        naytettavat = new ArrayList<>();
+        String[] etsittavat = haku.trim().toLowerCase().split(",");
+        List<Vinkki> vinkit = vinkkiDao.findAll();
+
+        for (String s : etsittavat) {
+            String etsittava = s.trim();
+            for (Vinkki vinkki : vinkit) {
+                String otsikko = vinkki.getOtsikko().toLowerCase();
+                String tekija = vinkki.getTekija().toLowerCase();
+                String kuvaus = vinkki.getKuvaus().toLowerCase();
+                System.out.println("etsittava: " + etsittava);
+                System.out.println("otsikko: " + otsikko);
+                if ((otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) && naytettavat.indexOf(vinkki) == -1) {
+                    naytettavat.add(vinkki);
+                }
+            }
+        }
+    }
+    
+    private static void combineDisplayablesByTag(String haku) {
         naytettavat = new ArrayList<>();
         String[] etsittavat = haku.trim().toLowerCase().split(",");
         List<Vinkki> vinkit = vinkkiDao.findAll();
