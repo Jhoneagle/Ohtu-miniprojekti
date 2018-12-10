@@ -21,11 +21,6 @@ public class Stepdefs {
         driver.get(baseUrl);
     }
 
-    @When("^list all tips clicked$")
-    public void list_all_tips_clicked() throws Throwable {
-        WebElement element = driver.findElement(By.name("toVinkit"));
-        element.click();
-    }
 
     @Then("^list all view is open$")
     public void list_all_view_is_open() throws Throwable {

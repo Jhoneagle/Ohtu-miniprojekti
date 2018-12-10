@@ -53,11 +53,9 @@ public class Main {
         }
 
         get("/", (request, response) -> {
-            HashMap map = new HashMap<>();
-            map.put("template", "templates/index.html");
-            map.put("naytettavat", naytettavat);
-            return new ModelAndView(map, "index");
-        }, new ThymeleafTemplateEngine());
+            response.redirect("/vinkit");
+            return "";
+        });
 
         get("/base", (request, response) -> {
             HashMap map = new HashMap<>();
