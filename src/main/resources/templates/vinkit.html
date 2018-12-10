@@ -16,22 +16,20 @@
 
         <div class="container">
             <h1>Lukuvinkit listana</h1>
-            <p>
-                <a href="/vinkit?notRead=notRead" class="btn btn-primary" name="notRead">Näytä lukemattomat</a>
-                <a href="/vinkit" class="btn btn-success">Näytä kaikki</a>
-            </p>
 
-            <form action="/etsi" method="post">
-                <div class="form-group">
-                    <label>Etsi vinkkejä joko tageilla tai vapaana sanahakuna. Erottele hakutermit pilkuilla.</label> 
-                    <input type="text" class="form-control" name="etsi"/>     
-                </div>             
-                <span>
-                    <input class="btn btn-success" type="submit" name="action" value="Etsi tageilla"></input>
-                    <input class="btn btn-success" type="submit" name="action" value="Vapaa sanahaku"></input>
-                </span>
+            <form action="/vinkit" method="get">
+                <p>
+                    <label>Etsi vinkkejä joko tageilla tai vapaana sanahakuna. Erottele hakutermit pilkuilla</label>
+                    <input type="text" class="form-control" name="searchText">
+                </p>
+                <p>
+                    <input class="form-check-input" type="checkbox" name="notRead" id="notRead" value="notRead">
+                    <label class="form-check-label" for="notRead">Näytä vain lukemattomat vinkit</label>
+                </p>
+                <input class="btn btn-primary" type="submit" name="search" value="Etsi ilman hakusanaa">
+                <input class="btn btn-success" type="submit" name="search" value="Etsi tageilla">
+                <input class="btn btn-success" type="submit" name="search" value="Vapaa sanahaku">
             </form>
-
 
             <p>
                 <ul class="list-group">
