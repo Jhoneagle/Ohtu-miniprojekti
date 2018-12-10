@@ -14,6 +14,8 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import ohtu.util.ISBNhandler;
 
 import static spark.Spark.*;
@@ -81,9 +83,16 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         get("/vinkit", (req, res) -> {
+            String notRead = req.queryParams("notRead");
+            ArrayList<Vinkki> vinkit = (ArrayList) vinkkiDao.findAll();
+            if ("notRead".equals(notRead)) {
+                vinkit = (ArrayList) vinkit.stream()
+                        .filter(vinkki -> null == vinkki.getLuettu())
+                        .collect(Collectors.toList());
+            }
             naytettavat = new ArrayList<>();
             HashMap map = new HashMap<>();
-            map.put("vinkit", vinkkiDao.findAll());
+            map.put("vinkit", vinkit);
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
 
