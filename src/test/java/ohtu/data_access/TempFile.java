@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class TempFile {
+
     protected File tempDatabase;
     protected Database database;
 
@@ -17,18 +18,22 @@ public class TempFile {
     public void setUp() {
         try {
             tempDatabase = tempFolder.newFile("test.db");
-            String databaseAddress = "jdbc:sqlite:"+tempDatabase.getAbsolutePath();
-            
+            String databaseAddress = "jdbc:sqlite:" + tempDatabase.getAbsolutePath();
+
             database = new Database(databaseAddress, true);
         } catch (IOException ex) {
             System.out.println("Failed to use database in tests!");
         }
     }
-    
+
     @After
     public void restore() {
         if (tempDatabase != null) {
             this.tempDatabase.delete();
         }
+    }
+
+    protected Database unValidDatabase() {
+        return new Database(null, true);
     }
 }

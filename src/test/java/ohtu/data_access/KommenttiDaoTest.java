@@ -88,7 +88,7 @@ public class KommenttiDaoTest extends TempFile {
     
     @Test
     public void unValidDatabaseCausesError1() {
-        kommenttiDao = new KommenttiDao(new Database(null, true));
+        kommenttiDao = new KommenttiDao(unValidDatabase());
         List<Kommentti> findAll = kommenttiDao.findAll();
         
         assertNull(findAll);
@@ -96,7 +96,7 @@ public class KommenttiDaoTest extends TempFile {
     
     @Test
     public void unValidDatabaseCausesError2() {
-        kommenttiDao = new KommenttiDao(new Database(null, true));
+        kommenttiDao = new KommenttiDao(unValidDatabase());
         Kommentti findOne = kommenttiDao.findOne(0);
         
         assertNull(findOne);
@@ -104,7 +104,7 @@ public class KommenttiDaoTest extends TempFile {
     
     @Test
     public void unValidDatabaseCausesError3() {
-        kommenttiDao = new KommenttiDao(new Database(null, true));
+        kommenttiDao = new KommenttiDao(unValidDatabase());
         kommenttiDao.add(generateKommentti());
         Kommentti findOne = kommenttiDao.findOne(0);
         
@@ -113,7 +113,7 @@ public class KommenttiDaoTest extends TempFile {
     
     @Test
     public void unValidDatabaseCausesError4() {
-        kommenttiDao = new KommenttiDao(new Database(null, true));
+        kommenttiDao = new KommenttiDao(unValidDatabase());
         List<Kommentti> found = kommenttiDao.findAllByForeignKey(0);
         
         assertNull(found);
