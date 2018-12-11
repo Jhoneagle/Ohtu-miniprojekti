@@ -14,20 +14,23 @@ public class Utils {
         if (string == null) {
             return "";
         }
+        
         if (string.contains("youtube.com")) {
             return "video";
         } else if (string.contains("dm.acm.org") || string.contains("ieeexplore.ieee.org")) {
             return "tieteellinen julkaisu";
+        } else {
+            return "";
         }
-        
-        return "";
     }
 
     public List<Kommentti> sortCommentsByDateOrId(List<Kommentti> kom) {
         if (kom == null || kom.size() < 2) {
             return kom;
         }
+        
         List<Kommentti> kommentit = kom;
+        
         Collections.sort(kommentit, new Comparator<Kommentti>() {
             @Override
             public int compare(Kommentti kom1, Kommentti kom2) {

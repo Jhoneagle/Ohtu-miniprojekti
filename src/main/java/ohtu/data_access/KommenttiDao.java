@@ -3,6 +3,8 @@ package ohtu.data_access;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ohtu.domain.Kommentti;
 
 public class KommenttiDao implements Dao<Kommentti, Integer> {
@@ -11,22 +13,16 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
     public KommenttiDao(Database database) {
         this.database = database;
     }
-    
-    
-    public Kommentti createOneFrom(ResultSet rs) throws SQLException {
-        Integer id = rs.getInt("id");
-        Integer vinkkiId = rs.getInt("vinkki_id");
-        String nikki = rs.getString("nikki");
-        String content = rs.getString("content");
-        Date created = rs.getDate("created");
-        Kommentti kommentti = new Kommentti(id, vinkkiId, nikki, content, created);
-        return kommentti;
-    }
 
     @Override
     public Kommentti findOne(Integer key) {
         try {
             Connection conn = database.getConnection();
+            
+            if (conn == null) {
+                return null;
+            }
+            
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti WHERE id=?");
             stmt.setObject(1, key);
 
@@ -51,8 +47,12 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
         try {
             List<Kommentti> kommentit = new ArrayList<>();
             Connection conn = database.getConnection();
+            
+            if (conn == null) {
+                return null;
+            }
+            
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti");
-
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -76,6 +76,11 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             List<Kommentti> kommentit = new ArrayList<>();
             
             Connection conn = database.getConnection();
+            
+            if (conn == null) {
+                return null;
+            }
+            
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti WHERE vinkki_id=?");
             stmt.setObject(1, key);
 
@@ -106,6 +111,11 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
     public void add(Kommentti newOne) {
         try {
             Connection conn = database.getConnection();
+            
+            if (conn == null) {
+                return;
+            }
+            
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kommentti (vinkki_id, nikki, content, created) VALUES (?,?,?,?)");
             stmt.setInt(1, newOne.getVinkkiId());
             stmt.setString(2, newOne.getNikki());
@@ -117,6 +127,21 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             conn.close();
         } catch (SQLException ex) {
             System.out.println("ei toimi yhteys databaseen! \n" + ex);
+        }
+    }
+    
+    private Kommentti createOneFrom(ResultSet rs) {
+        try {
+            Integer id = rs.getInt("id");
+            Integer vinkkiId = rs.getInt("vinkki_id");
+            String nikki = rs.getString("nikki");
+            String content = rs.getString("content");
+            Date created = rs.getDate("created");
+            Kommentti kommentti = new Kommentti(id, vinkkiId, nikki, content, created);
+            return kommentti;
+        } catch (SQLException ex) {
+            System.out.println("ei toimi! \n" + ex);
+            return null;
         }
     }
 }

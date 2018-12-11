@@ -310,6 +310,12 @@ public class Main {
     }
 
     static Database getDatabase() {
-        return new Database("jdbc:sqlite:vinkit.db", false);
+        String bdUrl = System.getenv("JDBC_DATABASE_URL");
+        
+        if (bdUrl != null && bdUrl.length() > 0) {
+            return new DatabasePostgres();
+        } else {
+            return new DatabaseSQLite("jdbc:sqlite:vinkit.db");
+        }
     }
 }
