@@ -23,11 +23,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public Vinkki findOne(Integer key) {
         try {
             Connection conn = database.getConnection();
-            
-            if (conn == null) {
-                return null;
-            }
-            
             PreparedStatement stmt = conn.prepareStatement("SELECT * from Vinkki WHERE id=?");
             stmt.setObject(1, key);
 
@@ -52,14 +47,9 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public List<Vinkki> findAll() {
         try {
             List<Vinkki> vinkit = new ArrayList<>();
+            
             Connection conn = database.getConnection();
-            
-            if (conn == null) {
-                return null;
-            }
-            
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Vinkki");
-
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -82,11 +72,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public void delete(Integer id) {
         try {
             Connection conn = database.getConnection();
-            
-            if (conn == null) {
-                return;
-            }
-            
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vinkki WHERE id = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -116,11 +101,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             }
 
             Connection conn = database.getConnection();
-            
-            if (conn == null) {
-                return;
-            }
-            
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit, luettu, isbn) VALUES (?,?,?,?,?,?,?)");
             stmt.setString(1, vinkkiOtsikko);
             stmt.setString(2, vinkkiTekija);
@@ -142,11 +122,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public void updateWithKey(Integer id) {
         try {
             Connection conn = database.getConnection();
-            
-            if (conn == null) {
-                return;
-            }
-            
             PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET luettu = ? WHERE id = ?");
             stmt.setDate(1, new Date(System.currentTimeMillis()));
             stmt.setInt(2, id);
@@ -163,11 +138,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public Vinkki update(Vinkki updatedOne) {
         try {
             Connection conn = database.getConnection();
-            
-            if (conn == null) {
-                return null;
-            }
-            
             PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET otsikko=?, tekija=?, kuvaus=?, linkki=?, tagit=? WHERE id = ?");
             stmt.setString(1, updatedOne.getOtsikko());
             stmt.setString(2, updatedOne.getTekija());
