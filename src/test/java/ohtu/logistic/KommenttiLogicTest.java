@@ -45,10 +45,10 @@ public class KommenttiLogicTest extends TempFile {
         assertTrue(component.areKommentitSame(k2, allCommentsByForeignKey.get(0)));
 
         allCommentsByForeignKey = kommenttiController.findAllByForeignKey(1);
-        generatedOnes = new Utils().sortCommentsByDateOrId(generatedOnes);
+        List<Kommentti> sortComments = new Utils().sortCommentsByDateOrId(generatedOnes);
         
         for (int index = 0; index < times; index++) {
-            assertTrue(component.areKommentitSame(generatedOnes.get(index), allCommentsByForeignKey.get(index)));
+            assertTrue(component.areKommentitSame(sortComments.get(index), allCommentsByForeignKey.get(index)));
         }
         
         assertEquals(times + 1, kommenttiController.findAll().size());
