@@ -170,23 +170,6 @@ public class Stepdefs {
         pageHasContent("uusi vinkki");
         createFormContent(false);
     }
-
-    @When("^checkbox show only tips not read is checked")
-    public void checkbox_nayta_lukemattomat_checked() throws Throwable {
-        WebElement element = driver.findElement(By.name("notRead"));
-        element.click();
-    }
-
-    @When("^search text \"([^\"]*)\" is given and search button clicked")
-    public void search_text_given_and_search_button_clicked(String searchText) throws Throwable {
-        search(searchText);
-    }
-
-    @Then("^tips already read isnt shown")
-    public void tips_already_read_isnt_shown() throws Throwable {
-        pageHasContent("Lukuvinkit listana");
-        assertFalse(driver.getPageSource().contains(new Date(System.currentTimeMillis()).toString()));
-    }
     
     
     
@@ -262,10 +245,10 @@ public class Stepdefs {
         element.submit();
     }
     
-    private void search(String searchText) {
-        WebElement element = driver.findElement(By.name("searchText"));
-        element.sendKeys(searchText);
-        element = driver.findElement(By.name("search"));
+    private void search(String tags) {
+        WebElement element = driver.findElement(By.name("etsi"));
+        element.sendKeys(tags);
+        element = driver.findElement(By.name("action"));
         element.submit();
     }
 }

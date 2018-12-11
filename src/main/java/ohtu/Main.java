@@ -14,13 +14,12 @@ import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import ohtu.util.ISBNhandler;
 
 import static spark.Spark.*;
 
 public class Main {
+
     public static Dao vinkkiDao;
     public static Dao kommenttiDao;
     public static List<Vinkki> naytettavat;
@@ -69,40 +68,23 @@ public class Main {
         get("/newVinkki", (request, response) -> {
             HashMap model = new HashMap<>();
             model.put("template", "templates/newVinkki.html");
-            
+
             if (handler.isQueue()) {
                 Vinkki data = handler.getData();
-                
+
                 model.put("vinkki", data);
                 model.put("tagit", data.getTagit());
             } else {
                 model.put("vinkki", new Vinkki(-1, "", "", "", "", new Date(1), null));
             }
-            
+
             return new ModelAndView(model, "newVinkki");
         }, new ThymeleafTemplateEngine());
 
         get("/vinkit", (req, res) -> {
-            String notRead = req.queryParams("notRead");
-            ArrayList<Vinkki> vinkit = (ArrayList) vinkkiDao.findAll();
-            String searchType = req.queryParams("search");
-            if ("Etsi tageilla".equals(searchType)) {
-                vinkit = combineDisplayablesByTag(vinkit, req.queryParams("searchText"));
-            } else if ("Vapaa sanahaku".equals(searchType)) {
-                vinkit = combineDisplayablesByVapaaSanahaku(vinkit, req.queryParams("searchText"));
-            }
-
-            if ("notRead".equals(notRead)) {
-                vinkit = (ArrayList) vinkit.stream()
-                        .filter(vinkki -> null == vinkki.getLuettu())
-                        .collect(Collectors.toList());
-            }
-
-
-
             naytettavat = new ArrayList<>();
             HashMap map = new HashMap<>();
-            map.put("vinkit", vinkit);
+            map.put("vinkit", vinkkiDao.findAll());
             return new ModelAndView(map, "vinkit");
         }, new ThymeleafTemplateEngine());
 
@@ -110,14 +92,14 @@ public class Main {
             Integer vinkkiId = Integer.parseInt(req.params(":id"));
             Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
             ArrayList<Kommentti> kommentit = (ArrayList) kommenttiDao.findAllByForeignKey(vinkkiId);
-            
+
             HashMap map = new HashMap<>();
             map.put("vinkki", found);
             map.put("kommentit", utils.sortCommentsByDateOrId(kommentit));
-            
+
             if (found != null) {
                 map.put("tagit", found.getTagit());
-                
+
                 if (found.getIsbn() != null && !found.getIsbn().isEmpty()) {
                     found.setIsbn(found.getIsbn().substring(0, found.getIsbn().length() - 1));
                 }
@@ -142,7 +124,7 @@ public class Main {
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
             String isbn = req.queryParams("isbn");
-            
+
             if (otsikko.isEmpty()) {
                 res.redirect("/newVinkki");
                 return "Vinkillä on oltava otsikko!";
@@ -155,11 +137,11 @@ public class Main {
             res.redirect("/vinkit");
             return "";
         });
-        
+
         post("/isbn", (req, res) -> {
             String isbn = req.queryParams("isbn");
             handler.setIsbn(isbn);
-            
+
             res.redirect("/newVinkki");
             return "";
         });
@@ -176,7 +158,14 @@ public class Main {
             Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
             vinkkiDao.updateWithKey(vinkkiId);
 
-            res.redirect("/vinkit");
+            res.redirect("/vinkki/"+ vinkkiId);
+            return "";
+        });
+        post("/lukematon/:id", (req, res) -> {
+            Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
+            vinkkiDao.removeDate(vinkkiId);
+
+            res.redirect("/vinkki/"+ vinkkiId);
             return "";
         });
 
@@ -189,7 +178,7 @@ public class Main {
             String kuvaus = req.queryParams("kuvaus");
             String linkki = req.queryParams("linkki");
             String tagit = req.queryParams("tagit");
-            
+
             if (!otsikko.isEmpty()) {
                 vinkki.setOtsikko(otsikko);
             }
@@ -222,21 +211,21 @@ public class Main {
             return "";
         });
 
-    /*    post("/", (req, res) -> {
+        post("/", (req, res) -> {
             String nappi = req.queryParams("action");
-            if(nappi.equals("Etsi tageilla")) {
+            if (nappi.equals("Etsi tageilla")) {
                 combineDisplayablesByTag(req.queryParams("etsi"));
             } else {
                 combineDisplayablesByVapaaSanahaku(req.queryParams("etsi"));
             }
-            
+
             res.redirect("/");
             return "";
         });
 
         post("/etsi", (req, res) -> {
             String nappi = req.queryParams("action");
-            if(nappi.equals("Etsi tageilla")) {
+            if (nappi.equals("Etsi tageilla")) {
                 combineDisplayablesByTag(req.queryParams("etsi"));
             } else {
                 combineDisplayablesByVapaaSanahaku(req.queryParams("etsi"));
@@ -246,12 +235,13 @@ public class Main {
             map.put("vinkit", naytettavat);
 
             return new ModelAndView(map, "vinkit");
-        }, new ThymeleafTemplateEngine()); */
+        }, new ThymeleafTemplateEngine());
     }
-    
-    private static ArrayList<Vinkki> combineDisplayablesByVapaaSanahaku(ArrayList<Vinkki> vinkit, String haku) {
+
+    private static void combineDisplayablesByVapaaSanahaku(String haku) {
+        naytettavat = new ArrayList<>();
         String[] etsittavat = haku.trim().toLowerCase().split(",");
-        ArrayList<Vinkki> filteredVinkit = new ArrayList();
+        List<Vinkki> vinkit = vinkkiDao.findAll();
 
         for (String s : etsittavat) {
             String etsittava = s.trim();
@@ -261,28 +251,28 @@ public class Main {
                 String kuvaus = vinkki.getKuvaus().toLowerCase();
                 System.out.println("etsittava: " + etsittava);
                 System.out.println("otsikko: " + otsikko);
-                if ((otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) && filteredVinkit.indexOf(vinkki) == -1) {
-                    filteredVinkit.add(vinkki);
+                if ((otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) && naytettavat.indexOf(vinkki) == -1) {
+                    naytettavat.add(vinkki);
                 }
             }
         }
-        return filteredVinkit;
     }
-    
-    private static ArrayList<Vinkki> combineDisplayablesByTag(ArrayList<Vinkki> vinkit, String haku) {
+
+    private static void combineDisplayablesByTag(String haku) {
+        naytettavat = new ArrayList<>();
         String[] etsittavat = haku.trim().toLowerCase().split(",");
-        ArrayList<Vinkki> filteredVinkit = new ArrayList();
+        List<Vinkki> vinkit = vinkkiDao.findAll();
 
         for (String s : etsittavat) {
             String etsittava = s.trim();
             for (Vinkki vinkki : vinkit) {
                 String tagit = vinkki.getTagit();
-                if (tagit.contains(etsittava) && filteredVinkit.indexOf(vinkki) == -1) {
-                    filteredVinkit.add(vinkki);
+                if (tagit.contains(etsittava) && naytettavat.indexOf(vinkki) == -1) {
+                    naytettavat.add(vinkki);
                 }
             }
         }
-        return filteredVinkit;
+
     }
 
     public static void setAllDao(Database database) {

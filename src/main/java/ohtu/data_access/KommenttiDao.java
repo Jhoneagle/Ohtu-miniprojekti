@@ -6,13 +6,13 @@ import java.util.List;
 import ohtu.domain.Kommentti;
 
 public class KommenttiDao implements Dao<Kommentti, Integer> {
+
     private final Database database;
 
     public KommenttiDao(Database database) {
         this.database = database;
     }
-    
-    
+
     public Kommentti createOneFrom(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("id");
         Integer vinkkiId = rs.getInt("vinkki_id");
@@ -74,7 +74,7 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
     public List<Kommentti> findAllByForeignKey(Integer key) {
         try {
             List<Kommentti> kommentit = new ArrayList<>();
-            
+
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti WHERE vinkki_id=?");
             stmt.setObject(1, key);
@@ -89,7 +89,7 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             rs.close();
             stmt.close();
             conn.close();
-            
+
             return kommentit;
         } catch (SQLException ex) {
             System.out.println("ei toimi yhteys databaseen! \n" + ex);

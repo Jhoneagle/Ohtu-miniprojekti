@@ -6,6 +6,7 @@ import ohtu.data_access.Dao;
 import ohtu.domain.Kommentti;
 
 public class KommenttiDaoForTests implements Dao<Kommentti, Integer> {
+
     private List<Kommentti> kommentit;
     private int nextId;
 
@@ -21,7 +22,7 @@ public class KommenttiDaoForTests implements Dao<Kommentti, Integer> {
     public void setKommentit(List<Kommentti> kommentit) {
         this.kommentit = kommentit;
     }
-    
+
     @Override
     public Kommentti findOne(Integer key) {
         return this.kommentit.get(key);
@@ -35,14 +36,14 @@ public class KommenttiDaoForTests implements Dao<Kommentti, Integer> {
     @Override
     public List<Kommentti> findAllByForeignKey(Integer vinkkiId) {
         List<Kommentti> r = new ArrayList<>();
-        
+
         this.kommentit.stream().filter((k) -> (k.getVinkkiId() == vinkkiId)).forEachOrdered((k) -> {
             r.add(k);
         });
-        
+
         return r;
     }
-    
+
     @Override
     public void delete(Integer key) {
         this.kommentit.remove((int) key);
@@ -52,8 +53,9 @@ public class KommenttiDaoForTests implements Dao<Kommentti, Integer> {
     @Override
     public void add(Kommentti newOne) {
         Kommentti kommentti = new Kommentti(nextId, newOne.getVinkkiId(), newOne.getNikki(), newOne.getContent(), newOne.getCreated());
-        
+
         this.kommentit.add(kommentti);
         this.nextId++;
     }
+
 }

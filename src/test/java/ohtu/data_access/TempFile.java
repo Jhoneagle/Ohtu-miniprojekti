@@ -31,8 +31,4 @@ public class TempFile {
             this.tempDatabase.delete();
         }
     }
-    
-    protected Database unValidDatabase() {
-        return new Database(null, true);
-    }
 }

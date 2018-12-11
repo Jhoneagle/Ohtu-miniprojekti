@@ -34,12 +34,18 @@
                 <input type="submit" class="btn btn-danger"id="removeButton" name="removeButton" value="Poista">
                     <a th:href="@{~/vinkinMuokkaus/{id} (id=${vinkki.id})}" class="btn btn-success" name="editButton" id="muokkausNappi" value="Muokkaa">Muokkaa</a>
             </form>
-
-            <form action="/luettu/:id" method="post">
-                <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
-                <input type="submit" class="btn btn-success"id="luettuButton" name="luettuButton" value="Merkitse luetuksi">
-            </form><br/><br/>
-
+            <div th:if="${vinkki.luettu == NULL}">
+                <form action="/luettu/:id" method="post">
+                    <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
+                    <input type="submit" class="btn btn-success"id="luettuButton" name="luettuButton" value="Merkitse luetuksi">
+                </form><br/><br/>
+            </div>
+            <div th:if="${vinkki.luettu != NULL}"> 
+                <form th:else action="/lukematon/:id" method="post">
+                    <input type="hidden" name="id" th:value="${vinkki.id}"/><br/>
+                    <input type="submit" class="btn btn-danger"id="lukematonButton" name="lukematonButton" value="Merkitse lukemattomaksi">
+                </form><br/><br/>
+            </div>
             <h3>Syötä uusi kommentti</h3>
             <form action="/kommentit/:vinkkiId" method="post">
                 <input type="hidden" name="vinkkiId" th:value="${vinkki.id}"/>
