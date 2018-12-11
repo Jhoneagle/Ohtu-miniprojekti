@@ -1,5 +1,7 @@
 package ohtu;
 
+import ohtu.logistic.KommenttiLogic;
+import ohtu.logistic.VinkkiLogic;
 import ohtu.mocks.*;
 import org.junit.rules.ExternalResource;
 import spark.Spark;
@@ -14,8 +16,8 @@ public class ServerRule extends ExternalResource {
     @Override
     protected void before() throws Throwable {
         Spark.port(port);
-        Main.vinkkiDao = new VinkkiDaoForTests();
-        Main.kommenttiDao = new KommenttiDaoForTests();
+        Main.vinkkiController = new VinkkiLogic(new VinkkiDaoForTests());
+        Main.kommenttiController = new KommenttiLogic(new KommenttiDaoForTests());
         Main.main(null);
     }
 

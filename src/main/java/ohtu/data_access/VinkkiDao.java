@@ -13,8 +13,7 @@ import java.util.List;
 
 public class VinkkiDao implements Dao<Vinkki, Integer> {
     private final Database database;
-    private final Utils utils = new Utils();
-
+    
     public VinkkiDao(Database database) {
         this.database = database;
     }
@@ -90,15 +89,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             String vinkkiKuvaus = vinkki.getKuvaus();
             String vinkkiLinkki = vinkki.getLinkki();
             String tagit = vinkki.getTagit();
-
-            String tag = utils.parseUrlForTag(vinkkiLinkki);
-            if (!tag.isEmpty()) {
-                if (tagit.isEmpty()) {
-                    tagit = tag;
-                } else {
-                    tagit += "," + tag;
-                }
-            }
+            String isbn = vinkki.getIsbn();
 
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Vinkki (otsikko, tekija, kuvaus, linkki, tagit, luettu, isbn) VALUES (?,?,?,?,?,?,?)");
@@ -108,7 +99,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.setString(4, vinkkiLinkki);
             stmt.setString(5, tagit);
             stmt.setDate(6, null);
-            stmt.setString(7, vinkki.getIsbn());
+            stmt.setString(7, isbn);
             
             stmt.executeUpdate();
             stmt.close();
@@ -119,32 +110,17 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     }
     
     @Override
-    public void updateWithKey(Integer id) {
-        try {
-            Connection conn = database.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET luettu = ? WHERE id = ?");
-            stmt.setDate(1, new Date(System.currentTimeMillis()));
-            stmt.setInt(2, id);
-            
-            stmt.executeUpdate();
-            stmt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            System.out.println("ei toimi yhteys databaseen! \n" + ex);
-        }
-    }
-
-    @Override
     public Vinkki update(Vinkki updatedOne) {
         try {
             Connection conn = database.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET otsikko=?, tekija=?, kuvaus=?, linkki=?, tagit=? WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET otsikko = ?, tekija = ?, kuvaus = ?, linkki = ?, tagit = ?, luettu = ? WHERE id = ?");
             stmt.setString(1, updatedOne.getOtsikko());
             stmt.setString(2, updatedOne.getTekija());
             stmt.setString(3, updatedOne.getKuvaus());
             stmt.setString(4, updatedOne.getLinkki());
             stmt.setString(5, updatedOne.getTagit());
-            stmt.setInt(6, updatedOne.getId());
+            stmt.setDate(6, updatedOne.getLuettu());
+            stmt.setInt(7, updatedOne.getId());
             
             stmt.executeUpdate();
             stmt.close();

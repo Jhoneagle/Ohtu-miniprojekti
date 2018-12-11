@@ -8,23 +8,23 @@ import java.util.ArrayList;
 import ohtu.data_access.*;
 import ohtu.domain.Kommentti;
 import ohtu.domain.Vinkki;
-import ohtu.util.Utils;
 import spark.ModelAndView;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import ohtu.logistic.KommenttiLogic;
+import ohtu.logistic.VinkkiLogic;
 
 import ohtu.util.ISBNhandler;
 
 import static spark.Spark.*;
 
 public class Main {
-    public static Dao vinkkiDao;
-    public static Dao kommenttiDao;
+    public static VinkkiLogic vinkkiController;
+    public static KommenttiLogic kommenttiController;
     public static List<Vinkki> naytettavat;
-    private static Utils utils;
     private static ISBNhandler handler;
 
     public static void main(String[] args) {
@@ -33,7 +33,6 @@ public class Main {
         Database database = getDatabase();
         setAllDao(database);
         naytettavat = new ArrayList<>();
-        utils = new Utils();
         handler = new ISBNhandler();
 
         try {
@@ -84,7 +83,7 @@ public class Main {
 
         get("/vinkit", (req, res) -> {
             String notRead = req.queryParams("notRead");
-            ArrayList<Vinkki> vinkit = (ArrayList) vinkkiDao.findAll();
+            ArrayList<Vinkki> vinkit = (ArrayList) vinkkiController.findAll();
             String searchType = req.queryParams("search");
             if ("Etsi tageilla".equals(searchType)) {
                 vinkit = combineDisplayablesByTag(vinkit, req.queryParams("searchText"));
@@ -108,12 +107,11 @@ public class Main {
 
         get("/vinkki/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.params(":id"));
-            Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
-            ArrayList<Kommentti> kommentit = (ArrayList) kommenttiDao.findAllByForeignKey(vinkkiId);
+            Vinkki found = (Vinkki) vinkkiController.findOne(vinkkiId);
             
             HashMap map = new HashMap<>();
             map.put("vinkki", found);
-            map.put("kommentit", utils.sortCommentsByDateOrId(kommentit));
+            map.put("kommentit", kommenttiController.findAllByForeignKey(vinkkiId));
             
             if (found != null) {
                 map.put("tagit", found.getTagit());
@@ -128,7 +126,7 @@ public class Main {
 
         get("/vinkinMuokkaus/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.params(":id"));
-            Vinkki found = (Vinkki) vinkkiDao.findOne(vinkkiId);
+            Vinkki found = (Vinkki) vinkkiController.findOne(vinkkiId);
             HashMap map = new HashMap<>();
             map.put("vinkki", found);
             return new ModelAndView(map, "vinkinMuokkaus");
@@ -150,7 +148,7 @@ public class Main {
 
             Vinkki vinkki = new Vinkki(-1, otsikko, tekija, kuvaus, linkki, new Date(1), isbn);
             vinkki.setTagit(tagit);
-            vinkkiDao.add(vinkki);
+            vinkkiController.add(vinkki);
 
             res.redirect("/vinkit");
             return "";
@@ -166,7 +164,7 @@ public class Main {
 
         post("/vinkit/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
-            vinkkiDao.delete(vinkkiId);
+            vinkkiController.delete(vinkkiId);
 
             res.redirect("/vinkit");
             return "";
@@ -174,7 +172,7 @@ public class Main {
 
         post("/luettu/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.queryParams("id"));
-            vinkkiDao.updateWithKey(vinkkiId);
+            vinkkiController.updateLuettuStatus(vinkkiId, true);
 
             res.redirect("/vinkit");
             return "";
@@ -183,7 +181,7 @@ public class Main {
         post("/muokattu/:id", (req, res) -> {
             String s = req.queryParams("id").replace("/", "").trim();
             Integer id = Integer.parseInt(s);
-            Vinkki vinkki = (Vinkki) vinkkiDao.findOne(id);
+            Vinkki vinkki = (Vinkki) vinkkiController.findOne(id);
             String otsikko = req.queryParams("otsikko");
             String tekija = req.queryParams("tekija");
             String kuvaus = req.queryParams("kuvaus");
@@ -206,7 +204,7 @@ public class Main {
                 vinkki.setTagitAgain(tagit);
             }
 
-            vinkkiDao.update(vinkki);
+            vinkkiController.update(vinkki);
 
             res.redirect("/vinkit");
             return "";
@@ -217,7 +215,7 @@ public class Main {
             String nikki = req.queryParams("nikki");
             String content = req.queryParams("content");
             Kommentti kommentti = new Kommentti(-1, vinkkiId, nikki, content, null);
-            kommenttiDao.add(kommentti);
+            kommenttiController.add(kommentti);
             res.redirect("/vinkki/" + vinkkiId);
             return "";
         });
@@ -286,12 +284,12 @@ public class Main {
     }
 
     public static void setAllDao(Database database) {
-        if (vinkkiDao == null) {
-            vinkkiDao = new VinkkiDao(database);
+        if (vinkkiController == null) {
+            vinkkiController = new VinkkiLogic(new VinkkiDao(database));
         }
 
-        if (kommenttiDao == null) {
-            kommenttiDao = new KommenttiDao(database);
+        if (kommenttiController == null) {
+            kommenttiController = new KommenttiLogic(new KommenttiDao(database));
         }
     }
 

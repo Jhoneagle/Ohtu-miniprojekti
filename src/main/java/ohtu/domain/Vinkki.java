@@ -96,6 +96,10 @@ public class Vinkki {
         return luettu;
     }
 
+    public void setLuettu(Date luettu) {
+        this.luettu = luettu;
+    }
+
     public String getIsbn() {
         return isbn;
     }

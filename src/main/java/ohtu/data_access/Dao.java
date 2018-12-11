@@ -7,19 +7,11 @@ public interface Dao<T, K> {
 
     List<T> findAll();
 
-    default List<T> findAllByForeignKey(K key) {
-        return null;
-    }
-
     void delete(K key);
 
     void add(T newOne);
     
     default T update(T updatedOne) {
         return null;
-    }
-    
-    default void updateWithKey(K key) {
-        System.out.println("not supported!");
     }
 }

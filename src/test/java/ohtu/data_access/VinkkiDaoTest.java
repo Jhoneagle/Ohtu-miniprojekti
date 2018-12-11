@@ -22,23 +22,23 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void oneAddSucceeds() {
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
 
         assertEquals(1, dao.findAll().size());
     }
 
     @Test
     public void twoAddsSucceeds() {
-        dao.add(generateVinkki());
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
+        dao.add(component.generateVinkki());
 
         assertEquals(2, dao.findAll().size());
     }
 
     @Test
     public void deleteOneSucceeds() {
-        dao.add(generateVinkki());
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
+        dao.add(component.generateVinkki());
         dao.delete(1);
 
         assertEquals(1, dao.findAll().size());
@@ -53,41 +53,31 @@ public class VinkkiDaoTest extends TempFile {
     }
 
     @Test
-    public void addingLinkWillAddTag() {
-        dao.add(new Vinkki(1, "Title", "Doer", "Doing titles", "youtube.com/", new Date(1), null));
-        assertEquals("video", dao.findOne(1).getTagit());
-        Vinkki vinkki = new Vinkki(2, "Foo", "Bar", "", "youtube.com/roger", new Date(1), null);
-        vinkki.setTagit("Tag,Magic");
-        dao.add(vinkki);
-        assertEquals("Tag,Magic,video", dao.findOne(2).getTagit());
-    }
-
-    @Test
     public void listOneVinkki() {
-        Vinkki g = generateVinkki();
+        Vinkki g = component.generateVinkki();
         dao.add(g);
 
         List<Vinkki> findAll = dao.findAll();
         assertEquals(1, findAll.size());
-        assertTrue(areVinkitSame(g, findAll.get(0)));
+        assertTrue(component.areVinkitSame(g, findAll.get(0)));
     }
 
     @Test
     public void listThreeObjects() {
-        Vinkki g1 = generateVinkki();
+        Vinkki g1 = component.generateVinkki();
         dao.add(g1);
 
-        Vinkki g2 = generateVinkki();
+        Vinkki g2 = component.generateVinkki();
         dao.add(g2);
 
-        Vinkki g3 = generateVinkki();
+        Vinkki g3 = component.generateVinkki();
         dao.add(g3);
 
         List<Vinkki> findAll = dao.findAll();
         assertEquals(3, findAll.size());
-        assertTrue(areVinkitSame(g1, findAll.get(0)));
-        assertTrue(areVinkitSame(g2, findAll.get(1)));
-        assertTrue(areVinkitSame(g3, findAll.get(2)));
+        assertTrue(component.areVinkitSame(g1, findAll.get(0)));
+        assertTrue(component.areVinkitSame(g2, findAll.get(1)));
+        assertTrue(component.areVinkitSame(g3, findAll.get(2)));
     }
 
     @Test
@@ -96,7 +86,7 @@ public class VinkkiDaoTest extends TempFile {
         List<Vinkki> generatedOnes = new ArrayList<>();
 
         for (int index = 0; index < times; index++) {
-            Vinkki g = generateVinkki();
+            Vinkki g = component.generateVinkki();
             dao.add(g);
             generatedOnes.add(g);
         }
@@ -105,49 +95,49 @@ public class VinkkiDaoTest extends TempFile {
         assertEquals(times, findAll.size());
 
         for (int index = 0; index < times; index++) {
-            assertTrue(areVinkitSame(generatedOnes.get(index), findAll.get(index)));
+            assertTrue(component.areVinkitSame(generatedOnes.get(index), findAll.get(index)));
         }
     }
 
     @Test
     public void findOnlyOne() {
-        Vinkki g = generateVinkki();
+        Vinkki g = component.generateVinkki();
         dao.add(g);
 
-        assertTrue(areVinkitSame(g, dao.findOne(dao.findAll().get(0).getId())));
+        assertTrue(component.areVinkitSame(g, dao.findOne(dao.findAll().get(0).getId())));
     }
 
     @Test
     public void findRightOne() {
-        dao.add(generateVinkki());
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
+        dao.add(component.generateVinkki());
 
-        Vinkki g = generateVinkki();
+        Vinkki g = component.generateVinkki();
         dao.add(g);
 
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
 
-        assertTrue(areVinkitSame(g, dao.findOne(dao.findAll().get(2).getId())));
+        assertTrue(component.areVinkitSame(g, dao.findOne(dao.findAll().get(2).getId())));
     }
 
     @Test
     public void findRightOne2() {
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
 
-        Vinkki g = generateVinkki();
+        Vinkki g = component.generateVinkki();
         dao.add(g);
 
-        dao.add(generateVinkki());
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
+        dao.add(component.generateVinkki());
 
-        assertTrue(areVinkitSame(g, dao.findOne(dao.findAll().get(1).getId())));
+        assertTrue(component.areVinkitSame(g, dao.findOne(dao.findAll().get(1).getId())));
     }
 
     @Test
     public void cantFindFromInvalidId() {
         long times = Math.round(Math.random() * 20);
         for (int index = 0; index < times; index++) {
-            dao.add(generateVinkki());
+            dao.add(component.generateVinkki());
         }
 
         assertNull(dao.findOne(7359));
@@ -155,19 +145,10 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void notReadInBegging() {
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
         Vinkki findOne = dao.findOne(1);
 
         assertNull(findOne.getLuettu());
-    }
-
-    @Test
-    public void ReadAfterSubmit() {
-        dao.add(generateVinkki());
-        dao.updateWithKey(1);
-        Vinkki findOne = dao.findOne(1);
-
-        assertNotNull(findOne.getLuettu());
     }
 
     @Test
@@ -200,7 +181,7 @@ public class VinkkiDaoTest extends TempFile {
     @Test
     public void unValidDatabaseCausesError3() {
         dao = new VinkkiDao(unValidDatabase());
-        dao.add(generateVinkki());
+        dao.add(component.generateVinkki());
         Vinkki findOne = dao.findOne(0);
 
         assertNull(findOne);
@@ -209,18 +190,9 @@ public class VinkkiDaoTest extends TempFile {
     @Test
     public void unValidDatabaseCausesError4() {
         dao = new VinkkiDao(unValidDatabase());
-        Vinkki update = dao.update(generateVinkki());
+        Vinkki update = dao.update(component.generateVinkki());
 
         assertNull(update);
-    }
-
-    @Test
-    public void unValidDatabaseCausesError5() {
-        dao = new VinkkiDao(unValidDatabase());
-        dao.updateWithKey(1);
-        Vinkki findOne = dao.findOne(0);
-
-        assertNull(findOne);
     }
 
     @Test
@@ -231,44 +203,10 @@ public class VinkkiDaoTest extends TempFile {
 
         assertNull(findOne);
     }
-
-    private Vinkki generateVinkki() {
-        int id = -1;
-        String otsikko = "" + randomFloat();
-        String tekija = "" + randomFloat();
-        String kuvaus = "" + randomFloat();
-        String linkki = "" + randomFloat();
-
-        return new Vinkki(id, otsikko, tekija, kuvaus, linkki, new Date(1), null);
-    }
-
-    private Double randomFloat() {
-        return Math.random() * 10000;
-    }
-
+    
     private void addNTime(long times) {
         for (int index = 0; index < times; index++) {
-            dao.add(generateVinkki());
+            dao.add(component.generateVinkki());
         }
-    }
-
-    private boolean areVinkitSame(Vinkki expected, Vinkki actual) {
-        if (!expected.getOtsikko().contains(actual.getOtsikko())) {
-            return false;
-        }
-
-        if (!expected.getTekija().contains(actual.getTekija())) {
-            return false;
-        }
-
-        if (!expected.getKuvaus().contains(actual.getKuvaus())) {
-            return false;
-        }
-
-        if (!expected.getLinkki().contains(actual.getLinkki())) {
-            return false;
-        }
-
-        return true;
     }
 }

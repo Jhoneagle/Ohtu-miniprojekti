@@ -60,33 +60,6 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
     }
 
     @Override
-    public List<Kommentti> findAllByForeignKey(Integer key) {
-        try {
-            List<Kommentti> kommentit = new ArrayList<>();
-            
-            Connection conn = database.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti WHERE vinkki_id=?");
-            stmt.setObject(1, key);
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Kommentti kommentti = createOneFrom(rs);
-                kommentit.add(kommentti);
-            }
-
-            rs.close();
-            stmt.close();
-            conn.close();
-            
-            return kommentit;
-        } catch (SQLException ex) {
-            System.out.println("ei toimi yhteys databaseen! \n" + ex);
-            return null;
-        }
-    }
-
-    @Override
     public void delete(Integer key) {
         System.out.println("not supported!");
     }

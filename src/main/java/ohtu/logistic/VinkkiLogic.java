@@ -1,6 +1,9 @@
 package ohtu.logistic;
 
+import java.sql.Date;
+import java.util.List;
 import ohtu.data_access.Dao;
+import ohtu.domain.Vinkki;
 import ohtu.util.Utils;
 
 public class VinkkiLogic {
@@ -12,5 +15,46 @@ public class VinkkiLogic {
         this.dao = dao;
     }
     
+    public Vinkki findOne(Integer key) {
+        return (Vinkki) dao.findOne(key);
+    }
     
+    public List<Vinkki> findAll() {
+        return (List<Vinkki>) dao.findAll();
+    }
+    
+    public void delete(Integer key) {
+        dao.delete(key);
+    }
+    
+    public void add(Vinkki newOne) {
+        String vinkkiLinkki = newOne.getLinkki();
+        String tag = utils.parseUrlForTag(vinkkiLinkki);
+        
+        if (!tag.isEmpty()) {
+            newOne.setTagit(tag);
+        }
+        
+        dao.add(newOne);
+    }
+    
+    public Vinkki update(Vinkki updatedOne) {
+        return (Vinkki) dao.update(updatedOne);
+    }
+    
+    public void updateLuettuStatus(Integer id, boolean isIt) {
+        Vinkki luettu = findOne(id);
+        
+        if (luettu == null) {
+            return;
+        }
+        
+        if (isIt) {
+            luettu.setLuettu(new Date(System.currentTimeMillis()));
+        } else {
+            luettu.setLuettu(null);
+        }
+        
+        dao.update(luettu);
+    }
 }

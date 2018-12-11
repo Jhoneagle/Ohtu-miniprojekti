@@ -60,11 +60,6 @@ public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
     }
 
     @Override
-    public void updateWithKey(Integer key) {
-        this.vinkit.get(key).getLuettu().setTime(System.currentTimeMillis());
-    }
-
-    @Override
     public Vinkki update(Vinkki updatedOne) {
         return this.vinkit.set(updatedOne.getId(), updatedOne);
     }

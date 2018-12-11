@@ -6,10 +6,12 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
+import ohtu.mocks.Utils;
 
 public class TempFile {
     protected File tempDatabase;
     protected Database database;
+    protected Utils component;
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -20,6 +22,7 @@ public class TempFile {
             String databaseAddress = "jdbc:sqlite:"+tempDatabase.getAbsolutePath();
             
             database = new DatabaseSQLite(databaseAddress);
+            component = new Utils();
         } catch (IOException ex) {
             System.out.println("Failed to use database in tests!");
         }
@@ -29,6 +32,7 @@ public class TempFile {
     public void restore() {
         if (tempDatabase != null) {
             this.tempDatabase.delete();
+            database = null;
         }
     }
     
