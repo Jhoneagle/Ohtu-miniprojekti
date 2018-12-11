@@ -1,7 +1,4 @@
-# Ohtu-miniprojekti
-
-
-Team Fibonacci
+﻿# Ohtu-miniprojekti by Team Fibonacci
 
 [![Build Status](https://travis-ci.org/Jhoneagle/Ohtu-miniprojekti.svg?branch=master)](https://travis-ci.org/Jhoneagle/Ohtu-miniprojekti)
 
@@ -9,15 +6,15 @@ Team Fibonacci
 
 Deployed version can be found in [heroku](https://ohtu-projekti.herokuapp.com/).
 
-Product and sprint backlog: https://docs.google.com/spreadsheets/d/17K3KS4yK0aTHdhOhpl4SCFNOYJR0JLlBurp1_vI2JCQ/edit#gid=0
+[Product and sprint backlog](https://docs.google.com/spreadsheets/d/17K3KS4yK0aTHdhOhpl4SCFNOYJR0JLlBurp1_vI2JCQ/edit#gid=0)
 
 
 Definition of done:
 
-Vaatimus on toteutettu valmiiksi, kun se on analysoitu, suunniteltu, ohjelmoitu, testattu, testaus automatisoitu, dokumentoitu, integroitu muuhun ohjelmistoon ja viety tuotantoympäristöön.
+The requirement has been completed when it has been analyzed, designed, programmed, tested, testing automated, documented, integrated into rest of the software and exported to the production environment.
 
-Testit:
+Tests:
 
-Cucumber-testien featuret löytyy täältä: https://github.com/Jhoneagle/Ohtu-miniprojekti/tree/master/src/test/resources/ohtu
+Cucumber features can be found [here](https://github.com/Jhoneagle/Ohtu-miniprojekti/tree/master/src/test/resources/ohtu).
 
-Yksikkötestit, sekä cucumber-testit löytyy täältä: https://github.com/Jhoneagle/Ohtu-miniprojekti/tree/master/src/test/java/ohtu
+Junit tests and Defined cucumber steps can be found [here](https://github.com/Jhoneagle/Ohtu-miniprojekti/tree/master/src/test/java/ohtu).

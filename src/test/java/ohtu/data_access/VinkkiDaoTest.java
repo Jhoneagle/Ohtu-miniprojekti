@@ -183,7 +183,7 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void unValidDatabaseCausesError1() {
-        dao = new VinkkiDao(new Database(null, true));
+        dao = new VinkkiDao(unValidDatabase());
         List<Vinkki> findAll = dao.findAll();
 
         assertNull(findAll);
@@ -191,7 +191,7 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void unValidDatabaseCausesError2() {
-        dao = new VinkkiDao(new Database(null, true));
+        dao = new VinkkiDao(unValidDatabase());
         Vinkki findOne = dao.findOne(0);
 
         assertNull(findOne);
@@ -199,7 +199,7 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void unValidDatabaseCausesError3() {
-        dao = new VinkkiDao(new Database(null, true));
+        dao = new VinkkiDao(unValidDatabase());
         dao.add(generateVinkki());
         Vinkki findOne = dao.findOne(0);
 
@@ -208,7 +208,7 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void unValidDatabaseCausesError4() {
-        dao = new VinkkiDao(new Database(null, true));
+        dao = new VinkkiDao(unValidDatabase());
         Vinkki update = dao.update(generateVinkki());
 
         assertNull(update);
@@ -216,7 +216,7 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void unValidDatabaseCausesError5() {
-        dao = new VinkkiDao(new Database(null, true));
+        dao = new VinkkiDao(unValidDatabase());
         dao.updateWithKey(1);
         Vinkki findOne = dao.findOne(0);
 
@@ -225,7 +225,7 @@ public class VinkkiDaoTest extends TempFile {
 
     @Test
     public void unValidDatabaseCausesError6() {
-        dao = new VinkkiDao(new Database(null, true));
+        dao = new VinkkiDao(unValidDatabase());
         dao.delete(1);
         Vinkki findOne = dao.findOne(0);
 
