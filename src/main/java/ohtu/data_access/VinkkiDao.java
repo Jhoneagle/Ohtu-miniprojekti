@@ -12,14 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VinkkiDao implements Dao<Vinkki, Integer> {
-
     private final Database database;
     private final Utils utils = new Utils();
 
     public VinkkiDao(Database database) {
         this.database = database;
     }
-
+    
     private Vinkki createOneFrom(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("id");
         String otsikko = rs.getString("otsikko");
@@ -28,8 +27,9 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         String linkki = rs.getString("linkki");
         String tagit = rs.getString("tagit");
         Date luettu = rs.getDate("luettu");
-
-        Vinkki vinkki = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, null);
+        String isbn = rs.getString("isbn");
+        
+        Vinkki vinkki = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, isbn);
         vinkki.setTagit(tagit);
         return vinkki;
     }
@@ -68,7 +68,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Vinkki f = createOneFrom(rs);
+            	Vinkki f = createOneFrom(rs);
                 vinkit.add(f);
             }
 
@@ -124,7 +124,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.setString(5, tagit);
             stmt.setDate(6, null);
             stmt.setString(7, vinkki.getIsbn());
-
+            
             stmt.executeUpdate();
             stmt.close();
             conn.close();
@@ -132,7 +132,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             System.out.println("ei toimi yhteys databaseen! \n" + ex);
         }
     }
-
+    
     @Override
     public void updateWithKey(Integer id) {
         try {
@@ -140,7 +140,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET luettu = ? WHERE id = ?");
             stmt.setDate(1, new Date(System.currentTimeMillis()));
             stmt.setInt(2, id);
-
+            
             stmt.executeUpdate();
             stmt.close();
             conn.close();
@@ -148,6 +148,7 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             System.out.println("ei toimi yhteys databaseen! \n" + ex);
         }
     }
+
     @Override
     public void removeDate(Integer id) {
         try {
@@ -174,11 +175,11 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
             stmt.setString(4, updatedOne.getLinkki());
             stmt.setString(5, updatedOne.getTagit());
             stmt.setInt(6, updatedOne.getId());
-
+            
             stmt.executeUpdate();
             stmt.close();
             conn.close();
-
+            
             return updatedOne;
         } catch (SQLException ex) {
             System.out.println("ei toimi yhteys databaseen! \n" + ex);
