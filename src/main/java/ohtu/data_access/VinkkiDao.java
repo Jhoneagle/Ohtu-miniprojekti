@@ -150,6 +150,21 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     }
 
     @Override
+    public void removeDate(Integer id) {
+        try {
+            Connection conn = database.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Vinkki SET luettu = NULL WHERE id = ?");
+            stmt.setInt(1, id);
+
+            stmt.executeUpdate();
+            stmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println("ei toimi yhteys databaseen! \n" + ex);
+        }
+    }
+
+    @Override
     public Vinkki update(Vinkki updatedOne) {
         try {
             Connection conn = database.getConnection();
