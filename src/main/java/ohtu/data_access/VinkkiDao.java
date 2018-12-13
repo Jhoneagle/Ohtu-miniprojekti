@@ -71,6 +71,9 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
     public void delete(Integer id) {
         try {
             Connection conn = database.getConnection();
+            if (database instanceof DatabaseSQLite) {
+                conn.prepareStatement("PRAGMA foreign_keys = ON").execute();
+            }
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Vinkki WHERE id = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
