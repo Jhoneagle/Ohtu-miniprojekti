@@ -26,7 +26,7 @@ public class DatabaseSQLite implements Database {
                     + ", tagit varchar(255), luettu date, isbn varchar(255))").execute();
             getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS Kommentti(id INTEGER PRIMARY KEY, "
                     + "vinkki_id INTEGER, nikki varchar(255), content varchar(10000), created date, "
-                    + "FOREIGN KEY (vinkki_id) REFERENCES Vinkki(id))").execute();
+                    + "FOREIGN KEY (vinkki_id) REFERENCES Vinkki(id) ON DELETE CASCADE)").execute();
         } catch (SQLException ex) {
             System.out.println("create tables failed!" + "\n" + ex);
         }
