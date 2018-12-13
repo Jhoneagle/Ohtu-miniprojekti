@@ -9,6 +9,7 @@ import java.io.IOException;
 import ohtu.mocks.Utils;
 
 public class TempFile {
+
     protected File tempDatabase;
     protected Database database;
     protected Utils component;
@@ -19,6 +20,7 @@ public class TempFile {
     public void setUp() {
         try {
             tempDatabase = tempFolder.newFile("test.db");
+            
             String databaseAddress = "jdbc:sqlite:"+tempDatabase.getAbsolutePath();
             
             database = new DatabaseSQLite(databaseAddress);
@@ -27,7 +29,7 @@ public class TempFile {
             System.out.println("Failed to use database in tests!");
         }
     }
-    
+
     @After
     public void restore() {
         if (tempDatabase != null) {
@@ -35,7 +37,7 @@ public class TempFile {
             database = null;
         }
     }
-    
+
     protected Database unValidDatabase() {
         return new DatabaseSQLite(null);
     }

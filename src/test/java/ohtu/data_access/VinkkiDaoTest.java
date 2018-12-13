@@ -151,7 +151,6 @@ public class VinkkiDaoTest extends TempFile {
         assertNull(findOne.getLuettu());
     }
 
-    @Test
     public void update() {
         Vinkki vinkki = new Vinkki(1, "Eka", "Eka", "", "youtube.com/Eka", new Date(1), null);
         Vinkki updated = new Vinkki(1, "Toka", "Toka", "", "youtube.com/toka", new Date(1), null);

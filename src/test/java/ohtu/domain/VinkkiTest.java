@@ -134,10 +134,30 @@ public class VinkkiTest {
         this.vinkki.setKuvaus("kuvaus");
         assertEquals("kuvaus", this.vinkki.getKuvaus());
     }
-    
+
     @Test
     public void setTagitAgainTest() {
         this.vinkki.setTagitAgain("asd,qwe,zxc");
         assertEquals("asd,qwe,zxc", this.vinkki.getTagit());
     }
+
+    @Test
+    public void setNull() {
+        this.vinkki.setLuettu(null);
+        assertNull(vinkki.getLuettu());
+    }
+
+    @Test
+    public void setDate() {
+        Date date = new Date(5);
+        this.vinkki.setLuettu(date);
+        assertEquals(vinkki.getLuettu(), new Date(5));
+    }
+
+    @Test
+    public void setGetISBN() {
+        this.vinkki.setIsbn("test");
+        assertEquals(vinkki.getIsbn(), "test");
+    }
+
 }

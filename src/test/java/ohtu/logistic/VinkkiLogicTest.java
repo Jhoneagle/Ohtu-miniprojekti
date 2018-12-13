@@ -45,4 +45,9 @@ public class VinkkiLogicTest extends TempFile {
 
         assertNull(findOne);
     }
+    
+    @Test
+    public void removeLuettu() {
+        
+    }
 }

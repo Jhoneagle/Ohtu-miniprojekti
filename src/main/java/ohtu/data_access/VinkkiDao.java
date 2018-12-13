@@ -109,7 +109,6 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         }
     }
     
-    @Override
     public Vinkki update(Vinkki updatedOne) {
         try {
             Connection conn = database.getConnection();
@@ -141,8 +140,9 @@ public class VinkkiDao implements Dao<Vinkki, Integer> {
         String linkki = rs.getString("linkki");
         String tagit = rs.getString("tagit");
         Date luettu = rs.getDate("luettu");
+        String isbn = rs.getString("isbn");
         
-        Vinkki vinkki = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, null);
+        Vinkki vinkki = new Vinkki(id, otsikko, tekija, kuvaus, linkki, luettu, isbn);
         vinkki.setTagit(tagit);
         return vinkki;
     }

@@ -6,12 +6,13 @@ import java.util.List;
 import ohtu.domain.Kommentti;
 
 public class KommenttiDao implements Dao<Kommentti, Integer> {
+
     private final Database database;
 
     public KommenttiDao(Database database) {
         this.database = database;
     }
-
+    
     @Override
     public Kommentti findOne(Integer key) {
         try {
@@ -39,9 +40,10 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
     public List<Kommentti> findAll() {
         try {
             List<Kommentti> kommentit = new ArrayList<>();
-            
+
             Connection conn = database.getConnection();
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kommentti");
+
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -89,6 +91,7 @@ public class KommenttiDao implements Dao<Kommentti, Integer> {
             String nikki = rs.getString("nikki");
             String content = rs.getString("content");
             Date created = rs.getDate("created");
+            
             Kommentti kommentti = new Kommentti(id, vinkkiId, nikki, content, created);
             return kommentti;
         } catch (SQLException ex) {
