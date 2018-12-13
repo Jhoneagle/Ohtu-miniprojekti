@@ -85,19 +85,17 @@ public class Main {
             String notRead = req.queryParams("notRead");
             List<Vinkki> vinkit = vinkkiController.findAll();
             String searchType = req.queryParams("search");
-            
+
             if ("Etsi tageilla".equals(searchType)) {
-                vinkit = combineDisplayablesByTag(vinkit, req.queryParams("searchText"));
+                vinkit = vinkkiController.filterVinkitByTag(vinkit, req.queryParams("searchText"));
             } else if ("Vapaa sanahaku".equals(searchType)) {
-                vinkit = combineDisplayablesByVapaaSanahaku(vinkit, req.queryParams("searchText"));
+                vinkit = vinkkiController.filterVinkitByVapaaSanahaku(vinkit, req.queryParams("searchText"));
             }
-            
+
             if ("notRead".equals(notRead)) {
-                vinkit = vinkit.stream()
-                        .filter(vinkki -> null == vinkki.getLuettu())
-                        .collect(Collectors.toList());
+                vinkit = vinkkiController.filterVinkitByNotRead(vinkit);
             }
-            
+
             naytettavat = new ArrayList<>();
             HashMap map = new HashMap<>();
             map.put("vinkit", vinkit);
@@ -107,11 +105,11 @@ public class Main {
         get("/vinkki/:id", (req, res) -> {
             Integer vinkkiId = Integer.parseInt(req.params(":id"));
             Vinkki found = (Vinkki) vinkkiController.findOne(vinkkiId);
-            
+
             HashMap map = new HashMap<>();
             map.put("vinkki", found);
             map.put("kommentit", kommenttiController.findAllByForeignKey(vinkkiId));
-            
+
             if (found != null) {
                 map.put("tagit", found.getTagit());
 
@@ -227,44 +225,6 @@ public class Main {
         });
     }
 
-    private static List<Vinkki> combineDisplayablesByVapaaSanahaku(List<Vinkki> vinkit, String haku) {
-        String[] etsittavat = haku.trim().toLowerCase().split(",");
-        List<Vinkki> filteredVinkit = new ArrayList();
-        
-        for (String s : etsittavat) {
-            String etsittava = s.trim();
-            for (Vinkki vinkki : vinkit) {
-                String otsikko = vinkki.getOtsikko().toLowerCase();
-                String tekija = vinkki.getTekija().toLowerCase();
-                String kuvaus = vinkki.getKuvaus().toLowerCase();
-                
-                if ((otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) && naytettavat.indexOf(vinkki) == -1) {
-                    filteredVinkit.add(vinkki);
-                }
-            }
-        }
-        
-        return filteredVinkit;
-    }
-
-    private static List<Vinkki> combineDisplayablesByTag(List<Vinkki> vinkit, String haku) {
-        String[] etsittavat = haku.trim().toLowerCase().split(",");
-        List<Vinkki> filteredVinkit = new ArrayList();
-        
-        for (String s : etsittavat) {
-            String etsittava = s.trim();
-            for (Vinkki vinkki : vinkit) {
-                String tagit = vinkki.getTagit();
-                if (tagit.contains(etsittava) && filteredVinkit.indexOf(vinkki) == -1) {
-                    filteredVinkit.add(vinkki);
-                }
-            }
-        }
-        
-        return filteredVinkit;
-
-    }
-
     public static void setAllDao(Database database) {
         if (vinkkiController == null) {
             vinkkiController = new VinkkiLogic(new VinkkiDao(database));
@@ -291,7 +251,7 @@ public class Main {
 
     static Database getDatabase() {
         String bdUrl = System.getenv("JDBC_DATABASE_URL");
-        
+
         if (bdUrl != null && bdUrl.length() > 0) {
             return new DatabasePostgres();
         } else {
