@@ -72,7 +72,7 @@ public class VinkkiLogic {
                 String tekija = vinkki.getTekija().toLowerCase();
                 String kuvaus = vinkki.getKuvaus().toLowerCase();
 
-                if ((otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) && filteredVinkit.indexOf(vinkki) == -1) {
+                if (otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) {
                     filteredVinkit.add(vinkki);
                 }
             }
@@ -88,7 +88,7 @@ public class VinkkiLogic {
             String etsittava = s.trim();
             for (Vinkki vinkki : vinkit) {
                 String tagit = vinkki.getTagit().toLowerCase();
-                if (tagit.contains(etsittava) && filteredVinkit.indexOf(vinkki) == -1) {
+                if (tagit.contains(etsittava)) {
                     filteredVinkit.add(vinkki);
                 }
             }
