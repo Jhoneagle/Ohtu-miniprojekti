@@ -9,7 +9,6 @@ import java.util.List;
 import ohtu.util.Utils;
 
 public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
-
     private List<Vinkki> vinkit;
     private int nextId;
 
@@ -54,7 +53,7 @@ public class VinkkiDaoForTests implements Dao<Vinkki, Integer> {
             }
         }
 
-        Vinkki vinkki = new Vinkki(nextId, newOne.getOtsikko(), newOne.getTekija(), newOne.getKuvaus(), newOne.getLinkki(), new Date(1), null);
+        Vinkki vinkki = new Vinkki(nextId, newOne.getOtsikko(), newOne.getTekija(), newOne.getKuvaus(), newOne.getLinkki(), null, null);
         vinkki.setTagit(newOne.getTagit());
         this.vinkit.add(vinkki);
         nextId++;

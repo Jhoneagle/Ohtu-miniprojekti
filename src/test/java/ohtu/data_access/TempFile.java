@@ -9,7 +9,6 @@ import java.io.IOException;
 import ohtu.mocks.Utils;
 
 public class TempFile {
-
     protected File tempDatabase;
     protected Database database;
     protected Utils component;

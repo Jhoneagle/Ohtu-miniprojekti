@@ -52,13 +52,22 @@ public class Utils {
     }
 
     public boolean areKommentitSame(Kommentti expected, Kommentti actual) {
-        if (expected.getCreated().toString().compareTo(actual.getCreated().toString()) == 0
-                && expected.getContent().equals(actual.getContent())
-                && expected.getNikki().equals(actual.getNikki())
-                && expected.getVinkkiId() == actual.getVinkkiId()) {
-            return true;
+        if (!expected.getCreated().toString().contains(actual.getCreated().toString())) {
+            return false;
         }
         
-        return false;
+        if (!expected.getContent().contains(actual.getContent())) {
+            return false;
+        }
+        
+        if (!expected.getNikki().contains(actual.getNikki())) {
+            return false;
+        }
+        
+        if (expected.getVinkkiId() != actual.getVinkkiId()) {
+            return false;
+        }
+        
+        return true;
     }
 }

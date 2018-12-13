@@ -36,7 +36,7 @@ public class Stepdefs {
     @When("^submitted read of the tip$")
     public void submitted_read_of_the_tip() throws Throwable {
         WebElement element = driver.findElement(By.name("luettuButton"));
-        element.click();
+        element.submit();
     }
 
     @Then("^new tip view is open$")
@@ -96,9 +96,9 @@ public class Stepdefs {
         pageHasContent(tipFound);
     }
 
-    @Then("^tip is signed read and have returned list view$")
+    @Then("^tip is signed read$")
     public void tip_is_signed_read_and_have_returned_list_view() throws Throwable {
-        pageHasContent("Lukuvinkit listana");
+        pageHasContent("Merkitse lukemattomaksi");
         pageHasContent(new Date(System.currentTimeMillis()).toString());
     }
 
