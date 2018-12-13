@@ -239,7 +239,7 @@ public class Main {
                 String kuvaus = vinkki.getKuvaus().toLowerCase();
                 
                 if ((otsikko.contains(etsittava) || tekija.contains(etsittava) || kuvaus.contains(etsittava)) && naytettavat.indexOf(vinkki) == -1) {
-                    naytettavat.add(vinkki);
+                    filteredVinkit.add(vinkki);
                 }
             }
         }
