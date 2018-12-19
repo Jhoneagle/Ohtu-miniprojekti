@@ -18,3 +18,7 @@ Tests:
 Cucumber features can be found [here](https://github.com/Jhoneagle/Ohtu-miniprojekti/tree/master/src/test/resources/ohtu).
 
 Junit tests and Defined cucumber steps can be found [here](https://github.com/Jhoneagle/Ohtu-miniprojekti/tree/master/src/test/java/ohtu).
+
+Link to report:
+
+https://docs.google.com/document/d/1lCm4j5-yVCLuNNVaPPzqXIOmZWQeQqzGkHcejpBG1yk/edit?usp=sharing
